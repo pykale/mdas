@@ -2,7 +2,7 @@
 
 ## Different ECG leads as complementary views
 
-The `lsemvae_ecg` example treats individual ECG leads as separate modalities. Its source README describes **representation pretraining on multi-lead recordings** and **fine-tuning using a subset of leads** for a **pulmonary hypertension task**.
+The `lsemvae_ecg` example treats individual ECG leads as separate modalities. Its example README describes **representation pretraining on multi-lead recordings** and **fine-tuning using a subset of leads** for a **pulmonary hypertension task**.
 
 ## Run the quick configuration
 
@@ -30,6 +30,6 @@ python -m examples.lsemvae_ecg.main --leads I,I+II,I+II+III
 ```
 
 > [!WARNING]
-> Treat configuration experiments as optional, subject to facilitator testing before session day.
+> Configuration experiments are optional. Confirm the supported lead-set comparisons with your facilitator before running them.
 
-Source: PDF pages 23–24. [Getting started](getting-started.md) · [CardioVAE hands-on](cardiovae-hands-on.md) · [Results and interpretation](results.md).
+[Getting started](getting-started.md) · [CardioVAE hands-on](cardiovae-hands-on.md) · [Results and interpretation](results.md).

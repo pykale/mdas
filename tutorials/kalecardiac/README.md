@@ -2,7 +2,7 @@
 
 ## Two practical examples
 
-The uploaded `cardiac-main` snapshot documents two runnable synthetic-cohort workflows:
+The `cardiac-main` development snapshot provides two synthetic-cohort workflows:
 
 | Example | Inputs | What it demonstrates |
 | --- | --- | --- |
@@ -19,8 +19,8 @@ Both examples can generate synthetic cohorts when no data path is supplied. They
 4. [Results and interpretation](results.md)
 
 > [!WARNING]
-> **Under development:** This documentation reflects the provided `cardiac-main` archive (snapshot metadata dated September 2026). Features, configurations and outputs may change before the session. Session-day support and final exercise selection are still to be confirmed.
+> **Under development:** These tutorials use the `cardiac-main` development snapshot. Features, configurations and outputs may change before the session. Session-day support and final exercise selection are still to be confirmed.
 
-**Source:** `cardiac-main/README.md`, `docs/quickstart.md`, `examples/README.md` and the example-specific READMEs. These refer to the software snapshot, not files in this documentation repository.
+**Technical references in `cardiac-main`:** `README.md`, `docs/quickstart.md`, `examples/README.md` and the example-specific READMEs. These paths are relative to the KaleCardiac repository root.
 
-Source: PDF pages 21–22 (page 21 is a section divider). [Tutorials overview](../README.md) · [Notebooks](../../notebooks/README.md) · [Resources](../../docs/resources.md).
+[Tutorials overview](../README.md) · [Notebooks](../../notebooks/README.md) · [Resources](../../docs/resources.md).

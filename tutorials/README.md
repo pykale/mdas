@@ -10,7 +10,7 @@ Clinical variables + pathology patch features → intermediate fusion → Cox ti
 
 ## KaleCardiac
 
-Two examples are documented in the uploaded development snapshot:
+The `cardiac-main` development snapshot provides two examples:
 
 - **CardioVAE:** chest X-ray + ECG multimodal representation learning.
 - **LS-EMVAE:** lead-specific ECG representation learning and fine-tuning.
@@ -18,6 +18,6 @@ Two examples are documented in the uploaded development snapshot:
 [About KaleCardiac](kalecardiac/README.md) · [Get started](kalecardiac/getting-started.md) · [CardioVAE hands-on](kalecardiac/cardiovae-hands-on.md) · [LS-EMVAE hands-on](kalecardiac/lsemvae-hands-on.md) · [Results and interpretation](kalecardiac/results.md).
 
 > [!NOTE]
-> **Development note:** KaleCardiac is actively evolving. All commands reflect the uploaded snapshot and should be retested against the version used on session day. Example results generated from synthetic data are not clinical findings.
+> KaleCardiac is actively evolving. Commands apply to the `cardiac-main` development snapshot; confirm the session revision with the organisers. Example results generated from synthetic data are not clinical findings.
 
-Source: PDF pages 13–14 (page 13 is a section divider). [Prerequisites](../docs/prerequisites.md) · [Notebooks](../notebooks/README.md) · [Main entry point](../README.md).
+[Prerequisites](../docs/prerequisites.md) · [Notebooks](../notebooks/README.md) · [Main entry point](../README.md).

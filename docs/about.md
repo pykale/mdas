@@ -13,6 +13,6 @@ The planned Multimodal Data Analysis Session (MDAS) introduces the **early, inte
 - Supported time for participants to apply ideas to their own suitable data or a provided problem.
 
 > [!NOTE]
-> These are intentions from the planning documents, not confirmed session outcomes.
+> The session format is provisional and subject to confirmation.
 
-Source: PDF pages 6–7 (page 6 is the “What is MDAS” section divider). Continue to the [draft agenda](agenda.md), [participation guide](participation.md), or [overview](overview.md).
+[Draft agenda](agenda.md) · [Participation guide](participation.md) · [Overview](overview.md).

@@ -1,11 +1,11 @@
 # KaleCancer: hands-on activity
 
 > [!NOTE]
-> Proposed facilitator exercise, based on the uploaded refactor example; not a separately validated exercise from the repository.
+> This is a proposed session activity using the `cancer-refactor` synthetic example.
 
 ## 1. Run and observe
 
-From the extracted `cancer-refactor` directory:
+From the `cancer-refactor` repository root:
 
 ```sh
 uv run python examples/synthetic/synthetic_survival.py
@@ -36,4 +36,4 @@ Open `examples/synthetic/synthetic_survival.py` and find:
 
 The refactor repository documents HANCOCK examples in `docs/quickstart.md`, including `examples/hancock/survival_intermediate.py`, `from_config.py`, `cross_validation.py` and `classification_late.py`. These require a **local HANCOCK dataset** and are **not part of the no-data starter exercise**.
 
-Source: PDF pages 18–19. Paths refer to the `cancer-refactor` software snapshot. [Getting started](getting-started.md) · [Results and interpretation](results.md) · [Participation guide](../../docs/participation.md).
+[Getting started](getting-started.md) · [Results and interpretation](results.md) · [Participation guide](../../docs/participation.md).

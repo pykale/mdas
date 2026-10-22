@@ -1,20 +1,23 @@
 # Jupyter notebooks
 
-Real tutorial notebooks will be stored in:
+Hands-on notebook tutorials will be stored in:
 
 - [KaleCancer](kalecancer/): `notebooks/kalecancer/`
 - [KaleCardiac](kalecardiac/): `notebooks/kalecardiac/`
 
-These folders currently contain only `.gitkeep` files. No tutorial `.ipynb` files have been supplied, generated or copied into this repository.
+**No session notebooks are available in this repository yet.** Links will be added here and in the corresponding [KaleCancer](../tutorials/kalecancer/README.md) and [KaleCardiac](../tutorials/kalecardiac/README.md) tutorials when they are available.
 
 ## Access and execution
 
-Once actual notebooks are added, participants will access them through links from this page and the corresponding [KaleCancer](../tutorials/kalecancer/README.md) and [KaleCardiac](../tutorials/kalecardiac/README.md) tutorials. Notebooks can be viewed on GitHub. Compatible notebooks may be opened in Google Colab for execution. Working GitHub and Colab links will be provided once the actual notebooks are available and checked.
+Notebooks can be viewed on GitHub. Compatible notebooks may also be opened in Google Colab for execution. Working GitHub and Colab links will be provided once the session notebooks are available.
 
-Python dependencies and data requirements may need additional setup, including the correct software snapshot, compatible packages, and permissions for any real research datasets. Review the [prerequisites](../docs/prerequisites.md) and track-specific setup before running a notebook. Do not upload identifiable patient data, confidential material or private datasets to public services or this repository.
+Python dependencies and data requirements may need additional setup, including the correct software snapshot, compatible packages and permissions for real research datasets. Review the [prerequisites](../docs/prerequisites.md) and track-specific setup before running a notebook.
 
-## Notebook referenced by the source
+> [!CAUTION]
+> Do not upload identifiable patient data, confidential material or private datasets to public services or this repository. Use clinical data only with appropriate permissions and secure infrastructure.
 
-PDF page 17 states that the `cancer-refactor` snapshot provides an equivalent synthetic example at `examples/synthetic/synthetic_survival.ipynb`. This is a source-snapshot reference, not a file or working notebook link in this repository. The PDF does not identify a specific KaleCardiac notebook path. Organizers need to supply and verify the real notebooks before publication of execution links.
+## KaleCancer example notebook
 
-[Main entry point](../README.md) · [Migration checklist](../MIGRATION_CHECKLIST.md).
+The `cancer-refactor` development snapshot documents a synthetic survival notebook at `examples/synthetic/synthetic_survival.ipynb` within the KaleCancer software repository. It is not currently included in this repository. See [KaleCancer getting started](../tutorials/kalecancer/getting-started.md) for the command-line example.
+
+[MDAS home](../README.md) · [Tutorials overview](../tutorials/README.md).

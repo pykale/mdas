@@ -22,9 +22,9 @@ python -m examples.cardiovae_multimodal.main --cfg examples/cardiovae_multimodal
 3. **Identify the endpoint and saved results.** Identify the endpoint and locate the saved results.
 4. **Discuss missing modalities.** Discuss what could happen when one modality is missing.
 
-For experiment-specific data requirements and output file names, see `examples/cardiovae_multimodal/README.md` in the uploaded cardiac snapshot.
+For experiment-specific data requirements and output file names, see `examples/cardiovae_multimodal/README.md` in the `cardiac-main` development snapshot.
 
 > [!NOTE]
-> The session activity prompts are proposed; the example, modalities and command are source-grounded.
+> These activities are provisional; the final session exercises are still to be confirmed.
 
-Source: PDF pages 25–26. [Getting started](getting-started.md) · [LS-EMVAE hands-on](lsemvae-hands-on.md) · [Results and interpretation](results.md).
+[Getting started](getting-started.md) · [LS-EMVAE hands-on](lsemvae-hands-on.md) · [Results and interpretation](results.md).

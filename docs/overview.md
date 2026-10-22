@@ -10,7 +10,7 @@ Welcome to the **Multimodal Data Analysis Session (MDAS): Cancer & Cardiac Resea
 
 ## Who this is for
 
-AI/ML researchers, data scientists, research software engineers, clinicians, clinical researchers and PhD students working with, or planning to work with, cancer or cardiac data. Some Python experience and a laptop are recommended (per the draft invitation).
+AI/ML researchers, data scientists, research software engineers, clinicians, clinical researchers and PhD students working with, or planning to work with, cancer or cardiac data. Some Python experience and a laptop are recommended.
 
 ## Start here
 
@@ -22,4 +22,4 @@ AI/ML researchers, data scientists, research software engineers, clinicians, cli
 > [!IMPORTANT]
 > The synthetic examples are demonstrations of software workflows, not evidence of clinical performance.
 
-Source: PDF pages 4–5. [Return to the main entry point](../README.md).
+[Return to the main entry point](../README.md).

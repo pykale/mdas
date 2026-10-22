@@ -1,10 +1,10 @@
 # KaleCardiac: getting started
 
-The PDF does not contain a separate KaleCardiac getting-started page. Its [Quick Start](../../docs/quick-start.md) provides the setup and commands reproduced here for this tutorial route.
+Set up KaleCardiac and choose a synthetic example below. For a shorter route, see the [Quick Start](../../docs/quick-start.md).
 
 ## Prepare the snapshot
 
-Use the extracted **`cardiac-main` repository root**, with **Python 3.10, 3.11 or 3.12**. Install a compatible PyTorch build and PyKale first, following their installation guidance.
+Use the **`cardiac-main` development snapshot** and run commands from its repository root, with **Python 3.10, 3.11 or 3.12**. Install a compatible PyTorch build and PyKale first, following their installation guidance.
 
 ```sh
 pip install -e .
@@ -31,9 +31,9 @@ python -m examples.lsemvae_ecg.main --cfg examples/lsemvae_ecg/configs/quick.yam
 
 Continue to [LS-EMVAE hands-on](lsemvae-hands-on.md).
 
-The uploaded quickstart says these examples run on CPU and write predictions, metrics and configuration records under `outputs/`. Exact runtime depends on hardware and dependencies.
+The `cardiac-main` quickstart describes CPU-capable examples that write predictions, metrics and configuration records under `outputs/`. Exact runtime depends on hardware and dependencies.
 
 > [!WARNING]
-> These commands come from `cardiac-main/docs/quickstart.md`; they have not been independently executed here. If using the uploaded ZIP offline, extract it first and run commands from its root. Avoid mixing it with an older installed KaleCardiac version. Do not assume these commands work on the current public default branch.
+> Run these commands from the `cardiac-main` development snapshot, not this documentation repository. Avoid mixing it with an older installed KaleCardiac version. Compatibility with the current public default branch is not guaranteed; confirm the session revision with the organisers.
 
-Source: PDF pages 2–3. [About KaleCardiac](README.md) · [Results and interpretation](results.md) · [Prerequisites](../../docs/prerequisites.md).
+[About KaleCardiac](README.md) · [Results and interpretation](results.md) · [Prerequisites](../../docs/prerequisites.md).

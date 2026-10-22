@@ -1,10 +1,10 @@
 # Quick Start
 
-The source Quick Start covers KaleCardiac. For the other track, see [KaleCancer getting started](../tutorials/kalecancer/getting-started.md). Review the [prerequisites](prerequisites.md) before setup.
+This Quick Start covers KaleCardiac. For the other track, see [KaleCancer getting started](../tutorials/kalecancer/getting-started.md). Review the [prerequisites](prerequisites.md) before setup.
 
 ## Installation
 
-The uploaded cardiac quickstart supports **Python 3.10, 3.11 and 3.12**. Install a compatible PyTorch build and PyKale first, following their installation guidance. From the extracted **`cardiac-main` repository root**:
+The `cardiac-main` development snapshot supports **Python 3.10, 3.11 and 3.12**. Install a compatible PyTorch build and PyKale first, following their installation guidance. From the **`cardiac-main` repository root**:
 
 ```sh
 pip install -e .
@@ -31,12 +31,12 @@ python -m examples.lsemvae_ecg.main --cfg examples/lsemvae_ecg/configs/quick.yam
 
 See [LS-EMVAE hands-on](../tutorials/kalecardiac/lsemvae-hands-on.md).
 
-The uploaded quickstart says these synthetic examples run on CPU and write predictions, metrics and configuration records under `outputs/`. Exact runtime depends on hardware and dependencies.
+The `cardiac-main` quickstart describes CPU-capable synthetic examples that write predictions, metrics and configuration records under `outputs/`. Exact runtime depends on hardware and dependencies.
 
 > [!WARNING]
-> These commands come from `cardiac-main/docs/quickstart.md`; they have not been independently executed here. If using the uploaded ZIP offline, extract it first and run commands from its root. Avoid mixing it with an older installed KaleCardiac version.
+> Run these commands from the `cardiac-main` development snapshot, not this documentation repository. Avoid mixing it with an older installed KaleCardiac version. Compatibility with the current public default branch is not guaranteed; confirm the session revision with the organisers.
 
 > [!IMPORTANT]
 > Synthetic examples are pipeline checks, not evidence of clinical performance.
 
-Source: PDF pages 2–3. See [resources](resources.md) for snapshot references and [KaleCardiac getting started](../tutorials/kalecardiac/getting-started.md).
+[Resources](resources.md) · [KaleCardiac getting started](../tutorials/kalecardiac/getting-started.md).

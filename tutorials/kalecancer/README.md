@@ -13,6 +13,6 @@ How can clinical features and pathology patch features be combined to explore ti
 > [!NOTE]
 > No real patient data are needed for this starter exercise. For a real-data extension, the repository also includes **HANCOCK** examples; those require separate dataset access and additional setup.
 
-**Source snapshot:** `cancer-refactor` ZIP: `README.md`, `docs/quickstart.md`, `examples/synthetic/synthetic_survival.py`, and `examples/hancock/`. These are paths within the software snapshot, not this documentation repository.
+**Technical references in `cancer-refactor`:** `README.md`, `docs/quickstart.md`, `examples/synthetic/synthetic_survival.py`, and `examples/hancock/`. These paths are relative to the KaleCancer repository root.
 
-Source: PDF pages 15–16 (page 15 is a section divider). [Tutorials overview](../README.md) · [Notebooks](../../notebooks/README.md) · [Resources](../../docs/resources.md).
+[Tutorials overview](../README.md) · [Notebooks](../../notebooks/README.md) · [Resources](../../docs/resources.md).
