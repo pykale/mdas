@@ -1,0 +1,43 @@
+# Local migration sources (never publish)
+/source-material/
+
+# Python caches and build products
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+/build/
+/dist/
+
+# Local environments
+.venv/
+venv/
+env/
+.conda/
+
+# Jupyter checkpoints (tutorial .ipynb files remain included)
+.ipynb_checkpoints/
+
+# Local secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+/secrets/
+/.aws/
+
+# Temporary files and generated outputs
+/tmp/
+/temp/
+/outputs/
+/output/
+*.tmp
+*.temp
+*.log
+*~
+*.swp
+.DS_Store
+Thumbs.db
