@@ -1,0 +1,12 @@
+[project]
+name = "mdas"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = [
+    "ipykernel>=7.4.0",
+    "kalecancer",
+    "numpy>=2.5.4",
+]
+
+[tool.uv.sources]
+kalecancer = { git = "https://github.com/pykale/cancer.git" }

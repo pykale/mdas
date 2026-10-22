@@ -17,6 +17,9 @@ venv/
 env/
 .conda/
 
+# Data
+data/
+
 # Jupyter checkpoints (tutorial .ipynb files remain included)
 .ipynb_checkpoints/
 

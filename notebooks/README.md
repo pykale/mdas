@@ -2,8 +2,8 @@
 
 Hands-on notebook tutorials will be stored in:
 
-- [KaleCancer](kalecancer/): `notebooks/kalecancer/`
-- [KaleCardiac](kalecardiac/): `notebooks/kalecardiac/`
+- [KaleCancer](cancer/): `cancer`
+- [KaleCardiac](cardiac/): `cardiac`
 
 **No session notebooks are available in this repository yet.** Links will be added here and in the corresponding [KaleCancer](../tutorials/kalecancer/README.md) and [KaleCardiac](../tutorials/kalecardiac/README.md) tutorials when they are available.
 
