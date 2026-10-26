@@ -1,0 +1,12 @@
+# CPU-only execution environment. Versions follow the existing research lock.
+# Recompile with the command documented in .binder/README.md.
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch==2.6.0+cpu
+kalecancer @ git+https://github.com/pykale/cancer.git@1f476fdba87f515286f732cd7eaa92ffeeffdbc2
+numpy==2.5.4
+pandas==2.2.2
+h5py==3.16.0
+scikit-learn==1.9.1
+lightning==2.6.6
+torchsurv==0.1.6
+ipykernel==7.4.0
