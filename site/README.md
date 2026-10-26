@@ -142,15 +142,10 @@ The Cancer and Cardiac public `main` trees were inspected on 26 October 2026. Bo
 
 ## GitHub Pages preparation
 
-The configured destination is <https://pykale.github.io/mmai-mdas/>. No publication is performed by the build script. Generated HTML contains relative links suitable for that project subpath, and Sphinx's GitHub Pages extension creates `.nojekyll` so underscore-prefixed theme assets can be served.
+The deployment workflow is now [`.github/workflows/deploy-docs.yml`](../.github/workflows/deploy-docs.yml). It builds on pushes to `main` and manual dispatch, uploads only `site/_build/html`, and deploys through the official Pages Actions. Committing and pushing this workflow to `main` can trigger publication once Pages is configured. No workflow was run or remote setting changed during preparation.
 
-`github-pages.yml.example` is an **inactive template outside `.github/workflows/`**. It cannot run in its current location. It uses only a manual `workflow_dispatch` trigger. After review, a repository maintainer could:
+See [DEPLOYMENT.md](DEPLOYMENT.md) for the source inventory, exact review/staging/publication commands, required manual settings and validation limits. The old `github-pages.yml.example` is a retired placeholder; do not copy it into the workflows directory.
 
-1. Add the template as `.github/workflows/docs-pages.yml`, then commit and push the approved source changes.
-2. In repository **Settings → Pages → Build and deployment**, select **GitHub Actions** as the publishing source. Administrative or maintainer access is required to configure the source; organisation policy must permit Pages and the referenced Actions.
-3. Permit the workflow token to read repository contents, write Pages deployments (`pages: write`) and request an OpenID Connect token (`id-token: write`). Review any protection rules for the `github-pages` environment.
-4. Manually run the workflow on the intended branch. The upload step includes only `site/_build/html`, not notebooks, source material, datasets or the repository checkout.
+The configured URL is <https://pykale.github.io/mmai-mdas/>. The link checker resolves generated HTML and CSS asset URLs under `/mmai-mdas/`, checks anchors, and verifies search assets and `.nojekyll`. Notebook execution remains disabled during the build. The workflow installs only the documentation dependencies through the existing `build.py` isolated uv tool process, without installing the root research project, Binder environment or ML packages.
 
-The workflow and repository settings have not been activated, changed or run. The site is not published by this local work.
-
-For publishing details, see GitHub's [custom Pages workflows](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages) and [publishing-source settings](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site).
+Colab-ready work is deferred by organiser instruction. Its notebook was previously removed; the Colab button continues to open the original public notebook, which needs separate setup for execution. There is no constraints-file setup to publish or validate in this release.
