@@ -1,8 +1,8 @@
-# KaleCancer: results and interpretation
+# Cancer: results and interpretation
 
 ## Reading a synthetic survival run
 
-The example illustrates a **Cox time-to-event workflow** using synthetic clinical and patch data. The refactor documentation identifies **Harrell's C** as a survival evaluation measure used in its examples; real-data HANCOCK examples also document **Uno's C**.
+The example illustrates a **Cox time-to-event workflow** using synthetic clinical and patch data. The Cancer documentation identifies **Harrell's C** as a survival evaluation measure used in its examples; real-data HANCOCK examples also document **Uno's C**.
 
 A concordance measure summarises how well risk ordering agrees with observed event-time information. It is not a probability of survival for an individual patient.
 
@@ -15,6 +15,6 @@ A concordance measure summarises how well risk ordering agrees with observed eve
 
 ## Next steps
 
-The real-data HANCOCK examples require access to the dataset, the expected local directory structure, and further compute. Consult `docs/quickstart.md` in the `cancer-refactor` development snapshot before attempting them.
+The real-data HANCOCK examples require access to the dataset, the expected local directory structure, and further compute. Consult `docs/quickstart.md` in the Cancer repository before attempting them.
 
-[About KaleCancer](README.md) · [Getting started](getting-started.md) · [Hands-on activity](hands-on.md) · [Resources](../../docs/resources.md).
+[Cancer Getting Started](getting-started.md) · [Getting started](getting-started.md) · [Hands-on activity](hands-on.md) · [Quick Start](../../docs/quick-start.md).

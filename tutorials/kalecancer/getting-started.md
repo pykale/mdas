@@ -1,12 +1,20 @@
-# KaleCancer: getting started
+# Cancer: Getting Started
+
+## Research question
+
+How can clinical features and pathology patch features be combined to explore time-to-event prediction? The starter example trains an **intermediate-fusion Cox model** using a small synthetic cohort.
+
+No real patient data are needed. Real-data HANCOCK examples require separate dataset access and additional setup.
 
 ## Prepare the repository
 
-Use the **`cancer-refactor` development snapshot**. Compatibility with the public default branch is not guaranteed. From the `cancer-refactor` repository root, with **Python 3.11 or 3.12** and **uv** installed:
+Use the [KaleCancer repository](https://github.com/pykale/cancer), Python **3.11 or 3.12**, and **uv**. From the repository root, follow its [quickstart](https://github.com/pykale/cancer/blob/main/docs/quickstart.md):
 
 ```sh
 uv sync --all-extras
 ```
+
+The public repository contains the example paths below. Confirm the session environment with the organisers before installing; these documentation checks do not replace testing the dependencies on your machine.
 
 ## Run the synthetic example
 
@@ -14,9 +22,9 @@ uv sync --all-extras
 uv run python examples/synthetic/synthetic_survival.py
 ```
 
-The repository describes this as a CPU-capable, no-download demonstration. It generates a cohort with clinical variables, pathology patch features and censored survival times, and trains an intermediate-fusion Cox model.
+This CPU-capable, no-download demonstration generates clinical variables, pathology patch features and censored survival times, then trains the model.
 
-The `cancer-refactor` snapshot documents an equivalent notebook at `examples/synthetic/synthetic_survival.ipynb`. Session notebooks are not yet available in this repository; see [notebook availability](../../notebooks/README.md).
+The repository also provides [an equivalent synthetic example notebook](https://github.com/pykale/cancer/blob/main/examples/synthetic/synthetic_survival.ipynb). The session's [Live-Coding Notebook](../../notebooks/MDAS/cancer/cancer_live_coding.ipynb) is available here with its saved outputs and a Colab link.
 
 ## What to look for
 
@@ -25,7 +33,17 @@ The `cancer-refactor` snapshot documents an equivalent notebook at `examples/syn
 - Where intermediate fusion occurs.
 - Which evaluation metrics are printed.
 
-> [!WARNING]
-> These commands require the `cancer-refactor` development snapshot. Confirm the session revision and supported environment with the organisers before installing.
+## Continue the track
 
-[About KaleCancer](README.md) · [Hands-on activity](hands-on.md) · [Results](results.md).
+1. [Hands-on Tutorial](hands-on.md): locate the synthetic inputs and identify the prediction task.
+2. [Live-Coding Notebook](../../notebooks/MDAS/cancer/cancer_live_coding.ipynb): follow data loading, modelling, training and evaluation.
+3. [Results and Interpretation](results.md): understand the output and limits of a synthetic survival exercise.
+
+## Technical references
+
+Within the software repository, consult [README.md](https://github.com/pykale/cancer/blob/main/README.md), [docs/quickstart.md](https://github.com/pykale/cancer/blob/main/docs/quickstart.md), [examples/synthetic/synthetic_survival.py](https://github.com/pykale/cancer/blob/main/examples/synthetic/synthetic_survival.py), and [examples/hancock/](https://github.com/pykale/cancer/tree/main/examples/hancock).
+
+For library support, use [PyKale discussions](https://github.com/pykale/pykale/discussions) or the repository's issue tracker.
+
+> [!IMPORTANT]
+> Synthetic scores are pipeline checks, not evidence of clinical predictive performance. Clinical data require appropriate permissions and secure infrastructure.

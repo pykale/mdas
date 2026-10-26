@@ -1,0 +1,7 @@
+/* Preserve the existing theme and notebook layout; add only execution controls. */
+#mdas-thebe-launch { margin: 0 .4rem .6rem 0; }
+#mdas-thebe-status { font-size: .92rem; margin-bottom: .8rem; }
+#mdas-thebe-launch:disabled { opacity: .8; cursor: default; }
+#mdas-thebe-launch.mdas-kernel-ready .spinner,
+#mdas-thebe-launch.mdas-connection-failed .spinner { display: none; }
+.thebe-cell .CodeMirror { height: auto; min-height: 2.5rem; }

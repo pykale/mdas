@@ -1,11 +1,11 @@
-# KaleCancer: hands-on activity
+# Cancer: hands-on activity
 
 > [!NOTE]
-> This is a proposed session activity using the `cancer-refactor` synthetic example.
+> This is a proposed session activity using the synthetic survival example.
 
 ## 1. Run and observe
 
-From the `cancer-refactor` repository root:
+From the Cancer repository root:
 
 ```sh
 uv run python examples/synthetic/synthetic_survival.py
@@ -34,6 +34,6 @@ Open `examples/synthetic/synthetic_survival.py` and find:
 
 ## Optional advanced reading
 
-The refactor repository documents HANCOCK examples in `docs/quickstart.md`, including `examples/hancock/survival_intermediate.py`, `from_config.py`, `cross_validation.py` and `classification_late.py`. These require a **local HANCOCK dataset** and are **not part of the no-data starter exercise**.
+The [Cancer quickstart](https://github.com/pykale/cancer/blob/main/docs/quickstart.md) documents HANCOCK examples, including `examples/hancock/survival_intermediate.py`, `from_config.py`, `cross_validation.py` and `classification_late.py`. These require a **local HANCOCK dataset** and are **not part of the no-data starter exercise**.
 
 [Getting started](getting-started.md) · [Results and interpretation](results.md) · [Participation guide](../../docs/participation.md).

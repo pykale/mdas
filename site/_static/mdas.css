@@ -1,0 +1,83 @@
+/* Restrained MDAS branding; the Book Theme supplies responsive navigation. */
+html {
+  --pst-font-family-base: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --pst-font-family-heading: var(--pst-font-family-base);
+  --pst-font-family-monospace: "Cascadia Code", Consolas, monospace;
+}
+html[data-theme="light"] {
+  --pst-color-primary: #007c89;
+  --pst-color-secondary: #496785;
+  --pst-color-link: #006e7a;
+  --pst-color-link-hover: #004f5a;
+  --pst-color-background: #ffffff;
+  --pst-color-on-background: #f5f8fa;
+}
+html[data-theme="dark"] {
+  --pst-color-primary: #6dd8dc;
+  --pst-color-link: #81dce0;
+}
+.bd-header {
+  border-top: 3px solid var(--pst-color-primary);
+}
+.bd-sidebar-primary {
+  padding-top: 1.5rem;
+}
+.navbar-brand.logo {
+  display: flex;
+  flex-direction: column;
+  gap: .6rem;
+  padding-bottom: 1rem;
+}
+.navbar-brand img {
+  width: 100%;
+  height: auto;
+  max-height: none !important;
+  background: white;
+  border-radius: .35rem;
+}
+.navbar-brand .logo__title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: .04em;
+}
+.bd-article h1 {
+  font-size: clamp(1.85rem, 3vw, 2.5rem);
+  line-height: 1.18;
+  letter-spacing: -.025em;
+}
+.bd-article h2 {
+  font-size: 1.55rem;
+  margin-top: 2rem;
+}
+.mdas-home-logo {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: .3rem 0 1.8rem;
+  border-radius: .5rem;
+  background: white;
+}
+.bd-article table {
+  width: 100%;
+  font-size: .94rem;
+}
+.bd-article table th {
+  white-space: normal;
+}
+.bd-article table td {
+  vertical-align: top;
+}
+.bd-article pre {
+  border-radius: .4rem;
+}
+.bd-article .admonition {
+  border-radius: .4rem;
+}
+.bd-sidebar-primary .caption {
+  margin-top: 1.3rem;
+  letter-spacing: .025em;
+}
+@media (max-width: 767px) {
+  .bd-article h1 { font-size: 1.85rem; }
+  .mdas-home-logo { margin-bottom: 1rem; }
+}

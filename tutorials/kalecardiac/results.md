@@ -1,8 +1,8 @@
-# KaleCardiac: results and interpretation
+# Cardiac: results and interpretation
 
 ## What the examples save
 
-The `cardiac-main` quickstart describes synthetic example outputs under `outputs/`, including configurations, predictions, and metrics. The individual example READMEs describe more detailed artefacts such as `results.csv`, `metrics.json`, and interpretation reports. The LS-EMVAE example also documents `lead_importance.csv`.
+The Cardiac quickstart describes synthetic example outputs under `outputs/`, including configurations, predictions, and metrics. The individual example READMEs describe more detailed artefacts such as `results.csv`, `metrics.json`, and interpretation reports. The LS-EMVAE example also documents `lead_importance.csv`.
 
 ## Interpret carefully
 
@@ -19,4 +19,4 @@ The `cardiac-main` quickstart describes synthetic example outputs under `outputs
 2. Which modalities are present and which might be missing in practice?
 3. What would be required before drawing conclusions on real patient cohorts?
 
-[About KaleCardiac](README.md) · [CardioVAE hands-on](cardiovae-hands-on.md) · [LS-EMVAE hands-on](lsemvae-hands-on.md) · [Resources](../../docs/resources.md).
+[Cardiac Getting Started](getting-started.md) · [CardioVAE hands-on](cardiovae-hands-on.md) · [LS-EMVAE hands-on](lsemvae-hands-on.md) · [Quick Start](../../docs/quick-start.md).

@@ -6,7 +6,7 @@ The `lsemvae_ecg` example treats individual ECG leads as separate modalities. It
 
 ## Run the quick configuration
 
-From the `cardiac-main` checkout:
+From the Cardiac repository root:
 
 ```sh
 python -m examples.lsemvae_ecg.main --cfg examples/lsemvae_ecg/configs/quick.yaml

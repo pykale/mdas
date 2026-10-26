@@ -44,3 +44,8 @@ data/
 *.swp
 .DS_Store
 Thumbs.db
+
+# Sphinx staging, generated HTML and local build environment
+/site/_staged/
+/site/_build/
+/site/.venv/

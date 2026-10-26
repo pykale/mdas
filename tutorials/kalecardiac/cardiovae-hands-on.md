@@ -6,7 +6,7 @@ The `cardiovae_multimodal` example pairs ECG and chest X-ray modalities. Its rep
 
 ## Run the quick configuration
 
-From the `cardiac-main` checkout:
+From the Cardiac repository root:
 
 ```sh
 python -m examples.cardiovae_multimodal.main --cfg examples/cardiovae_multimodal/configs/quick.yaml
@@ -22,7 +22,7 @@ python -m examples.cardiovae_multimodal.main --cfg examples/cardiovae_multimodal
 3. **Identify the endpoint and saved results.** Identify the endpoint and locate the saved results.
 4. **Discuss missing modalities.** Discuss what could happen when one modality is missing.
 
-For experiment-specific data requirements and output file names, see `examples/cardiovae_multimodal/README.md` in the `cardiac-main` development snapshot.
+For experiment-specific data requirements and output file names, see `examples/cardiovae_multimodal/README.md` in the Cardiac repository.
 
 > [!NOTE]
 > These activities are provisional; the final session exercises are still to be confirmed.

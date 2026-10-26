@@ -1,4 +1,6 @@
-# Participation
+# Participation Guide
+
+Join us on **Wednesday, 18 November 2026, 13:00–16:30**, at **The Diamond, Workroom 3 (Room 205), University of Sheffield**. See the [Session Agenda](agenda.md) for the full programme.
 
 ## Suggested activity loop
 
@@ -8,10 +10,11 @@
 4. **Discuss limitations.** What would change with real data, missing modalities, class imbalance or censoring?
 5. **Ask for support.** Use the facilitator team to identify a safe next experiment.
 
-## Bring your own data?
+## Applying the pipeline
 
-> [!WARNING]
-> Participants may be able to work with their own data or organiser-provided alternatives. Availability of suitable datasets and support is not yet confirmed. Any clinical data must be used only with appropriate permissions and secure infrastructure.
+In Block 2, make progress on your own research problem or an organiser-provided problem, with the AIRE team available to help. Specific organiser-provided problems remain to be confirmed.
+
+If you plan to use your own data, discuss permissions, privacy and compute requirements with the organisers first. Clinical data must be used only with appropriate permissions and secure infrastructure. Do not upload identifiable patient data, confidential material or private datasets to this repository or public services.
 
 ## Questions to discuss
 
