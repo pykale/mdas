@@ -28,7 +28,7 @@ The earlier revision `ed163a322186055c8c5b79885288ad9a051f89c4` lacked Binder fi
 
 [Open the original notebook in Google Colab](https://colab.research.google.com/github/pykale/mmai-mdas/blob/main/notebooks/MDAS/cancer/cancer_live_coding.ipynb).
 
-This link opens Joffray Hargreaves's original notebook. It does not automatically install dependencies or retrieve the companion `synthetic_data_generation.py` module. A Colab-ready environment is deferred for follow-up work; use **Run interactively on this website** for the currently working Binder option.
+This link opens the original MDAS Cancer notebook. It does not automatically install dependencies or retrieve the companion `synthetic_data_generation.py` module. A Colab-ready environment is deferred for follow-up work; use **Run interactively on this website** for the currently working Binder option.
 
 ## Compute and privacy limits
 

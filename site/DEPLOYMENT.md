@@ -6,7 +6,7 @@ Destination: https://pykale.github.io/mmai-mdas/ (repository `pykale/mmai-mdas`,
 
 `.github/workflows/deploy-docs.yml` runs on pushes to `main` and manual dispatch. Checkout, Python 3.12 and pinned uv 0.13.5 precede the existing `python site/build.py` process. That process installs the exact documentation packages from `site/requirements.txt` in an isolated uv tool environment, builds Sphinx with warnings as errors and checks generated links. It does not install `pyproject.toml`, `uv.lock`, `.binder/requirements.txt`, Torch or Cancer. MyST-NB execution stays disabled; no training, Binder launch or patient-data access happens during build.
 
-The build uploads only `site/_build/html` using `actions/upload-pages-artifact@v4`. The dependent deploy job uses `actions/deploy-pages@v4`, with `pages: write`, `id-token: write` and the `github-pages` environment. Other permissions default to read-only contents. One Pages concurrency group serializes runs without cancelling a deployment in progress. Only `main` can deploy, including manually dispatched runs.
+The build uploads only `site/_build/html` using `actions/upload-pages-artifact@v4`. The dependent deploy job uses `actions/deploy-pages@v4`, with `pages: write`, `id-token: write` and the `github-pages` environment. The build job has `contents: read` and `pages: read` so `configure-pages` can read the Pages site metadata. The deploy job has the write/OIDC permissions above. One Pages concurrency group serializes runs without cancelling a deployment in progress. Only `main` can deploy, including manually dispatched runs.
 
 **Pushing this workflow to main can deploy automatically once Pages is configured.** Preparation itself does not publish anything. Keep review complete before running the commit/push commands below.
 
@@ -111,3 +111,7 @@ Official reference: [GitHub Pages custom workflows](https://docs.github.com/en/p
 - Thebe remains configured for `pykale/mmai-mdas`, `main`, `https://mybinder.org`, kernel directory `notebooks/MDAS/cancer`. The existing click-time check pins the actual public revision before launch. Working kernel connection was previously confirmed by the organiser; no new remote launch was required for deployment preparation.
 - Colab continues to open the original public `cancer_live_coding.ipynb`. At the organiser's explicit clarification, Colab-ready work remains deferred: `cancer_live_coding_colab.ipynb` was previously deleted and is not part of this release. The missing temporary constraints-file issue is therefore not fixed or claimed tested here. The original Colab notebook still needs environment/helper setup for execution.
 - The Actions workflow has not run on GitHub, and no public Pages deployment or public-origin Binder connection was tested. Local checks do not establish either. No commit, push, deployment or remote-setting change was performed.
+
+## Configure Pages 404 follow-up
+
+The first remote run failed before Sphinx at the Pages metadata API. The build job initially lacked an explicit `pages: read` permission; this has now been added. A 404 can also mean Pages is not enabled. Confirm Settings > Pages > Source is GitHub Actions before retrying. Commit/push this fix and inspect the new run rather than rerunning an older commit, which retains the old permissions. No remote setting or publication was changed by this local correction.

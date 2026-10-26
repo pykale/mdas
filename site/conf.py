@@ -86,24 +86,15 @@ def prepare_notebook(app, docname, source):
 <p id="mdas-thebe-status" role="status" aria-live="polite">Not connected. An interactive session starts only when you choose to launch it.</p>""" if MDAS_ENABLE_THEBE else "<p>In-page execution is disabled for this build. Read the saved notebook below or use Colab.</p>"
     intro = """# Live-Coding Notebook
 
+Run cells on this page using the built-in **Binder kernel**, or open the notebook in **Google Colab** as an alternative. Colab requires additional dependency and companion-module setup.
+
 MDAS_INTERACTIVE_CONTROL
 
 <a class="btn btn-primary" href="https://colab.research.google.com/github/pykale/mmai-mdas/blob/main/notebooks/MDAS/cancer/cancer_live_coding.ipynb">Open in Google Colab</a>
 
-[View on GitHub](https://github.com/pykale/mmai-mdas/blob/main/notebooks/MDAS/cancer/cancer_live_coding.ipynb).
+[View on GitHub](https://github.com/pykale/mmai-mdas/blob/main/notebooks/MDAS/cancer/cancer_live_coding.ipynb) | [Execution help](../../docs/notebook-execution.md).
 
-[Open Binder build logs](https://mybinder.org/v2/gh/pykale/mmai-mdas/main?urlpath=lab%2Ftree%2Fnotebooks%2FMDAS%2Fcancer%2Fcancer_live_coding.ipynb) · [Connection troubleshooting](../../docs/notebook-execution.md#connection-troubleshooting).
-
-Read the notebook below, run its code directly on this page using a temporary Binder environment, or open it in Google Colab. Online execution requires an internet connection and may take time to initialise.
-
-Joffray Hargreaves's original code and saved outputs remain readable without an online service. No cells run during the website build or automatically after connection. Once connected, edit and run cells individually in order; the training and advanced comparison cells may take longer.
-
-Binder sessions are temporary, public resources are limited and availability is not guaranteed. Colab is an alternative if Binder is busy. Changes in temporary online sessions may not be saved: download work you want to keep.
-
-The Colab button opens the original notebook. Colab execution needs additional dependency and companion-module setup; a Colab-ready edition is deferred. Use the in-page Binder kernel for the currently working interactive option.
-
-> [!CAUTION]
-> Do not upload identifiable patient data, confidential material or private datasets to public services. Use clinical data only with appropriate permissions and secure infrastructure.
+> Sessions are temporary; save work you want to keep. Use synthetic data only: do not upload private or patient data. Synthetic results do not demonstrate clinical performance.
 """.replace("MDAS_INTERACTIVE_CONTROL", launch)
     notebook["cells"].insert(0, {"cell_type": "markdown", "id": "mdas-access", "metadata": {}, "source": intro})
     source[0] = json.dumps(notebook)
