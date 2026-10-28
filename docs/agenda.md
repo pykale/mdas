@@ -2,9 +2,11 @@
 
 **Date:** Wednesday, 18 November 2026
 
-**Venue:** Regent Court, University of Sheffield (as advertised at registration). The Diamond, Workroom 3 (Room 205), University of Sheffield, is being considered as an alternative venue. The final location will be confirmed with registered participants.
+**Venue:** Regent Court, University of Sheffield. The Diamond, Workroom 3 (Room 205), is a possible alternative venue. The final location will be confirmed with registered participants.
 
-**Attendee programme:** 13:00–16:30
+**Attendee programme:** 13:00–17:00
+
+> **Agenda review pending:** The overall session runs until 17:00. The activities below currently end at 16:30; arrangements for the final 30 minutes remain to be confirmed.
 
 ## Programme
 

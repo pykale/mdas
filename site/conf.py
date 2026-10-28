@@ -47,6 +47,7 @@ html_baseurl = "https://pykale.github.io/mdas/"
 html_static_path = ["_static"]
 templates_path = ["_templates"]
 html_css_files = ["mdas.css"]
+html_js_files = [("mdas-presentation.js", {"defer": "defer"})]
 html_logo = "_static/mdas-logo.png"
 html_show_sourcelink = False
 html_copy_source = False
@@ -63,7 +64,7 @@ html_theme_options = {
     "show_toc_level": 2,
     "toc_title": "On this page",
     "navigation_with_keys": False,
-    "logo": {"text": "MDAS 2026"},
+    "logo": {"text": ""},
 }
 
 
@@ -97,9 +98,9 @@ Run cells on this page using the built-in **Binder kernel**, or open the noteboo
 
 MDAS_INTERACTIVE_CONTROL
 
-<a class="btn btn-primary" href="https://colab.research.google.com/github/pykale/mdas/blob/main/notebooks/MDAS/cancer/survival.ipynb">Open in Google Colab</a>
+<a class="btn btn-primary" href="https://colab.research.google.com/github/pykale/mdas/blob/main/notebooks/MDAS/cancer/classification.ipynb">Open in Google Colab</a>
 
-[View on GitHub](https://github.com/pykale/mdas/blob/main/notebooks/MDAS/cancer/survival.ipynb) | [Execution help](../../docs/notebook-execution.md).
+[View on GitHub](https://github.com/pykale/mdas/blob/main/notebooks/MDAS/cancer/classification.ipynb) | [Optional blank exercise](https://github.com/pykale/mdas/blob/main/notebooks/MDAS/cancer/classification_blank.ipynb) | [Execution help](../../docs/notebook-execution.md).
 
 > Sessions are temporary; save work you want to keep. Use synthetic data only: do not upload private or patient data. Synthetic results do not demonstrate clinical performance.
 """.replace("MDAS_INTERACTIVE_CONTROL", launch)

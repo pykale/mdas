@@ -34,9 +34,9 @@ By the end of the session, participants should be better able to:
 
 ## Session format and information
 
-**Wednesday, 18 November 2026, 13:00–16:30**.
+**Wednesday, 18 November 2026, 13:00–17:00**.
 
-**Venue:** Regent Court, University of Sheffield (as advertised at registration). The Diamond, Workroom 3 (Room 205), University of Sheffield, is being considered as an alternative venue. The final location will be confirmed with registered participants.
+**Venue:** Regent Court, University of Sheffield; The Diamond is a possible alternative. See the [Session Agenda](agenda.md) for venue details and confirmation arrangements.
 
 - **Learn the Pipeline:** introductions, environment setup and core content from data loading to model evaluation, followed by discussion.
 - **Apply the Pipeline:** make progress on a real research problem, participants' own or an organiser-provided problem, with the AIRE team available to help.

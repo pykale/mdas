@@ -51,7 +51,7 @@ def stage() -> None:
     paths = [p for p in paths if p.relative_to(ROOT).as_posix() not in excluded]
     mapping = {p.relative_to(ROOT).as_posix(): p.relative_to(ROOT).as_posix() for p in paths}
     mapping["README.md"] = "index.md"
-    notebook = ROOT / "notebooks/MDAS/cancer/survival.ipynb"
+    notebook = ROOT / "notebooks/MDAS/cancer/classification.ipynb"
     mapping[notebook.relative_to(ROOT).as_posix()] = "tutorials/kalecancer/live-coding.ipynb"
     aliases = {"docs/overview.md": "docs/about.md", "docs/resources.md": "docs/quick-start.md",
                "notebooks/README.md": "tutorials/kalecancer/live-coding.ipynb",

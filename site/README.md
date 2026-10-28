@@ -51,7 +51,7 @@ The ignored `site/_staged/` directory is regenerated on every build. It preserve
 
 ### Notebook rendering
 
-The original `notebooks/MDAS/cancer/survival.ipynb` is copied byte-for-byte into the staged tree and parsed by MyST-NB. **Execution is disabled** with `nb_execution_mode = "off"` and an all-notebook exclusion pattern. Saved code and outputs are shown; no research environment or dataset is loaded.
+The original `notebooks/MDAS/cancer/classification.ipynb` is copied byte-for-byte into the staged tree and parsed by MyST-NB. **Execution is disabled** with `nb_execution_mode = "off"` and an all-notebook exclusion pattern. Saved code and outputs are shown; no research environment or dataset is loaded.
 
 A source-read hook adds the page title, GitHub and prominent Colab links, setup guidance and privacy warnings in memory. Existing notebook headings are nested beneath the page title for navigation. It leaves code, outputs and safety text unchanged. The original notebook and associated Python helper are never written or executed. Its existing Mermaid diagram is rendered using the Mermaid extension. A legacy `ipython2` display-lexer alias is registered without changing notebook metadata on disk.
 
@@ -118,7 +118,7 @@ The dependency resolution, helper smoke test, static builds, HTML links and cont
 
 The organiser has confirmed Binder server launch and Thebe kernel connection after publishing revision `090f1ff`. The earlier failure analysis above records the pre-publication state. Full research-training validation remains separate.
 
-The Colab button targets the original `notebooks/MDAS/cancer/survival.ipynb`. Colab environment preparation is deferred; no separate Colab-ready notebook or setup instructions are included in this version. The original notebook remains the only rendered notebook/sidebar entry.
+The Colab button targets the original `notebooks/MDAS/cancer/classification.ipynb`. Colab environment preparation is deferred; no separate Colab-ready notebook or setup instructions are included in this version. The original notebook remains the only rendered notebook/sidebar entry.
 
 ### Disable or replace the backend
 
@@ -149,3 +149,13 @@ See [DEPLOYMENT.md](DEPLOYMENT.md) for the source inventory, exact review/stagin
 The configured URL is <https://pykale.github.io/mdas/>. The link checker resolves generated HTML and CSS asset URLs under `/mmai-mdas/`, checks anchors, and verifies search assets and `.nojekyll`. Notebook execution remains disabled during the build. The workflow installs only the documentation dependencies through the existing `build.py` isolated uv tool process, without installing the root research project, Binder environment or ML packages.
 
 Colab-ready work is deferred by organiser instruction. Its notebook was previously removed; the Colab button continues to open the original public notebook, which needs separate setup for execution. There is no constraints-file setup to publish or validate in this release.
+
+## Classification page and presentation mode
+
+The Cancer Live-Coding Notebook displays `classification.ipynb`; the GitHub, Colab and Binder preflight references use that same file. The blank classification notebook is linked as an optional exercise, not substituted for the complete notebook. Survival notebooks remain untouched. The byte-for-byte staged copy is adapted only in memory for HTML rendering.
+
+The header **Present** button (`_static/mdas-presentation.js`) expands the content and hides sidebars without replacing or reloading notebook DOM nodes. It uses the browser Fullscreen API when available and keeps an expanded-layout fallback if fullscreen is denied or unavailable. Toggle again or press Escape to restore the normal layout. It does not connect, disconnect or execute a kernel. Browser permissions, native Escape handling and responsive appearance should also be checked manually on the intended teaching device.
+
+Run `node --test site/tests/interactive.test.cjs site/tests/presentation.test.cjs` for controller checks. The workflow remains unchanged. New static JavaScript and test files must be included in the reviewed commit alongside modified sources.
+
+The overall session is now 13:00–17:00 on 18 November 2026. The detailed agenda still ends at 16:30; organisers must confirm the final 30 minutes. Individual activities have deliberately not been extended or reordered.

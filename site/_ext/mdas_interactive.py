@@ -39,7 +39,7 @@ def configure_page(app, doctree, docname):
                 "required_files": [
                     ".binder/runtime.txt",
                     ".binder/requirements.txt",
-                    "notebooks/MDAS/cancer/survival.ipynb",
+                    "notebooks/MDAS/cancer/classification.ipynb",
                     "notebooks/MDAS/cancer/synthetic_data_generation.py",
                 ],
             }

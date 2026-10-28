@@ -53,9 +53,9 @@ html[data-theme="dark"] {
 .mdas-home-logo {
   display: block;
   width: 100%;
-  max-width: 300px;
+  max-width: 380px;
   height: auto;
-  margin: .3rem auto 1.8rem;
+  margin: 0 auto 1rem;
   border-radius: .5rem;
   background: white;
 }
@@ -82,4 +82,44 @@ html[data-theme="dark"] {
 @media (max-width: 767px) {
   .bd-article h1 { font-size: 1.85rem; }
   .mdas-home-logo { margin-bottom: 1rem; }
+}
+
+/* Expanded teaching layout; DOM nodes and notebook kernels stay in place. */
+.mdas-presentation-toggle:focus-visible {
+  outline: 3px solid var(--pst-color-primary);
+  outline-offset: 3px;
+}
+html.mdas-presentation .bd-sidebar-primary,
+html.mdas-presentation .bd-sidebar-secondary,
+html.mdas-presentation .sidebar-toggle,
+html.mdas-presentation .pst-primary-sidebar-modal,
+html.mdas-presentation .pst-secondary-sidebar-modal,
+html.mdas-presentation .bd-footer,
+html.mdas-presentation .prev-next-area {
+  display: none !important;
+}
+html.mdas-presentation .bd-container,
+html.mdas-presentation .bd-container__inner,
+html.mdas-presentation .bd-main,
+html.mdas-presentation .bd-content,
+html.mdas-presentation .bd-article-container,
+html.mdas-presentation .bd-header-article {
+  width: 100% !important;
+  max-width: none !important;
+  margin-inline: 0 !important;
+}
+html.mdas-presentation .bd-main {
+  flex-grow: 1;
+}
+html.mdas-presentation .bd-article {
+  padding-inline: clamp(1rem, 4vw, 4rem);
+}
+html.mdas-presentation .bd-header-article {
+  position: sticky;
+  top: 0;
+  z-index: 1050;
+  background: var(--pst-color-background);
+}
+@media (max-width: 575px) {
+  .mdas-presentation-label { display: none; }
 }
