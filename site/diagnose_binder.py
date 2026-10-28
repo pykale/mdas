@@ -12,9 +12,9 @@ from urllib.parse import quote
 from urllib.request import Request, urlopen
 
 ROOT = Path(__file__).resolve().parent.parent
-REPO = "pykale/mmai-mdas"
+REPO = "pykale/mdas"
 REQUIRED = [".binder/runtime.txt", ".binder/requirements.txt",
-            "notebooks/MDAS/cancer/cancer_live_coding.ipynb",
+            "notebooks/MDAS/cancer/survival.ipynb",
             "notebooks/MDAS/cancer/synthetic_data_generation.py"]
 
 

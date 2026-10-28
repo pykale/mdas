@@ -13,7 +13,7 @@ uv run python examples/synthetic/synthetic_survival.py
 
 The [synthetic example](https://github.com/pykale/cancer/blob/main/examples/synthetic/synthetic_survival.py) generates clinical variables, pathology patch features and censored survival times, then trains an intermediate-fusion Cox model. It is a CPU-capable, no-download starter exercise.
 
-Continue with [Cancer Getting Started](../tutorials/kalecancer/getting-started.md), the [Hands-on Tutorial](../tutorials/kalecancer/hands-on.md), or the [Live-Coding Notebook](../notebooks/MDAS/cancer/cancer_live_coding.ipynb). The live-coding notebook imports the accompanying `synthetic_data_generation.py`; review its access notes before attempting local or Colab execution.
+Continue with [Cancer Getting Started](../tutorials/kalecancer/getting-started.md), the [Hands-on Tutorial](../tutorials/kalecancer/hands-on.md), or the [Live-Coding Notebook](../notebooks/MDAS/cancer/survival.ipynb). The live-coding notebook imports the accompanying `synthetic_data_generation.py`; review its access notes before attempting local or Colab execution.
 
 ## Cardiac Quick Start
 

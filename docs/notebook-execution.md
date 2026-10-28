@@ -4,7 +4,7 @@ orphan: true
 
 # Online notebook execution
 
-The [Cancer Live-Coding Notebook](../notebooks/MDAS/cancer/cancer_live_coding.ipynb) can be read as a static page, connected to a temporary Binder kernel through Thebe, or opened in Google Colab. No code is run by opening the documentation page.
+The [Cancer Live-Coding Notebook](../notebooks/MDAS/cancer/survival.ipynb) can be read as a static page, connected to a temporary Binder kernel through Thebe, or opened in Google Colab. No code is run by opening the documentation page.
 
 ## Run on this website
 
@@ -26,7 +26,7 @@ The earlier revision `ed163a322186055c8c5b79885288ad9a051f89c4` lacked Binder fi
 
 ## Open in Google Colab
 
-[Open the original notebook in Google Colab](https://colab.research.google.com/github/pykale/mmai-mdas/blob/main/notebooks/MDAS/cancer/cancer_live_coding.ipynb).
+[Open the original notebook in Google Colab](https://colab.research.google.com/github/pykale/mdas/blob/main/notebooks/MDAS/cancer/survival.ipynb).
 
 This link opens the original MDAS Cancer notebook. It does not automatically install dependencies or retrieve the companion `synthetic_data_generation.py` module. A Colab-ready environment is deferred for follow-up work; use **Run interactively on this website** for the currently working Binder option.
 

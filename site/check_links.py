@@ -27,7 +27,7 @@ class Page(HTMLParser):
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--base-url", default="https://pykale.github.io/mmai-mdas/",
+    parser.add_argument("--base-url", default="https://pykale.github.io/mdas/",
                         help="Published directory URL used to check project-prefix resolution")
     base = urlsplit(parser.parse_args().base_url)
     prefix = base.path.rstrip("/") + "/"

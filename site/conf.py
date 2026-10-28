@@ -17,7 +17,7 @@ if MDAS_ENABLE_THEBE:
     extensions += ["sphinx_thebe", "mdas_interactive"]
     thebe_config = {
         "always_load": False,
-        "repository_url": "https://github.com/pykale/mmai-mdas",
+        "repository_url": "https://github.com/pykale/mdas",
         "repository_branch": os.environ.get("MDAS_BINDER_REF", "main"),
         "selector": ".cell",
         "selector_input": ".cell_input pre",
@@ -43,7 +43,7 @@ nitpicky = True
 html_theme = "sphinx_book_theme"
 html_title = "MDAS: Cancer & Cardiac Research"
 html_short_title = "MDAS 2026"
-html_baseurl = "https://pykale.github.io/mmai-mdas/"
+html_baseurl = "https://pykale.github.io/mdas/"
 html_static_path = ["_static"]
 templates_path = ["_templates"]
 html_css_files = ["mdas.css"]
@@ -52,7 +52,7 @@ html_show_sourcelink = False
 html_copy_source = False
 html_show_sphinx = False
 html_theme_options = {
-    "repository_url": "https://github.com/pykale/mmai-mdas",
+    "repository_url": "https://github.com/pykale/mdas",
     "repository_branch": "main",
     "use_repository_button": True,
     "use_download_button": False,
@@ -76,6 +76,13 @@ def prepare_notebook(app, docname, source):
 
     notebook = json.loads(source[0])
     notebook.setdefault("metadata", {}).setdefault("mystnb", {})["execution_mode"] = "off"
+    # Ignore VS Code-only viewer payloads in the in-memory rendering copy.
+    # All affected outputs retain their standard HTML/text representation.
+    for cell in notebook["cells"]:
+        for output in cell.get("outputs", []):
+            data = output.get("data", {})
+            if "text/html" in data or "text/plain" in data:
+                data.pop("application/vnd.microsoft.datawrangler.viewer.v0+json", None)
     # Nest the notebook's existing section headings beneath its page title.
     # Code, outputs, safety notes and scientific text are unchanged.
     for cell in notebook["cells"]:
@@ -90,9 +97,9 @@ Run cells on this page using the built-in **Binder kernel**, or open the noteboo
 
 MDAS_INTERACTIVE_CONTROL
 
-<a class="btn btn-primary" href="https://colab.research.google.com/github/pykale/mmai-mdas/blob/main/notebooks/MDAS/cancer/cancer_live_coding.ipynb">Open in Google Colab</a>
+<a class="btn btn-primary" href="https://colab.research.google.com/github/pykale/mdas/blob/main/notebooks/MDAS/cancer/survival.ipynb">Open in Google Colab</a>
 
-[View on GitHub](https://github.com/pykale/mmai-mdas/blob/main/notebooks/MDAS/cancer/cancer_live_coding.ipynb) | [Execution help](../../docs/notebook-execution.md).
+[View on GitHub](https://github.com/pykale/mdas/blob/main/notebooks/MDAS/cancer/survival.ipynb) | [Execution help](../../docs/notebook-execution.md).
 
 > Sessions are temporary; save work you want to keep. Use synthetic data only: do not upload private or patient data. Synthetic results do not demonstrate clinical performance.
 """.replace("MDAS_INTERACTIVE_CONTROL", launch)

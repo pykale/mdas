@@ -51,7 +51,7 @@ The ignored `site/_staged/` directory is regenerated on every build. It preserve
 
 ### Notebook rendering
 
-The original `notebooks/MDAS/cancer/cancer_live_coding.ipynb` is copied byte-for-byte into the staged tree and parsed by MyST-NB. **Execution is disabled** with `nb_execution_mode = "off"` and an all-notebook exclusion pattern. Saved code and outputs are shown; no research environment or dataset is loaded.
+The original `notebooks/MDAS/cancer/survival.ipynb` is copied byte-for-byte into the staged tree and parsed by MyST-NB. **Execution is disabled** with `nb_execution_mode = "off"` and an all-notebook exclusion pattern. Saved code and outputs are shown; no research environment or dataset is loaded.
 
 A source-read hook adds the page title, GitHub and prominent Colab links, setup guidance and privacy warnings in memory. Existing notebook headings are nested beneath the page title for navigation. It leaves code, outputs and safety text unchanged. The original notebook and associated Python helper are never written or executed. Its existing Mermaid diagram is rendered using the Mermaid extension. A legacy `ipython2` display-lexer alias is registered without changing notebook metadata on disk.
 
@@ -71,7 +71,7 @@ The original static page, GitHub link and Colab link remain available if an onli
 
 The standard `.binder/runtime.txt` and `.binder/requirements.txt` select Python 3.12 and a pinned Linux x86-64 CPU-only dependency graph. `.binder/requirements.in` is its editable input. The Cancer library uses the commit already present in the research lockfile; CPU Torch/Torchvision avoid downloading CUDA runtimes. Only core dependencies are installed, without optional research extras. See [.binder/README.md](../.binder/README.md) for the regeneration command and validation status.
 
-The default backend is `https://mybinder.org`, repository `pykale/mmai-mdas`, revision `main`. Binder obtains code from that GitHub revision, **not the local checkout**. These local environment files cannot be used by the public backend until reviewed and pushed; this task does not push or deploy them. Do not tell participants this environment is verified before that remote test.
+The default backend is `https://mybinder.org`, repository `pykale/mdas`, revision `main`. Binder obtains code from that GitHub revision, **not the local checkout**. These local environment files cannot be used by the public backend until reviewed and pushed; this task does not push or deploy them. Do not tell participants this environment is verified before that remote test.
 
 ### Diagnosed failed launch and local repair
 
@@ -118,7 +118,7 @@ The dependency resolution, helper smoke test, static builds, HTML links and cont
 
 The organiser has confirmed Binder server launch and Thebe kernel connection after publishing revision `090f1ff`. The earlier failure analysis above records the pre-publication state. Full research-training validation remains separate.
 
-The Colab button targets the original `notebooks/MDAS/cancer/cancer_live_coding.ipynb`. Colab environment preparation is deferred; no separate Colab-ready notebook or setup instructions are included in this version. The original notebook remains the only rendered notebook/sidebar entry.
+The Colab button targets the original `notebooks/MDAS/cancer/survival.ipynb`. Colab environment preparation is deferred; no separate Colab-ready notebook or setup instructions are included in this version. The original notebook remains the only rendered notebook/sidebar entry.
 
 ### Disable or replace the backend
 
@@ -146,6 +146,6 @@ The deployment workflow is now [`.github/workflows/deploy-docs.yml`](../.github/
 
 See [DEPLOYMENT.md](DEPLOYMENT.md) for the source inventory, exact review/staging/publication commands, required manual settings and validation limits. The old `github-pages.yml.example` is a retired placeholder; do not copy it into the workflows directory.
 
-The configured URL is <https://pykale.github.io/mmai-mdas/>. The link checker resolves generated HTML and CSS asset URLs under `/mmai-mdas/`, checks anchors, and verifies search assets and `.nojekyll`. Notebook execution remains disabled during the build. The workflow installs only the documentation dependencies through the existing `build.py` isolated uv tool process, without installing the root research project, Binder environment or ML packages.
+The configured URL is <https://pykale.github.io/mdas/>. The link checker resolves generated HTML and CSS asset URLs under `/mmai-mdas/`, checks anchors, and verifies search assets and `.nojekyll`. Notebook execution remains disabled during the build. The workflow installs only the documentation dependencies through the existing `build.py` isolated uv tool process, without installing the root research project, Binder environment or ML packages.
 
 Colab-ready work is deferred by organiser instruction. Its notebook was previously removed; the Colab button continues to open the original public notebook, which needs separate setup for execution. There is no constraints-file setup to publish or validate in this release.

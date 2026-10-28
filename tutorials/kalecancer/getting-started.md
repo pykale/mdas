@@ -24,7 +24,7 @@ uv run python examples/synthetic/synthetic_survival.py
 
 This CPU-capable, no-download demonstration generates clinical variables, pathology patch features and censored survival times, then trains the model.
 
-The repository also provides [an equivalent synthetic example notebook](https://github.com/pykale/cancer/blob/main/examples/synthetic/synthetic_survival.ipynb). The session's [Live-Coding Notebook](../../notebooks/MDAS/cancer/cancer_live_coding.ipynb) is available here with its saved outputs and a Colab link.
+The repository also provides [an equivalent synthetic example notebook](https://github.com/pykale/cancer/blob/main/examples/synthetic/synthetic_survival.ipynb). The session's [Live-Coding Notebook](../../notebooks/MDAS/cancer/survival.ipynb) is available here with its saved outputs and a Colab link.
 
 ## What to look for
 
@@ -36,7 +36,7 @@ The repository also provides [an equivalent synthetic example notebook](https://
 ## Continue the track
 
 1. [Hands-on Tutorial](hands-on.md): locate the synthetic inputs and identify the prediction task.
-2. [Live-Coding Notebook](../../notebooks/MDAS/cancer/cancer_live_coding.ipynb): follow data loading, modelling, training and evaluation.
+2. [Live-Coding Notebook](../../notebooks/MDAS/cancer/survival.ipynb): follow data loading, modelling, training and evaluation.
 3. [Results and Interpretation](results.md): understand the output and limits of a synthetic survival exercise.
 
 ## Technical references

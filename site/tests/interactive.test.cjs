@@ -11,9 +11,9 @@ function page(available = true, missing = [], httpStatus = 200) {
   const label = {textContent: ""};
   const button = {disabled: false, classList: {add: value => state.classes.add(value)}, querySelector: () => label};
   const status = {textContent: "Not connected"};
-  const preflight = {textContent: JSON.stringify({repository: "pykale/mmai-mdas", ref: "main",
-    required_files: [".binder/runtime.txt", ".binder/requirements.txt", "notebooks/MDAS/cancer/cancer_live_coding.ipynb", "notebooks/MDAS/cancer/synthetic_data_generation.py"]})};
-  const config = {textContent: JSON.stringify({binderOptions: {repo: "pykale/mmai-mdas", ref: "main"}})};
+  const preflight = {textContent: JSON.stringify({repository: "pykale/mdas", ref: "main",
+    required_files: [".binder/runtime.txt", ".binder/requirements.txt", "notebooks/MDAS/cancer/survival.ipynb", "notebooks/MDAS/cancer/synthetic_data_generation.py"]})};
+  const config = {textContent: JSON.stringify({binderOptions: {repo: "pykale/mdas", ref: "main"}})};
   const context = {
     document: {head: {}, getElementById: id => id === "mdas-thebe-launch" ? button : id === "mdas-binder-check" ? preflight : status,
       querySelector: () => config},

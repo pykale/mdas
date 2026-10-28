@@ -1,6 +1,6 @@
 # First GitHub Pages deployment
 
-Destination: https://pykale.github.io/mmai-mdas/ (repository `pykale/mmai-mdas`, branch `main`).
+Destination: https://pykale.github.io/mdas/ (repository `pykale/mdas`, branch `main`).
 
 ## What the workflow does
 
@@ -31,7 +31,7 @@ docs/participation.md
 docs/prerequisites.md
 docs/quick-start.md
 docs/resources.md
-notebooks/MDAS/cancer/cancer_live_coding.ipynb
+notebooks/MDAS/cancer/survival.ipynb
 notebooks/MDAS/cancer/synthetic_data_generation.py
 notebooks/MDAS/cardiac/.gitkeep
 notebooks/README.md
@@ -106,10 +106,10 @@ Official reference: [GitHub Pages custom workflows](https://docs.github.com/en/p
 ## Validation and remaining issues
 
 - Sphinx build passed with warnings treated as errors: 25 HTML pages, 1,174 local HTML/CSS links/assets, zero errors.
-- Link resolution checked under `https://pykale.github.io/mmai-mdas/`; a temporary local HTTP prefix test served 47 page/asset URLs successfully, including search assets. Search runtime behaviour and responsive layout have not been retested in a browser during this deployment preparation.
+- Link resolution checked under `https://pykale.github.io/mdas/`; a temporary local HTTP prefix test served 47 page/asset URLs successfully, including search assets. Search runtime behaviour and responsive layout have not been retested in a browser during this deployment preparation.
 - Book Theme, CSS, logo, navigation, original notebook, code and saved outputs were preserved. The staged notebook matches the original bytes. Six controller tests passed.
-- Thebe remains configured for `pykale/mmai-mdas`, `main`, `https://mybinder.org`, kernel directory `notebooks/MDAS/cancer`. The existing click-time check pins the actual public revision before launch. Working kernel connection was previously confirmed by the organiser; no new remote launch was required for deployment preparation.
-- Colab continues to open the original public `cancer_live_coding.ipynb`. At the organiser's explicit clarification, Colab-ready work remains deferred: `cancer_live_coding_colab.ipynb` was previously deleted and is not part of this release. The missing temporary constraints-file issue is therefore not fixed or claimed tested here. The original Colab notebook still needs environment/helper setup for execution.
+- Thebe remains configured for `pykale/mdas`, `main`, `https://mybinder.org`, kernel directory `notebooks/MDAS/cancer`. The existing click-time check pins the actual public revision before launch. Working kernel connection was previously confirmed by the organiser; no new remote launch was required for deployment preparation.
+- Colab continues to open the original public `survival.ipynb`. At the organiser's explicit clarification, Colab-ready work remains deferred: `cancer_live_coding_colab.ipynb` was previously deleted and is not part of this release. The missing temporary constraints-file issue is therefore not fixed or claimed tested here. The original Colab notebook still needs environment/helper setup for execution.
 - The Actions workflow has not run on GitHub, and no public Pages deployment or public-origin Binder connection was tested. Local checks do not establish either. No commit, push, deployment or remote-setting change was performed.
 
 ## Configure Pages 404 follow-up

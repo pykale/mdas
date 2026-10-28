@@ -6,6 +6,6 @@ Essential links are included in the [Quick Start](quick-start.md), [Cancer Getti
 - [KaleCancer](https://github.com/pykale/cancer)
 - [KaleCardiac](https://github.com/pykale/cardiac)
 - [PyKale discussions](https://github.com/pykale/pykale/discussions)
-- [Cancer Live-Coding Notebook](../notebooks/MDAS/cancer/cancer_live_coding.ipynb)
+- [Cancer Live-Coding Notebook](../notebooks/MDAS/cancer/survival.ipynb)
 
 Technical reference files are listed on the corresponding Getting Started pages. Real-data HANCOCK examples require separate dataset access, permissions and setup.
