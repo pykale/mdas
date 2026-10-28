@@ -6,7 +6,9 @@ Explore practical ways to combine biomedical data for cancer and cardiac researc
 
 | Date | Attendee programme | Venue |
 | --- | --- | --- |
-| Wednesday, 18 November 2026 | 13:00–16:30 | The Diamond, Workroom 3 (Room 205), University of Sheffield |
+| Wednesday, 18 November 2026 | 13:00–16:30 | Regent Court, University of Sheffield (as advertised at registration) |
+
+**Venue:** Regent Court, University of Sheffield (as advertised at registration). The Diamond, Workroom 3 (Room 205), University of Sheffield, is being considered as an alternative venue. The final location will be confirmed with registered participants.
 
 ## Start here
 

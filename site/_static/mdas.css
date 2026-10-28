@@ -30,6 +30,7 @@ html[data-theme="dark"] {
 }
 .navbar-brand img {
   width: 100%;
+  max-width: 150px;
   height: auto;
   max-height: none !important;
   background: white;
@@ -52,8 +53,9 @@ html[data-theme="dark"] {
 .mdas-home-logo {
   display: block;
   width: 100%;
+  max-width: 300px;
   height: auto;
-  margin: .3rem 0 1.8rem;
+  margin: .3rem auto 1.8rem;
   border-radius: .5rem;
   background: white;
 }

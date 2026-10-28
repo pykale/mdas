@@ -1,6 +1,10 @@
 # Participation Guide
 
-Join us on **Wednesday, 18 November 2026, 13:00–16:30**, at **The Diamond, Workroom 3 (Room 205), University of Sheffield**. See the [Session Agenda](agenda.md) for the full programme.
+Join us on **Wednesday, 18 November 2026, 13:00–16:30**.
+
+**Venue:** Regent Court, University of Sheffield (as advertised at registration). The Diamond, Workroom 3 (Room 205), University of Sheffield, is being considered as an alternative venue. The final location will be confirmed with registered participants.
+
+See the [Session Agenda](agenda.md) for the full programme.
 
 ## Suggested activity loop
 
