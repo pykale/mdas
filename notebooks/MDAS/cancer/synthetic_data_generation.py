@@ -9,9 +9,16 @@ def make_cohort(
         folder: str,
         n_patients: int = 100,
         random_state: int = 42,
-        missingness: float = 0.1
+        missingness: float = 0.1,
+        task: str = 'classification'
     ):
-    """Write one h5 file of patch features per patient into ``folder``; return the clinical table and outcomes."""
+    """Write one h5 file of patch features per patient into ``folder``, plus ``clinical.csv`` with the target.
+
+    ``task='survival'`` writes ``time`` and ``event`` columns, with ``stage`` as a clinical feature.
+    ``task='classification'`` writes a ``stage`` column of ``'early'``/``'late'`` labels to predict, driven mostly by the slides.
+    """
+    if task not in ('survival', 'classification'):
+        raise ValueError(f"task must be 'survival' or 'classification', got {task!r}")
     folder = Path(folder)
     folder.mkdir(parents = True, exist_ok=True)
     rng = np.random.default_rng(random_state)
@@ -39,12 +46,18 @@ def make_cohort(
             f["coords"] = rng.integers(0, 50_000, size=(n_patches, 2))
 
     # target
-    risk = 0.09 * (clinical["age"] - 60) + 1.2 * (clinical["stage"] - 2.5) + 12.0 * aggressive_fraction
-    event_time = rng.exponential(2000 * np.exp(-risk))
-    censoring_time = rng.uniform(200, 3000, n_patients)
-    outcome = pd.DataFrame(
-        {"time": np.minimum(event_time, censoring_time), "event": event_time <= censoring_time}, index=ids
-    )
+    if task == 'survival':
+        risk = 0.09 * (clinical["age"] - 60) + 1.2 * (clinical["stage"] - 2.5) + 12.0 * aggressive_fraction
+        event_time = rng.exponential(2000 * np.exp(-risk))
+        censoring_time = rng.uniform(200, 3000, n_patients)
+        outcome = pd.DataFrame(
+            {"time": np.minimum(event_time, censoring_time), "event": event_time <= censoring_time}, index=ids
+        )
+    else:
+        # stage follows the slide (more aggressive patches -> later stage), with a small age effect
+        score = aggressive_fraction + 0.005 * (clinical["age"] - 60) + rng.normal(0, 0.08, n_patients)
+        outcome = pd.DataFrame({"stage": np.where(score > 0.25, 'late', 'early')}, index=ids)
+        clinical = clinical.drop(columns="stage")
 
     # missingess for tabular data
     clinical = clinical.mask(
