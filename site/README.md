@@ -51,7 +51,7 @@ The ignored `site/_staged/` directory is regenerated on every build. It preserve
 
 ### Notebook rendering
 
-The original `notebooks/MDAS/cancer/classification.ipynb` is copied byte-for-byte into the staged tree and parsed by MyST-NB. **Execution is disabled** with `nb_execution_mode = "off"` and an all-notebook exclusion pattern. Saved code and outputs are shown; no research environment or dataset is loaded.
+The original `classification.ipynb` and `survival.ipynb` from `notebooks/MDAS/cancer/` are copied byte-for-byte into the staged tree and parsed by MyST-NB. `_ext/mdas_notebooks.py` maps their repository paths to `live-coding.html` (Classification, default) and `live-coding-survival.html` (Survival Analysis). The labelled dropdown navigates between these separate pages. Survival is an orphan page with the canonical notebook sidebar and previous/next navigation; it supplies its own page contents. Only one Live-Coding Notebook entry is included in the toctree. **Execution is disabled** with `nb_execution_mode = "off"` and an all-notebook exclusion pattern. Saved code and outputs are shown; no research environment or dataset is loaded.
 
 A source-read hook adds the page title, GitHub and prominent Colab links, setup guidance and privacy warnings in memory. Existing notebook headings are nested beneath the page title for navigation. It leaves code, outputs and safety text unchanged. The original notebook and associated Python helper are never written or executed. Its existing Mermaid diagram is rendered using the Mermaid extension. A legacy `ipython2` display-lexer alias is registered without changing notebook metadata on disk.
 
@@ -118,7 +118,7 @@ The dependency resolution, helper smoke test, static builds, HTML links and cont
 
 The organiser has confirmed Binder server launch and Thebe kernel connection after publishing revision `090f1ff`. The earlier failure analysis above records the pre-publication state. Full research-training validation remains separate.
 
-The Colab button targets the original `notebooks/MDAS/cancer/classification.ipynb`. Colab environment preparation is deferred; no separate Colab-ready notebook or setup instructions are included in this version. The original notebook remains the only rendered notebook/sidebar entry.
+The Colab button targets the original `notebooks/MDAS/cancer/classification.ipynb`. Colab environment preparation is deferred; no separate Colab-ready notebook or setup instructions are included in this version. Both complete notebooks are rendered under a single sidebar entry.
 
 ### Disable or replace the backend
 
@@ -152,10 +152,25 @@ Colab-ready work is deferred by organiser instruction. Its notebook was previous
 
 ## Classification page and presentation mode
 
-The Cancer Live-Coding Notebook displays `classification.ipynb`; the GitHub, Colab and Binder preflight references use that same file. The blank classification notebook is linked as an optional exercise, not substituted for the complete notebook. Survival notebooks remain untouched. The byte-for-byte staged copy is adapted only in memory for HTML rendering.
+The Cancer Live-Coding Notebook defaults to `classification.ipynb`; the dropdown also opens `survival.ipynb`. GitHub, Colab, blank exercise and Binder preflight references follow the selected notebook. Both `_blank.ipynb` files remain optional exercise links. The byte-for-byte staged copies are adapted only in memory for HTML rendering. Scientific content and original files remain untouched.
+
+`_static/mdas-notebooks.js` handles page navigation and exports current CodeMirror code edits with original Markdown as an `.ipynb` download. Exports clear stale outputs and execution counts; kernel variables and generated files are not included. After launch, even a disconnected session retains a leave-page guard so edits are protected. A cancelled selector confirmation restores the selection. `beforeunload` also protects other navigation/reload/close actions. Browser leave prompts depend on browser interaction policies. The selector and downloads still work when Thebe is disabled.
 
 The header **Present** button (`_static/mdas-presentation.js`) expands the content and hides sidebars without replacing or reloading notebook DOM nodes. It uses the browser Fullscreen API when available and keeps an expanded-layout fallback if fullscreen is denied or unavailable. Toggle again or press Escape to restore the normal layout. It does not connect, disconnect or execute a kernel. Browser permissions, native Escape handling and responsive appearance should also be checked manually on the intended teaching device.
 
-Run `node --test site/tests/interactive.test.cjs site/tests/presentation.test.cjs` for controller checks. The workflow remains unchanged. New static JavaScript and test files must be included in the reviewed commit alongside modified sources.
+Run `node --test site/tests/interactive.test.cjs site/tests/presentation.test.cjs site/tests/notebooks.test.cjs` for controller checks. The workflow remains unchanged. New static JavaScript and test files must be included in the reviewed commit alongside modified sources.
 
 The overall session is now 13:00–17:00 on 18 November 2026. The detailed agenda still ends at 16:30; organisers must confirm the final 30 minutes. Individual activities have deliberately not been extended or reordered.
+
+After an enabled Sphinx build, run `python site/tests/test_notebooks.py` to verify byte-identical staging, every displayed code cell, page ToCs, selector defaults, the single sidebar entry, selected notebook links and Binder configuration. These checks use only the Python standard library.
+
+### Multi-notebook validation (29 October 2026)
+
+- A clean `git archive HEAD` snapshot with only the review patch passed the strict Sphinx build (`-n -W -E -a`), with Thebe both enabled and disabled. No pre-existing generated pages or research environment were copied into this snapshot.
+- Enabled build: 26 HTML pages, 1,366 local links/assets, zero link errors. Disabled build: 26 pages, 1,358 links/assets, zero errors. Generated-page regression checks compare every code cell to its original notebook, validate every section ToC link, the selected dropdown value, one sidebar entry, byte-identical staging, and selected Colab/GitHub/Binder paths.
+- Node controller tests cover lazy launch, preflight failures, commit pinning, presentation, switching/cancellation, leave-page protection, and edit export (including export refusal when cell/editor mapping is incomplete).
+- Both full notebook and both blank exercise GitHub links, plus both Colab links, returned HTTP 200. This checks link reachability, not Colab execution or dependency compatibility.
+- A public Binder session at `ed11a4130174e2814b73fbc3eed7a50070891b18` reached ready. Remote notebook/helper/Binder inputs matched local files. A Jupyter notebook session started in `notebooks/MDAS/cancer` without a working-directory override. Both original notebooks' setup cells passed: helper/research imports, synthetic data generation, data loading, model/pipeline construction and 100-subject splits (80 train / 20 test). Classification and survival evaluation imports also passed. Training, baseline fits and bootstrap runs were deliberately excluded. The test kernel/session was stopped afterwards.
+- Browser automation reported that its access host was unavailable. Visual appearance, native leave prompts and actual Thebe editor export therefore still need a browser check; JavaScript regression tests use mocks. The remote kernel test used Jupyter APIs and does not establish browser-to-Binder integration.
+
+Files in this change: `build.py`, `conf.py`, `diagnose_binder.py`, `_ext/mdas_notebooks.py`, `_ext/mdas_interactive.py`, `_static/mdas-notebooks.js`, `_static/mdas-notebooks.css`, `_static/mdas-interactive.js`, `tests/notebooks.test.cjs`, `tests/test_notebooks.py`, this guide and `../docs/notebook-execution.md`. Notebook files, scientific content, helper, dependency lock, logo, venue/timing and deployment workflow are unchanged. No commit, push or publication was performed.

@@ -4,7 +4,7 @@ import json
 
 from docutils import nodes
 
-NOTEBOOK = "tutorials/kalecancer/live-coding"
+from mdas_notebooks import NOTEBOOKS
 
 
 def configure_page(app, doctree, docname):
@@ -13,7 +13,7 @@ def configure_page(app, doctree, docname):
         text = node.astext()
         if 'type="text/x-thebe-config"' not in text and "<script>kernelName =" not in text:
             continue
-        if docname != NOTEBOOK:
+        if docname not in NOTEBOOKS:
             node.parent.remove(node)
             continue
         if 'type="text/x-thebe-config"' in text:
@@ -39,7 +39,7 @@ def configure_page(app, doctree, docname):
                 "required_files": [
                     ".binder/runtime.txt",
                     ".binder/requirements.txt",
-                    "notebooks/MDAS/cancer/classification.ipynb",
+                    NOTEBOOKS[docname][1],
                     "notebooks/MDAS/cancer/synthetic_data_generation.py",
                 ],
             }
@@ -51,7 +51,7 @@ def configure_page(app, doctree, docname):
 
 
 def scope_assets(app, pagename, templatename, context, doctree):
-    if pagename == NOTEBOOK:
+    if pagename in NOTEBOOKS:
         return
 
     def keep(asset):

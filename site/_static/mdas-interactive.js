@@ -57,6 +57,7 @@
       return;
     }
     launched = true;
+    window.mdasSessionStarted = true;
     button().disabled = true;
     report("Checking that the public GitHub revision contains the Binder environment and notebook files. No Binder session has been requested yet.");
     try {
@@ -66,6 +67,7 @@
         ? "The GitHub readiness check timed out. No Binder session was requested. Read the saved notebook, use Colab, or retry later."
         : `Cannot launch: ${error.message} The saved notebook and Colab link remain available.`);
       launched = false;
+      window.mdasSessionStarted = false;
       button().disabled = false;
       return;
     }

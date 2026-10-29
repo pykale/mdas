@@ -17,6 +17,8 @@ ROOT = SITE.parent
 STAGED = SITE / "_staged"
 HTML = SITE / "_build" / "html"
 REPOSITORY = "https://github.com/pykale/mdas"
+sys.path.insert(0, str(SITE / "_ext"))
+from mdas_notebooks import NOTEBOOKS
 
 
 def find_uv() -> str:
@@ -51,8 +53,8 @@ def stage() -> None:
     paths = [p for p in paths if p.relative_to(ROOT).as_posix() not in excluded]
     mapping = {p.relative_to(ROOT).as_posix(): p.relative_to(ROOT).as_posix() for p in paths}
     mapping["README.md"] = "index.md"
-    notebook = ROOT / "notebooks/MDAS/cancer/classification.ipynb"
-    mapping[notebook.relative_to(ROOT).as_posix()] = "tutorials/kalecancer/live-coding.ipynb"
+    for docname, (_, notebook_path) in NOTEBOOKS.items():
+        mapping[notebook_path] = docname + ".ipynb"
     aliases = {"docs/overview.md": "docs/about.md", "docs/resources.md": "docs/quick-start.md",
                "notebooks/README.md": "tutorials/kalecancer/live-coding.ipynb",
                "tutorials/kalecancer/README.md": "tutorials/kalecancer/getting-started.md",
@@ -99,8 +101,8 @@ def stage() -> None:
             text += "".join(toctree(entries, caption) for caption, entries in nav.items())
         destination.write_text(text, encoding="utf-8")
     # Byte-for-byte copy: never execute or alter the original notebook.
-    notebook_destination = STAGED / mapping[notebook.relative_to(ROOT).as_posix()]
-    shutil.copyfile(notebook, notebook_destination)
+    for _, notebook_path in NOTEBOOKS.values():
+        shutil.copyfile(ROOT / notebook_path, STAGED / mapping[notebook_path])
     for track, entries in {
         "kalecancer": [["Getting Started", "getting-started"], ["Hands-on Tutorial", "hands-on"],
                        ["Live-Coding Notebook", "live-coding"], ["Results and Interpretation", "results"]],
@@ -111,7 +113,7 @@ def stage() -> None:
         # Navigation-only landing page, no duplicated introduction or setup.
         (STAGED / f"tutorials/{track}/index.md").write_text(
             f"# {title}\n\n[Begin with Getting Started](getting-started.md).\n" + toctree(entries), encoding="utf-8")
-    print(f"Staged {len(paths)} Markdown pages and the original notebook in {STAGED}", flush=True)
+    print(f"Staged {len(paths)} Markdown pages and {len(NOTEBOOKS)} original notebooks in {STAGED}", flush=True)
 
 
 def main() -> int:

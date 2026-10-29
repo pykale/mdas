@@ -4,15 +4,21 @@ orphan: true
 
 # Online notebook execution
 
-The [Cancer Live-Coding Notebook](../notebooks/MDAS/cancer/classification.ipynb) can be read as a static page, connected to a temporary Binder kernel through Thebe, or opened in Google Colab. No code is run by opening the documentation page.
+The [Cancer Live-Coding Notebook](../notebooks/MDAS/cancer/classification.ipynb) offers **Classification** (default) and **Survival Analysis** in the **Choose a notebook** dropdown. Each selection opens its own documentation page with the selected notebook's cells, contents and launch links. Both can be read as a static page, connected to a temporary Binder kernel through Thebe, or opened in Google Colab. No code is run by opening the documentation page.
 
 ## Run on this website
 
 Choose **Run interactively on this website** and wait for the connection status to show that the kernel is connected. The first Binder build may take several minutes. Code cells become editable, and you can run them individually, in order. A connection alone does not execute the notebook or verify that every research dependency works.
 
-The kernel is configured to start in `notebooks/MDAS/cancer/`, so the companion `synthetic_data_generation.py` module can be imported. The notebook's `../../../data/synthetic_data` path resolves to `data/synthetic_data` inside the temporary repository checkout. The helper generates synthetic data there; no patient dataset is needed.
+The kernel is configured to start in `notebooks/MDAS/cancer/`, so the companion `synthetic_data_generation.py` module can be imported. Both notebooks' `../../../data/synthetic_data` path resolves to `data/synthetic_data` inside the temporary repository checkout. The helper generates synthetic data there; no patient dataset is needed.
 
 Binder uses the repository on GitHub, not your local checkout. The organiser has confirmed a successful remote launch and Thebe kernel connection after publishing the Binder configuration. That does not establish full research-training validation or validate Colab.
+
+## Switch notebooks and save edits
+
+Switching loads a new page and starts with its saved cells; kernels and variables are not transferred. After interactive launch, switching asks for confirmation. Cancel to stay on the current page and choose **Download notebook with edits** before leaving. The download includes current code edits and original Markdown, with outputs cleared; it does not include kernel variables or generated files. Check that the download succeeded. Copy important results or download generated files separately. Reloading, closing the tab and following documentation links also trigger the browser's leave-page warning after launch.
+
+Each notebook links its corresponding `_blank.ipynb` as an **Optional blank exercise** on GitHub. These exercise notebooks are not the displayed defaults.
 
 ## Connection troubleshooting
 
@@ -26,9 +32,9 @@ The earlier revision `ed163a322186055c8c5b79885288ad9a051f89c4` lacked Binder fi
 
 ## Open in Google Colab
 
-[Open the original notebook in Google Colab](https://colab.research.google.com/github/pykale/mdas/blob/main/notebooks/MDAS/cancer/classification.ipynb).
+Use the **Open in Google Colab** button on the selected notebook page: [Classification](https://colab.research.google.com/github/pykale/mdas/blob/main/notebooks/MDAS/cancer/classification.ipynb) or [Survival Analysis](https://colab.research.google.com/github/pykale/mdas/blob/main/notebooks/MDAS/cancer/survival.ipynb).
 
-This link opens the original MDAS Cancer notebook. It does not automatically install dependencies or retrieve the companion `synthetic_data_generation.py` module. A Colab-ready environment is deferred for follow-up work; use **Run interactively on this website** for the currently working Binder option.
+Each link opens its original MDAS Cancer notebook. It does not automatically install dependencies or retrieve the companion `synthetic_data_generation.py` module. A Colab-ready environment is deferred for follow-up work; use **Run interactively on this website** for the currently working Binder option.
 
 ## Compute and privacy limits
 
