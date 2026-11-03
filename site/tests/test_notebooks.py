@@ -63,6 +63,8 @@ class Notebooks(unittest.TestCase):
                 for base in ("https://colab.research.google.com/github/pykale/mdas/blob/main/", "https://github.com/pykale/mdas/blob/main/"):
                     self.assertIn(f'href="{base}{path}"', html)
                 self.assertIn(f'{name}_blank.ipynb', html)
+                self.assertIn('href="https://colab.research.google.com/github/pykale/mdas/blob/main/colab/prepare_colab.ipynb"', html)
+                self.assertIn('../../docs/colab.html', html)
                 config = json.loads(page.scripts["text/x-thebe-config"])
                 self.assertEqual(config["kernelOptions"]["path"], "notebooks/MDAS/cancer")
                 self.assertFalse(config["bootstrap"])

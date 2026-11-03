@@ -123,13 +123,16 @@ MDAS_NOTEBOOK_SELECTOR
 
 **MDAS_NOTEBOOK_TITLE**
 
-Run cells on this page using the built-in **Binder kernel**, or open the notebook in **Google Colab** as an alternative. Colab requires additional dependency and companion-module setup.
+Run cells on this page using the built-in **Binder kernel**, or open the notebook in **Google Colab** as an alternative. For Colab, use the separate **Prepare Colab Environment** workflow with a supported Python 3.12 runtime. It runs the original notebook unchanged in an isolated kernel; a separately opened Colab notebook does not share that environment.
 
 MDAS_INTERACTIVE_CONTROL
 
 MDAS_NOTEBOOK_EXPORT
 
 <a class="btn btn-primary" href="https://colab.research.google.com/github/pykale/mdas/blob/main/MDAS_NOTEBOOK_PATH">Open in Google Colab</a>
+<a class="btn btn-secondary" href="https://colab.research.google.com/github/pykale/mdas/blob/main/colab/prepare_colab.ipynb">Prepare Colab Environment</a>
+
+[Colab preparation and runtime limits](../../docs/colab.md).
 
 [View on GitHub](https://github.com/pykale/mdas/blob/main/MDAS_NOTEBOOK_PATH) | [Optional blank exercise](https://github.com/pykale/mdas/blob/main/MDAS_BLANK_PATH) | [Execution help](../../docs/notebook-execution.md).
 

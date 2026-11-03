@@ -1,0 +1,7 @@
+# Reuse the reviewed Python 3.12 CPU research lock without changing Binder.
+-r ../.binder/requirements.txt
+
+# External execution and HTML reporting only; not research dependencies.
+nbclient==0.11.0
+nbformat==5.11.1
+nbconvert==7.17.2

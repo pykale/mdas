@@ -174,3 +174,8 @@ After an enabled Sphinx build, run `python site/tests/test_notebooks.py` to veri
 - Browser automation reported that its access host was unavailable. Visual appearance, native leave prompts and actual Thebe editor export therefore still need a browser check; JavaScript regression tests use mocks. The remote kernel test used Jupyter APIs and does not establish browser-to-Binder integration.
 
 Files in this change: `build.py`, `conf.py`, `diagnose_binder.py`, `_ext/mdas_notebooks.py`, `_ext/mdas_interactive.py`, `_static/mdas-notebooks.js`, `_static/mdas-notebooks.css`, `_static/mdas-interactive.js`, `tests/notebooks.test.cjs`, `tests/test_notebooks.py`, this guide and `../docs/notebook-execution.md`. Notebook files, scientific content, helper, dependency lock, logo, venue/timing and deployment workflow are unchanged. No commit, push or publication was performed.
+
+
+## External Colab preparation
+
+The separate `colab/prepare_colab.ipynb` prepares a supported Python 3.12 environment and executes the original notebooks through explicit isolated kernels. The scientific notebooks, Binder requirements and Binder integration remain unchanged. The website adds a preparation link alongside the original Colab link. `docs/colab.md` explains that independently opened Colab notebooks do not share the prepared runtime. See `colab/README.md` for dependency constraints, exact validation results and a fresh-session manual checklist. Earlier notes that Colab work was deferred describe the previous release.
