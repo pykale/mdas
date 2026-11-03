@@ -1,8 +1,37 @@
-# Multimodal Data Analysis Session (MDAS)
+# MDAS 1.0
 
-## Cancer & Cardiac Research
+**Multimodal Data Analysis Session**
 
-Explore practical ways to combine biomedical data for cancer and cardiac research. Hosted by the PyKale organisation, MDAS brings researchers and clinicians together to learn an analysis pipeline and apply it to a research problem.
+How can different biomedical data sources help answer one research question? Organised by **PyKale**, MDAS 1.0 introduces practical multimodal workflows through **KaleCancer** and **KaleCardiac**.
+
+Learn with us at the workshop or work through the same materials at your own pace afterwards. Start with synthetic data, follow the model from inputs to predictions, and learn what its results can and cannot tell you.
+
+## Choose a research track
+
+::::{container} mdas-track-cards
+:::{container} mdas-track-card
+<h3>Cancer</h3>
+
+Combine clinical variables and pathology patch features for **classification** and **survival analysis**. Compare fused models with a clinical-only baseline.
+
+[Explore Cancer](tutorials/kalecancer/getting-started.md)
+:::
+:::{container} mdas-track-card
+<h3>Cardiac</h3>
+
+Explore chest X-ray and ECG representation learning with **CardioVAE**, or learn from complementary ECG leads with **LS-EMVAE**.
+
+[Explore Cardiac](tutorials/kalecardiac/getting-started.md)
+:::
+::::
+
+## Learn a workflow you can explain
+
+Discover the question, prepare your environment, explore the inputs, run the example, interpret its outputs, and choose a responsible next experiment. Each track guides you through these stages; Previous/Next navigation is also available.
+
+New to the session? The [Participation Guide](docs/participation.md) explains the background, preparation and privacy expectations. Ready to execute an example? Use [Quick Start](docs/quick-start.md).
+
+## Workshop details
 
 | Date | Attendee programme | Venue |
 | --- | --- | --- |
@@ -10,12 +39,4 @@ Explore practical ways to combine biomedical data for cancer and cardiac researc
 
 **Venue:** Regent Court, University of Sheffield. The Diamond, Workroom 3 (Room 205), is a possible alternative venue. The final location will be confirmed with registered participants.
 
-## Start here
-
-- [Getting Started](docs/prerequisites.md): prepare your laptop and choose your software environment.
-- [What is MDAS?](docs/about.md): explore the purpose, audience and learning goals.
-- [Session Agenda](docs/agenda.md): see the two learning blocks and timings.
-- [Tutorials](tutorials/README.md): choose Cancer or Cardiac and begin the hands-on activities.
-
-> [!IMPORTANT]
-> Synthetic examples demonstrate software workflows, not clinical predictive performance. Use clinical data only with appropriate permissions and secure infrastructure; do not upload identifiable patient data, confidential material or private datasets to public services or this repository.
+Synthetic demonstrations teach the software workflow; they do not establish clinical performance. Keep patient data and confidential research off public execution services.

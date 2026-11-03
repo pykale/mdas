@@ -43,6 +43,28 @@ class DirectColab(unittest.TestCase):
             setup._check_loaded({"torch": "2.11.0", "numpy": "2.0.2"}, {"torch": "2.6.0+cpu", "numpy": "2.0.2"})
         setup._check_loaded({"torch": "2.6.0+cpu"}, {"torch": "2.6.0+cpu"})
 
+    def test_previously_loaded_hub_requires_restart_after_downgrade(self):
+        hub = MagicMock(__version__="2.3.0")
+        with patch.dict(sys.modules, {"huggingface_hub": hub}):
+            before = setup._loaded_versions()
+        self.assertEqual(before["huggingface-hub"], "2.3.0")
+        with self.assertRaisesRegex(RuntimeError, "huggingface-hub.*Restart session"):
+            setup._check_loaded(before, {"huggingface-hub": "1.33.0"})
+        setup._check_loaded({"huggingface-hub": "1.33.0"}, {"huggingface-hub": "1.33.0"})
+
+    def test_colab_transformers_hub_requirement_is_checked_before_imports(self):
+        def version(name):
+            return "5.13.1" if name == "transformers" else hub_version
+        with patch.object(setup.metadata, "requires", return_value=["huggingface-hub>=1.5.0,<2.0"]), \
+             patch.object(setup.metadata, "version", side_effect=version):
+            hub_version = "1.33.0"
+            setup._check_transformers_hub()
+            hub_version = "2.3.0"
+            with self.assertRaisesRegex(RuntimeError, "Transformers 5.13.1.*Hub 2.3.0"):
+                setup._check_transformers_hub()
+        with patch.object(setup.metadata, "requires", side_effect=setup.metadata.PackageNotFoundError):
+            setup._check_transformers_hub()  # Optional Transformers stays optional.
+
     def test_correct_alpha_version_from_wrong_git_commit_is_not_reused(self):
         with patch.object(setup.metadata, "version", return_value="2.0.2"), patch.object(setup.metadata, "distribution") as dist:
             dist.return_value.read_text.return_value = json.dumps({"vcs_info": {"commit_id": "wrong"}})

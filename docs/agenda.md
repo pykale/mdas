@@ -24,4 +24,4 @@
 
 Specific organiser-provided problems and final tutorial exercise selection remain to be confirmed. For the session's learning goals, see [What is MDAS?](about.md).
 
-[Prerequisites](prerequisites.md) · [Participation Guide](participation.md) · [MDAS home](../README.md).
+**Next:** [Prepare with the Participation Guide](participation.md).

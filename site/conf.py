@@ -7,6 +7,7 @@ import sys
 sys.path.insert(0, str(Path(__file__).resolve().parent / "_ext"))
 
 from mdas_notebooks import NOTEBOOKS
+from mdas_journey import render_journey, prepare_journey
 
 project = "Multimodal Data Analysis Session (MDAS)"
 author = "PyKale"
@@ -43,8 +44,8 @@ myst_fence_as_directive = ["mermaid"]
 nitpicky = True
 
 html_theme = "sphinx_book_theme"
-html_title = "MDAS: Cancer & Cardiac Research"
-html_short_title = "MDAS 2026"
+html_title = "MDAS 1.0: Cancer & Cardiac Research"
+html_short_title = "MDAS 1.0"
 html_baseurl = "https://pykale.github.io/mdas/"
 html_static_path = ["_static"]
 templates_path = ["_templates"]
@@ -78,7 +79,6 @@ def prepare_notebook(app, docname, source):
     import re
 
     title, notebook_path = NOTEBOOKS[docname]
-    blank_path = notebook_path.replace(".ipynb", "_blank.ipynb")
     notebook = json.loads(source[0])
     if docname.endswith("-survival"):
         notebook.setdefault("metadata", {})["orphan"] = True
@@ -106,17 +106,11 @@ def prepare_notebook(app, docname, source):
                 f'<select id="mdas-notebook-select" onchange="mdasSwitchNotebook(this)">{options}</select></div>'
                 '<noscript><p>Choose: <a href="live-coding.html">Classification</a> | '
                 '<a href="live-coding-survival.html">Survival Analysis</a></p></noscript>')
-    # Store the original notebook for a client-side export of edited code cells.
-    download = json.loads(source[0])
-    for cell in download["cells"]:
-        if cell["cell_type"] == "code":
-            cell["outputs"] = []
-            cell["execution_count"] = None
-    payload = json.dumps(download).replace("<", "\\u003c")
-    export = (f'<script type="application/json" id="mdas-notebook-source">{payload}</script>'
-              f'<button type="button" class="btn btn-secondary" onclick="mdasDownloadNotebook()">Download notebook with edits</button>'
-              f'<p id="mdas-download-status" role="status"></p>')
-    intro = """# Live-Coding Notebook
+    intro = """<div class="mdas-notebook-tools"><a class="mdas-execution-help" href="../../docs/notebook-execution.html" target="_blank" rel="noopener" aria-label="Execution Help (opens in a new tab)"><span class="mdas-help-icon" aria-hidden="true">?</span> Execution Help</a></div>
+
+# Live-Coding Notebook
+
+MDAS_LEARNING_STAGE
 
 MDAS_NOTEBOOK_SELECTOR
 
@@ -130,19 +124,20 @@ MDAS_INTERACTIVE_CONTROL
 </div>
 <p id="mdas-thebe-status" role="status" aria-live="polite">Not connected. Binder starts only when you choose to launch it.</p>
 
-Colab needs **Python 3.12**. Its setup section explains the runtime choice and installs the dependencies. [Runtime help](../../docs/colab.md).
+Colab needs a compatible **Python 3.12** runtime. Select it and run the initial setup cell; follow any restart instruction before continuing.
 
-MDAS_NOTEBOOK_EXPORT
-
-[View on GitHub](https://github.com/pykale/mdas/blob/main/MDAS_NOTEBOOK_PATH) | [Optional blank exercise](https://github.com/pykale/mdas/blob/main/MDAS_BLANK_PATH) | [Execution help](../../docs/notebook-execution.md).
-
-> Sessions are temporary; save work you want to keep. Use synthetic data only: do not upload private or patient data. Synthetic results do not demonstrate clinical performance.
-""".replace("MDAS_INTERACTIVE_CONTROL", launch).replace("MDAS_NOTEBOOK_SELECTOR", selector).replace("MDAS_NOTEBOOK_TITLE", title).replace("MDAS_NOTEBOOK_PATH", notebook_path).replace("MDAS_BLANK_PATH", blank_path).replace("MDAS_COLAB_PATH", notebook_path.replace(".ipynb", "_colab.ipynb")).replace("MDAS_NOTEBOOK_EXPORT", export)
+> Sessions are temporary. Copy code edits and important results before switching or leaving; keep generated files separately. Use synthetic data only: do not upload private or patient data. Synthetic results do not demonstrate clinical performance.
+""".replace("MDAS_INTERACTIVE_CONTROL", launch).replace("MDAS_NOTEBOOK_SELECTOR", selector).replace("MDAS_NOTEBOOK_TITLE", title).replace("MDAS_NOTEBOOK_PATH", notebook_path).replace("MDAS_COLAB_PATH", notebook_path.replace(".ipynb", "_colab.ipynb")).replace("MDAS_LEARNING_STAGE", render_journey(docname))
     notebook["cells"].insert(0, {"cell_type": "markdown", "id": "mdas-access", "metadata": {}, "source": intro})
+    notebook["cells"].append({"cell_type": "markdown", "id": "mdas-next-step", "metadata": {},
+        "source": "When you have inspected the predictions, metrics and baseline comparison, [interpret the Cancer results](results.md) before drawing conclusions."})
     source[0] = json.dumps(notebook)
 
 
 REDIRECTS = {
+    "docs/prerequisites": "participation.html",
+    "tutorials/README": "../index.html#choose-a-research-track",
+    "tutorials/kalecancer/hands-on": "live-coding.html",
     "docs/overview": "about.html",
     "docs/resources": "quick-start.html",
     "notebooks/README": "../tutorials/kalecancer/live-coding.html",
@@ -181,6 +176,7 @@ def setup(app):
 
     app.add_lexer("ipython2", PythonLexer)
     app.connect("source-read", prepare_notebook)
+    app.connect("source-read", prepare_journey)
     app.connect("html-page-context", notebook_navigation, priority=400)
     app.add_js_file("mdas-notebooks.js", defer="defer")
     app.add_css_file("mdas-notebooks.css")

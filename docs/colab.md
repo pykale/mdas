@@ -1,4 +1,4 @@
-﻿---
+---
 orphan: true
 ---
 
@@ -18,13 +18,19 @@ The default Python 3.13 runtime is outside the published KaleCancer and PyKale r
 ## Run cells directly
 
 1. Run the initial **Google Colab Environment Setup** code cell. It installs compatible CPU research packages in this notebook's active Python environment and downloads the companion module. No separate notebook, Drive mount, uploaded files or terminal commands are needed.
-2. If setup says a different library version is already loaded, choose **Runtime > Restart session** and rerun setup. This prevents mixing old, loaded binary libraries with newly installed packages. Continue only after **MDAS ready** appears.
+2. If setup says a different library version is already loaded, choose **Runtime > Restart session** and rerun setup. This prevents mixing old, loaded libraries with newly installed packages, including Hugging Face Hub and Transformers. After updating an earlier failed setup, wait for **MDAS ready** to print **Hub 1.33.0** before running scientific cells. Continue only after **MDAS ready** appears.
 3. Run the scientific cells individually in order. Training and advanced analyses run in full. Rerunning setup reuses compatible dependencies and cached support files.
-4. Save your notebook and download generated files before disconnecting. Colab runtimes are temporary. Use synthetic data only.
+4. Save a notebook copy through Colab's File menu and download generated files through its Files pane before disconnecting. Colab runtimes are temporary. Use synthetic data only.
 
 The setup arranges `notebooks/MDAS/cancer/` beneath `/content/mdas-cancer/`, adds that directory to the import path and changes the working directory there. Thus the original `from synthetic_data_generation import make_cohort` and `../../../data/synthetic_data` work without editing any scientific cell. Each notebook generates its own appropriate synthetic task with the original deterministic generator.
 
 The four original notebooks, blank exercises, Binder requirements and Binder controller are unchanged. **Run with Binder** continues to execute the original notebook on the website. Colab copies add only this setup section; all original cell dictionaries, ordering, metadata and saved outputs are preserved.
+
+## If setup does not reach MDAS ready
+
+Keep the error message. An unsupported Python version needs a runtime selection, not another interpreter installed in a cell. A download or checksum error may require reopening the latest Colab copy and rerunning setup with internet access. If a different package version is already imported, restart the session and rerun setup until **MDAS ready** appears; do not continue with a partly configured environment.
+
+For notebook switching, temporary sessions and saving work across both execution routes, see [Execution Help](notebook-execution.md).
 
 ## Compatibility and validation
 

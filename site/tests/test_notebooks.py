@@ -13,6 +13,7 @@ class Page(HTMLParser):
         self.scripts = {}
         self.options = []
         self.actions = []
+        self.help_links = []
         self.inputs = []
         self.depth = 0
         self.input_depth = None
@@ -28,6 +29,8 @@ class Page(HTMLParser):
                 self.inputs.append("")
         if "mdas-execution-button" in attrs.get("class", "").split():
             self.actions.append((tag, attrs))
+        if "mdas-execution-help" in attrs.get("class", "").split():
+            self.help_links.append(attrs)
         if tag == "option":
             self.options.append(attrs)
         if tag == "script":
@@ -61,13 +64,24 @@ class Notebooks(unittest.TestCase):
                 self.assertEqual([x["value"] for x in page.options], ["live-coding.html", "live-coding-survival.html"])
                 self.assertEqual([x["value"] for x in page.options if "selected" in x], [page_name + ".html"])
                 self.assertEqual([s.strip() for s in page.inputs], ["".join(c["source"]).strip() for c in original["cells"] if c["cell_type"] == "code"])
-                export = json.loads(page.scripts["mdas-notebook-source"])
-                self.assertEqual([c["source"] for c in export["cells"]], [c["source"] for c in original["cells"]])
-                self.assertIn(f'href="https://github.com/pykale/mdas/blob/main/{path}"', html)
+                self.assertNotIn("mdas-notebook-source", page.scripts)
+                self.assertNotIn("mdasDownloadNotebook", html)
+                self.assertNotIn("Download notebook with edits", html)
+                self.assertNotIn("_blank.ipynb", html)
+                self.assertNotIn("Optional blank exercise", html)
+                self.assertEqual(len(page.help_links), 1)
+                help_link = page.help_links[0]
+                self.assertEqual(help_link["href"], "../../docs/notebook-execution.html")
+                self.assertEqual(help_link["target"], "_blank")
+                self.assertIn("noopener", help_link["rel"])
+                self.assertEqual(help_link["aria-label"], "Execution Help (opens in a new tab)")
+                self.assertLess(html.index('class="mdas-notebook-tools"'), html.index('id="mdas-notebook-select"'))
+                self.assertIn('class="mdas-help-icon" aria-hidden="true"', html)
+                self.assertIn('aria-current="step">Run</li>', html)
+                self.assertRegex(html, r'class="left-prev"\s+href="getting-started.html"')
+                self.assertRegex(html, r'class="right-next"\s+href="results.html"')
                 colab_path = path.replace(".ipynb", "_colab.ipynb")
                 self.assertIn(f'href="https://colab.research.google.com/github/pykale/mdas/blob/main/{colab_path}"', html)
-                self.assertIn(f'{name}_blank.ipynb', html)
-                self.assertIn('../../docs/colab.html', html)
                 self.assertEqual(len(page.actions), 2)
                 self.assertEqual([tag for tag, _ in page.actions], ["button", "a"])
                 self.assertEqual(page.actions[0][1]["onclick"], "mdasLaunchInteractive()")

@@ -1,49 +1,31 @@
-# Cancer: Getting Started
+﻿# Cancer: Getting Started
 
-## Research question
+## The research question
 
-How can clinical features and pathology patch features be combined to explore time-to-event prediction? The starter example trains an **intermediate-fusion Cox model** using a small synthetic cohort.
+What can clinical variables and pathology patch features tell us together that a clinical table alone cannot? Cancer research may ask for a **class label** or for **time-to-event risk**. These are different questions, with different targets and evaluation methods.
 
-No real patient data are needed. Real-data HANCOCK examples require separate dataset access and additional setup.
+The MDAS notebooks use small synthetic cohorts so you can learn the workflow without patient data. The patch features are generated numerical vectors, not real pathology images or evidence that an image encoder works clinically.
 
-## Prepare the repository
+## Classification: predict a category
 
-Use the [KaleCancer repository](https://github.com/pykale/cancer), Python **3.11 or 3.12**, and **uv**. From the repository root, follow its [quickstart](https://github.com/pykale/cancer/blob/main/docs/quickstart.md):
+The Classification notebook predicts **early** versus **late**, the synthetic labels in the `stage` column. Inputs are clinical **age and gender**, together with bags of **32-dimensional pathology patch features**. The target column is removed from the clinical inputs.
 
-```sh
-uv sync --all-extras
-```
+Age is imputed and standardised; gender is encoded categorically. An attention-based multiple-instance encoder (**ABMIL**) pools each subject's patch bag. The clinical and patch representations are concatenated, then a classification head produces class probabilities. This is intermediate fusion: the representations are combined before the prediction head.
 
-The public repository contains the example paths below. Confirm the session environment with the organisers before installing; these documentation checks do not replace testing the dependencies on your machine.
+You will trace subject identifiers across modalities, keep fitted preprocessing inside the training pipeline, and inspect **AUROC for the late class** and **balanced accuracy**. The advanced section compares the fused model with a clinical-only baseline using AUROC bootstrap intervals.
 
-## Run the synthetic example
+## Survival Analysis: predict relative event risk
 
-```sh
-uv run python examples/synthetic/synthetic_survival.py
-```
+Survival analysis uses both a follow-up **time** and an **event indicator**. An observed event means the event occurred at that time. A censored observation means the event was not observed by the end of that person's follow-up; it does not mean the event can never occur.
 
-This CPU-capable, no-download demonstration generates clinical variables, pathology patch features and censored survival times, then trains the model.
+The Survival notebook combines clinical **age, stage and gender** with pathology patch features. Its `time` and `event` target columns are excluded from the clinical inputs. Age is imputed and standardised; **stage and gender** are encoded categorically. Stage is an input here, unlike Classification where the synthetic stage label is the target.
 
-The repository also provides [a separate synthetic survival example notebook](https://github.com/pykale/cancer/blob/main/examples/synthetic/synthetic_survival.ipynb). The session's [Live-Coding Notebook](../../notebooks/MDAS/cancer/classification.ipynb) is available here with its saved outputs and a Colab link.
+The same intermediate-fusion pattern leads to a **Cox head** with Efron handling of tied event times. Its prediction is a **log-hazard score** for relative risk ordering, not a survival probability or an estimated number of days. You will examine **Harrell's C** and **Uno's C at a horizon of 1,825 time units**, then compare a clinical-only baseline using Harrell's C bootstrap intervals.
 
-## What to look for
+## What to do and observe
 
-- How the synthetic cohort is assembled.
-- Which clinical and patch inputs are used.
-- Where intermediate fusion occurs.
-- Which evaluation metrics are printed.
+Follow one notebook in order: generate data, load each modality and target, construct the model, fit on the training split, and evaluate on the held-out split. Both notebooks use an 80/20 split and 40 training epochs; the optional baseline adds another fit. First inspect the saved cells if you want to understand the sequence before launching execution.
 
-## Continue the track
+As you work, record the target, input columns, prediction shape and metric. Ask why records from the same subject must stay in one split, why transformations must be fitted on training data, and what information patches might add beyond clinical variables. The interpretation page will help you separate a runnable workflow from a research claim.
 
-1. [Hands-on Tutorial](hands-on.md): locate the synthetic inputs and identify the prediction task.
-2. [Live-Coding Notebook](../../notebooks/MDAS/cancer/classification.ipynb): follow data loading, modelling, training and evaluation.
-3. [Results and Interpretation](results.md): understand the output and limits of a synthetic survival exercise.
-
-## Technical references
-
-Within the software repository, consult [README.md](https://github.com/pykale/cancer/blob/main/README.md), [docs/quickstart.md](https://github.com/pykale/cancer/blob/main/docs/quickstart.md), [examples/synthetic/synthetic_survival.py](https://github.com/pykale/cancer/blob/main/examples/synthetic/synthetic_survival.py), and [examples/hancock/](https://github.com/pykale/cancer/tree/main/examples/hancock).
-
-For library support, use [PyKale discussions](https://github.com/pykale/pykale/discussions) or the repository's issue tracker.
-
-> [!IMPORTANT]
-> Synthetic scores are pipeline checks, not evidence of clinical predictive performance. Clinical data require appropriate permissions and secure infrastructure.
+**Next:** [Choose and run the Live-Coding Notebook](../../notebooks/MDAS/cancer/classification.ipynb).

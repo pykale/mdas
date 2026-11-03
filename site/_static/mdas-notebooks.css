@@ -31,3 +31,17 @@
   .mdas-execution-actions { flex-direction: column; }
   .bd-article .mdas-execution-actions .mdas-execution-button { flex-basis: auto; width: 100%; }
 }
+
+/* Help stays in the article, including presentation mode; its new tab preserves the kernel. */
+.mdas-notebook-tools { display: flex; justify-content: flex-end; margin: 0 0 .65rem; }
+.bd-article .mdas-execution-help {
+  display: inline-flex; align-items: center; gap: .45rem; min-height: 44px;
+  padding: .4rem .7rem; border: 1px solid var(--pst-color-border); border-radius: .4rem;
+  color: var(--pst-color-text-base); background: var(--pst-color-on-background);
+  font-size: .9rem; font-weight: 600; text-decoration: none;
+}
+.bd-article .mdas-execution-help:visited { color: var(--pst-color-text-base); }
+.bd-article .mdas-execution-help:hover { border-color: var(--pst-color-primary); text-decoration: underline; }
+.bd-article .mdas-execution-help:focus-visible { outline: 3px solid var(--pst-color-primary); outline-offset: 3px; }
+.mdas-help-icon { display: inline-grid; place-items: center; width: 1.2rem; height: 1.2rem; border: 1px solid currentColor; border-radius: 50%; font-weight: 700; }
+@media (max-width: 480px) { .mdas-notebook-tools { margin-bottom: .4rem; } }

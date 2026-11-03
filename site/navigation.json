@@ -1,16 +1,32 @@
 {
   "Getting Started": [
-    ["Prerequisites", "docs/prerequisites"],
-    ["Quick Start", "docs/quick-start"]
+    [
+      "Quick Start",
+      "docs/quick-start"
+    ]
   ],
   "About the Session": [
-    ["What is MDAS?", "docs/about"],
-    ["Session Agenda", "docs/agenda"],
-    ["Participation Guide", "docs/participation"]
+    [
+      "What is MDAS?",
+      "docs/about"
+    ],
+    [
+      "Session Agenda",
+      "docs/agenda"
+    ],
+    [
+      "Participation Guide",
+      "docs/participation"
+    ]
   ],
   "Tutorials": [
-    ["Tutorials Overview", "tutorials/README"],
-    ["Cancer", "tutorials/kalecancer/index"],
-    ["Cardiac", "tutorials/kalecardiac/index"]
+    [
+      "Cancer",
+      "tutorials/kalecancer/index"
+    ],
+    [
+      "Cardiac",
+      "tutorials/kalecardiac/index"
+    ]
   ]
 }

@@ -1,46 +1,45 @@
----
+﻿---
 orphan: true
 ---
 
-# Online notebook execution
+# Execution Help
 
-The [Cancer Live-Coding Notebook](../notebooks/MDAS/cancer/classification.ipynb) offers **Classification** (default) and **Survival Analysis** in the **Choose a notebook** dropdown. Each selection opens its own documentation page with the selected notebook's cells, contents and launch links. Both can be read as a static page, connected to a temporary Binder kernel through Thebe, or opened in Google Colab. No code is run by opening the documentation page.
+This guide opens in a new tab so your notebook page and active kernel can stay in place. Choose the notebook first, then one execution route. Reading the saved cells alone does not run code.
 
-## Run on this website
+## Binder: run on this website
 
-Choose **Run with Binder** and wait for the connection status to show that the kernel is connected. The first Binder build may take several minutes. Code cells become editable, and you can run them individually, in order. A connection alone does not execute the notebook or verify that every research dependency works.
+1. Choose **Run with Binder**. The page first checks that the public GitHub revision contains the notebook and Binder files, then requests a temporary kernel. It does not run notebook cells automatically.
+2. Wait for **Kernel connected**. A first build or busy public service can take several minutes. Keep the page open and read the connection status; repeated clicks do not speed up startup.
+3. Edit and run cells individually, from the first cell onwards. Later cells depend on earlier variables. Run training and advanced comparisons deliberately; they add CPU time.
 
-The kernel is configured to start in `notebooks/MDAS/cancer/`, so the companion `synthetic_data_generation.py` module can be imported. Both notebooks' `../../../data/synthetic_data` path resolves to `data/synthetic_data` inside the temporary repository checkout. The helper generates synthetic data there; no patient dataset is needed.
+The kernel starts in `notebooks/MDAS/cancer/`, making `synthetic_data_generation.py` importable and the original data path valid. Binder uses the public repository revision, not files from your local checkout.
 
-Binder uses the repository on GitHub, not your local checkout. The organiser has confirmed a successful remote launch and Thebe kernel connection after publishing the Binder configuration. A subsequent complete execution test passed all original Classification and Survival code cells; see the [notebook validation report](https://github.com/pykale/mdas/blob/main/notebooks/MDAS/cancer/README-colab.md). This does not establish direct Colab UI compatibility.
+### Switching, saving and temporary sessions
 
-## Switch notebooks and save edits
+The Classification/Survival dropdown loads a separate page. Variables, edits and results are not transferred. After launch, the site asks before switching and the browser also protects reloads, links and closing the tab. **Cancel** to stay and copy code edits and important results into local files first. A warning does not save work for you.
 
-Switching loads a new page and starts with its saved cells; kernels and variables are not transferred. After interactive launch, switching asks for confirmation. Cancel to stay on the current page and choose **Download notebook with edits** before leaving. The download includes current code edits and original Markdown, with outputs cleared; it does not include kernel variables or generated files. Check that the download succeeded. Copy important results or download generated files separately. Reloading, closing the tab and following documentation links also trigger the browser's leave-page warning after launch.
+Binder sessions can disconnect or expire. The website has no edited-notebook export or general generated-file download interface. If you need to retain generated files, choose Colab and use its Files pane, or work locally. Save before leaving rather than relying on a temporary kernel.
 
-Each notebook links its corresponding `_blank.ipynb` as an **Optional blank exercise** on GitHub. These exercise notebooks are not the displayed defaults.
+### Connection failure and recovery
 
-## Connection troubleshooting
+- **Missing environment or notebook files:** the public revision is not ready. Local package changes cannot repair files missing on GitHub. Record the message and ask the organiser to check the published revision.
+- **GitHub timeout or rate limit:** wait and retry later. This is different from a failed package installation.
+- **Failed or disconnected kernel:** copy any work still visible, then reload and launch a new session. Run cells from the beginning; old variables cannot be assumed to survive. If the Binder service provides build logs, use them to distinguish build, server startup and kernel errors.
 
-If the launch reports **No environment specification found**, Binder has not reached package installation or kernel startup. It cannot see a usable environment definition in the selected public revision. Installing more packages locally does not fix that remote failure.
+An eventual kernel connection does not guarantee every research cell will finish within the service's resource limits. Colab or a local environment is an alternative when public Binder is unavailable.
 
-The launch control now checks the public revision for `.binder/runtime.txt`, `.binder/requirements.txt`, the notebook and its companion module **before requesting Binder**. If files are absent, the status names them and explains that local files are not sent to Binder. Once present, it launches the exact commit checked. A GitHub API timeout, blocked request or rate limit is reported separately and is not treated as evidence that packages failed to install.
+## Colab: run the dedicated copy
 
-Open the **Binder build logs** link on the notebook page to distinguish repository retrieval, environment discovery/build, server launch and kernel connection. A generic Thebe `failed` status alone does not identify the stage. A successful environment-file check is not a guarantee that the image or kernel will work.
+**Run in Google Colab** opens `classification_colab.ipynb` or `survival_colab.ipynb` for the selected task. These copies retain all original scientific cells and add an initial **Google Colab Environment Setup** section.
 
-The earlier revision `ed163a322186055c8c5b79885288ad9a051f89c4` lacked Binder files. The organiser subsequently published them in `090f1ff68a57cd2f04ab1df9008fd802e6caa278` and confirmed a ready server and working Thebe connection. See the maintainer build guide for diagnostics; a future failure still needs its actual launch stage checked.
+1. Select a compatible **Python 3.12** runtime as explained at the top of that notebook. Runtime selection is a participant action; installing another Python executable does not change the active kernel.
+2. Run the initial setup cell. It retrieves support files and installs compatible research packages in the active environment. The first installation may take several minutes.
+3. If requested, choose **Runtime > Restart session**, then rerun setup. Continue only when **MDAS ready** appears. After the corrected Hub setup, that message should include **Hub 1.33.0**; an already imported old Hub or Transformers stack needs a restart.
+4. Run scientific cells individually in order, including their data generation, training and evaluation steps.
+5. Save a notebook copy and download needed data/results using Colab's File menu and Files pane before disconnecting. A new Colab session does not automatically retain an earlier runtime's files or variables.
 
-## Open in Google Colab
+For runtime selection, a setup failure or a checksum/version message, follow the [Colab troubleshooting guide](colab.md). A failed setup is not permission to skip ahead to the scientific cells.
 
-Use the **Run in Google Colab** button on the selected notebook page: [Classification](https://colab.research.google.com/github/pykale/mdas/blob/main/notebooks/MDAS/cancer/classification_colab.ipynb) or [Survival Analysis](https://colab.research.google.com/github/pykale/mdas/blob/main/notebooks/MDAS/cancer/survival_colab.ipynb).
+## Privacy and interpretation
 
-Each link opens a dedicated Colab copy with an initial **Google Colab Environment Setup** section. Select the supported Python 3.12 runtime, run setup, then run the scientific cells directly in that notebook. The [Colab runtime guide](colab.md) explains runtime selection and a possible session restart if incompatible libraries are already imported. All original scientific cells are preserved in the copies; Binder continues to use the original notebooks.
-
-## Compute and privacy limits
-
-The helper defaults to 100 synthetic subjects and 20–199 patches per subject, each with 32 features. That feature data is small, but importing the ML stack, training for 40 epochs, fitting the optional baseline and computing bootstrap intervals need additional memory and CPU time. Measured full-run timings are recorded in the [validation report](https://github.com/pykale/mdas/blob/main/notebooks/MDAS/cancer/README-colab.md); memory use and public-service completion times are not guaranteed. Run training deliberately; avoid repeated or simultaneous advanced runs.
-
-Binder resources are limited and sessions are temporary; availability and completion are not guaranteed. Download work you need to keep: edits and generated files in temporary online sessions may be lost.
-
-> [!CAUTION]
-> Never upload identifiable patient data, confidential research data, private datasets, credentials or other secrets to public execution services. Synthetic workflow scores are not clinical evidence.
+Use synthetic data only on public execution services. Do not upload identifiable patient data, confidential research, private datasets or credentials. Synthetic metrics demonstrate a workflow, not clinical usefulness.

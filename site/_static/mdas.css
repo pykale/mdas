@@ -123,3 +123,21 @@ html.mdas-presentation .bd-header-article {
 @media (max-width: 575px) {
   .mdas-presentation-label { display: none; }
 }
+
+/* MDAS 1.0 learning components; no animation, extra runtime, or changes to notebook DOM. */
+.mdas-learning-journey { margin: .65rem 0 1.5rem; padding-block: .6rem; border-bottom: 1px solid var(--pst-color-border); }
+.mdas-learning-journey ol { display: flex; flex-wrap: wrap; gap: .4rem 1rem; list-style: none; margin: 0; padding: 0; }
+.mdas-learning-journey li { font-size: .84rem; color: var(--pst-color-text-base); }
+.mdas-learning-journey li[aria-current="step"] { font-weight: 700; text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: .35rem; }
+.mdas-track-cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.25rem; margin: 1.2rem 0 1.8rem; }
+.mdas-track-card { display: flex; flex-direction: column; padding: 1.4rem; border: 1px solid var(--pst-color-border); border-top: 3px solid var(--pst-color-primary); border-radius: .55rem; background: var(--pst-color-on-background); }
+.bd-article .mdas-track-card h3 { margin-top: 0; font-size: 1.4rem; }
+.mdas-track-card p:last-child { margin-top: auto; margin-bottom: 0; padding-top: .5rem; }
+.mdas-track-card a { font-weight: 650; text-underline-offset: .2rem; }
+.mdas-track-card a:focus-visible { outline: 3px solid var(--pst-color-primary); outline-offset: 4px; }
+.mdas-home-logo { max-width: 260px; }
+@media (max-width: 767px) {
+  .mdas-track-cards { grid-template-columns: 1fr; gap: 1rem; }
+  .mdas-track-card { padding: 1.1rem; }
+  .mdas-learning-journey ol { gap: .4rem .8rem; }
+}
