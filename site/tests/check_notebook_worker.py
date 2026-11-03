@@ -1,4 +1,4 @@
-﻿"""Integration checks for the actual external worker; requires its prepared Python 3.12 environment."""
+"""Integration checks for the actual external worker; requires its prepared Python 3.12 environment."""
 import importlib.util
 import json
 from pathlib import Path
@@ -6,7 +6,7 @@ import tempfile
 import unittest
 
 ROOT = Path(__file__).resolve().parents[2]
-spec = importlib.util.spec_from_file_location("mdas_runner", ROOT / "colab/run_notebooks.py")
+spec = importlib.util.spec_from_file_location("mdas_runner", ROOT / "site/tests/execute_notebooks.py")
 runner = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(runner)
 

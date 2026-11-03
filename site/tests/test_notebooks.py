@@ -12,6 +12,7 @@ class Page(HTMLParser):
         super().__init__()
         self.scripts = {}
         self.options = []
+        self.actions = []
         self.inputs = []
         self.depth = 0
         self.input_depth = None
@@ -25,6 +26,8 @@ class Page(HTMLParser):
             if "cell_input" in attrs.get("class", "").split():
                 self.input_depth = self.depth
                 self.inputs.append("")
+        if "mdas-execution-button" in attrs.get("class", "").split():
+            self.actions.append((tag, attrs))
         if tag == "option":
             self.options.append(attrs)
         if tag == "script":
@@ -60,11 +63,18 @@ class Notebooks(unittest.TestCase):
                 self.assertEqual([s.strip() for s in page.inputs], ["".join(c["source"]).strip() for c in original["cells"] if c["cell_type"] == "code"])
                 export = json.loads(page.scripts["mdas-notebook-source"])
                 self.assertEqual([c["source"] for c in export["cells"]], [c["source"] for c in original["cells"]])
-                for base in ("https://colab.research.google.com/github/pykale/mdas/blob/main/", "https://github.com/pykale/mdas/blob/main/"):
-                    self.assertIn(f'href="{base}{path}"', html)
+                self.assertIn(f'href="https://github.com/pykale/mdas/blob/main/{path}"', html)
+                colab_path = path.replace(".ipynb", "_colab.ipynb")
+                self.assertIn(f'href="https://colab.research.google.com/github/pykale/mdas/blob/main/{colab_path}"', html)
                 self.assertIn(f'{name}_blank.ipynb', html)
-                self.assertIn('href="https://colab.research.google.com/github/pykale/mdas/blob/main/colab/prepare_colab.ipynb"', html)
                 self.assertIn('../../docs/colab.html', html)
+                self.assertEqual(len(page.actions), 2)
+                self.assertEqual([tag for tag, _ in page.actions], ["button", "a"])
+                self.assertEqual(page.actions[0][1]["onclick"], "mdasLaunchInteractive()")
+                self.assertIn('>Run with Binder</button>', html)
+                self.assertIn('>Run in Google Colab</a>', html)
+                self.assertNotIn('Prepare Colab Environment', html)
+                self.assertNotIn('prepare_colab.ipynb', html)
                 config = json.loads(page.scripts["text/x-thebe-config"])
                 self.assertEqual(config["kernelOptions"]["path"], "notebooks/MDAS/cancer")
                 self.assertFalse(config["bootstrap"])

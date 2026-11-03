@@ -1,4 +1,4 @@
-"""Execute original Cancer notebooks, unedited, in separate explicit Python kernels."""
+"""Validation-only execution of original or direct Colab notebooks in fresh kernels."""
 from __future__ import annotations
 
 import argparse
@@ -9,7 +9,7 @@ import sys
 import time
 
 
-def execute(name: str, root: Path, output: Path, timeout: int = 1200) -> dict:
+def execute(name: str, root: Path, output: Path, timeout: int = 1200, variant: str = "original") -> dict:
     import nbformat
     from nbclient import NotebookClient
     from nbconvert import HTMLExporter
@@ -18,7 +18,8 @@ def execute(name: str, root: Path, output: Path, timeout: int = 1200) -> dict:
 
     if name not in {"classification", "survival"}:
         raise ValueError("Only complete classification and survival notebooks can be executed.")
-    source = root / "notebooks" / "MDAS" / "cancer" / f"{name}.ipynb"
+    stem = name + ("_colab" if variant == "colab" else "")
+    source = root / "notebooks" / "MDAS" / "cancer" / f"{stem}.ipynb"
     source_bytes = source.read_bytes()
     notebook = nbformat.reads(source_bytes.decode("utf-8"), as_version=4)
     # This affects the execution copy only; source bytes/metadata/outputs are never written.
@@ -28,7 +29,7 @@ def execute(name: str, root: Path, output: Path, timeout: int = 1200) -> dict:
             cell.execution_count = None
     output.mkdir(parents=True, exist_ok=True)
     # A failed rerun must not leave an earlier successful HTML report beside it.
-    (output / f"{name}.html").unlink(missing_ok=True)
+    (output / f"{stem}.html").unlink(missing_ok=True)
     # Explicit interpreter argv: no reliance on a global/Colab 'python3' kernel spec.
     spec_root = output / ".kernels"
     spec = spec_root / "mdas-colab"
@@ -54,7 +55,7 @@ def execute(name: str, root: Path, output: Path, timeout: int = 1200) -> dict:
     client = NotebookClient(notebook, km=manager, timeout=timeout, allow_errors=False,
                             resources={"metadata": {"path": str(source.parent)}},
                             on_cell_execute=begin, on_cell_executed=complete)
-    result = {"notebook": name, "source_sha256": hashlib.sha256(source_bytes).hexdigest(),
+    result = {"notebook": stem, "source_sha256": hashlib.sha256(source_bytes).hexdigest(),
               "python": sys.version, "executable": sys.executable, "working_directory": str(source.parent),
               "cells": cell_times}
     try:
@@ -73,12 +74,12 @@ def execute(name: str, root: Path, output: Path, timeout: int = 1200) -> dict:
             manager.shutdown_kernel(now=True)
         result["seconds"] = round(time.monotonic() - started, 2)
         result["source_unchanged"] = source.read_bytes() == source_bytes
-        nbformat.write(notebook, output / f"{name}.executed.ipynb")
-        (output / f"{name}.execution.json").write_text(json.dumps(result, indent=2), encoding="utf-8")
+        nbformat.write(notebook, output / f"{stem}.executed.ipynb")
+        (output / f"{stem}.execution.json").write_text(json.dumps(result, indent=2), encoding="utf-8")
         if not result["source_unchanged"]:
             raise RuntimeError("Source notebook changed during execution; investigate before continuing.")
     html, _ = HTMLExporter().from_notebook_node(notebook)
-    (output / f"{name}.html").write_text(html, encoding="utf-8")
+    (output / f"{stem}.html").write_text(html, encoding="utf-8")
     print(f"{name}: all {len(cell_times)} code cells passed in {result['seconds']:.1f}s; source unchanged.", flush=True)
     return result
 
@@ -86,18 +87,19 @@ def execute(name: str, root: Path, output: Path, timeout: int = 1200) -> dict:
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("notebook", choices=["classification", "survival", "both"])
-    parser.add_argument("--root", type=Path, default=Path(__file__).resolve().parents[1])
+    parser.add_argument("--variant", choices=["original", "colab"], default="colab")
+    parser.add_argument("--root", type=Path, default=Path(__file__).resolve().parents[2])
     parser.add_argument("--output", type=Path)
     parser.add_argument("--timeout", type=int, default=1200, help="Timeout per code cell, in seconds")
     args = parser.parse_args()
     root = args.root.resolve()
-    output = (args.output or root / "outputs" / "colab").resolve()
+    output = (args.output or root / "outputs" / "colab-validation").resolve()
     if output.is_relative_to(root / "notebooks"):
         parser.error("Output must be outside the source notebooks directory.")
     if sys.version_info[:2] != (3, 12):
         parser.error("Run this worker with the prepared Python 3.12 interpreter.")
     for name in (["classification", "survival"] if args.notebook == "both" else [args.notebook]):
-        execute(name, root, output, args.timeout)
+        execute(name, root, output, args.timeout, args.variant)
 
 
 if __name__ == "__main__":

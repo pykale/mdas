@@ -1,45 +1,33 @@
----
+﻿---
 orphan: true
 ---
 
-# Prepare a Google Colab environment
+# Run the Cancer notebooks in Google Colab
 
-The four original Cancer notebooks are unchanged. Opening an original notebook in Colab does not retrieve its companion module, install research packages, or arrange its working directory. Colab notebooks opened independently do not automatically share a runtime, packages, files, or kernel state. Preparing a separate notebook cannot silently prepare another tab.
+Choose **Classification** or **Survival Analysis** on the Live-Coding Notebook page, then select **Run in Google Colab**. Each link opens a self-configuring copy of that notebook:
 
-Use [Prepare Colab Environment](https://colab.research.google.com/github/pykale/mdas/blob/main/colab/prepare_colab.ipynb) to **execute the original unchanged** from a repository checkout in that preparation session. It runs every code cell, including training and advanced analysis, and produces downloadable executed copies and HTML reports. It does not turn a separately opened original notebook into a prepared interactive runtime. For editing and running individual cells in the original tutorial page, use the website's Binder option.
+- [Classification in Google Colab](https://colab.research.google.com/github/pykale/mdas/blob/main/notebooks/MDAS/cancer/classification_colab.ipynb)
+- [Survival Analysis in Google Colab](https://colab.research.google.com/github/pykale/mdas/blob/main/notebooks/MDAS/cancer/survival_colab.ipynb)
 
-## Select a supported runtime
+## Before running: Python 3.12
 
-In the preparation notebook choose **Runtime → Change runtime type → Runtime Version → 2026.07**, then reconnect. Verify that the actual kernel is **Python 3.12**. CPU is sufficient; the scientific notebooks explicitly train on CPU.
+In Colab select **Runtime > Change runtime type > Runtime Version > 2026.07**, then reconnect. Google currently lists this Python 3.12 runtime in its [runtime documentation](https://research.google.com/colaboratory/runtime-version-faq.html), checked on 3 November 2026. Runtime availability can change; if it is not offered, use **Run with Binder** on the website.
 
-Google documents Python 3.13 for runtime 2026.10, and Python 3.12 for 2026.07. Both the pinned KaleCancer and PyKale releases require Python below 3.13. PyKale also requires PyTorch at most 2.6; KaleCancer requires at least 2.6. Installing another Python executable in a cell does not change the Colab kernel's Python version. This workflow checks the actual kernel version and stops on an unsupported version rather than ignoring package constraints.
+The default Python 3.13 runtime is outside the published KaleCancer and PyKale requirements. Installing another interpreter does not change the active notebook kernel. The setup checks that kernel's Python version before downloading or installing anything.
 
-The preparation notebook creates a **separate Python 3.12 virtual environment** with PyTorch 2.6 CPU and the pinned research requirements. It then starts explicit notebook kernels with that environment's interpreter. Colab's host kernel and preinstalled PyTorch are left intact. Dependency isolation avoids breaking Colab's own installed packages.
+## Run cells directly
 
-Past Colab runtimes have a limited availability window. If Python 3.12 is no longer offered, use Binder; this workflow does not claim support for Python 3.13. See [Google's runtime version documentation](https://research.google.com/colaboratory/runtime-version-faq.html).
+1. Run the initial **Google Colab Environment Setup** code cell. It installs compatible CPU research packages in this notebook's active Python environment and downloads the companion module. No separate notebook, Drive mount, uploaded files or terminal commands are needed.
+2. If setup says a different library version is already loaded, choose **Runtime > Restart session** and rerun setup. This prevents mixing old, loaded binary libraries with newly installed packages. Continue only after **MDAS ready** appears.
+3. Run the scientific cells individually in order. Training and advanced analyses run in full. Rerunning setup reuses compatible dependencies and cached support files.
+4. Save your notebook and download generated files before disconnecting. Colab runtimes are temporary. Use synthetic data only.
 
-## Prepare and execute
+The setup arranges `notebooks/MDAS/cancer/` beneath `/content/mdas-cancer/`, adds that directory to the import path and changes the working directory there. Thus the original `from synthetic_data_generation import make_cohort` and `../../../data/synthetic_data` work without editing any scientific cell. Each notebook generates its own appropriate synthetic task with the original deterministic generator.
 
-1. Open **Prepare Colab Environment**, select the supported runtime, then run its checkout and preparation cells. The first run clones the public `pykale/mdas` repository and installs the isolated dependencies. No file upload or Drive mount is required.
-2. In its notebook selector choose `classification`, `survival`, or `both`, and run the execution cell. Each notebook gets its own fresh kernel. Every code cell runs in its original order; epochs, model definitions, evaluation and advanced analyses are preserved.
-3. Run the download cell to save the executed notebook copy, HTML report, timings and source checksum. These files are separate results, not replacements for the source notebooks.
-4. To run the other notebook, change the selector and rerun the execution cell. The checkout and matching installation are reused; a fresh kernel prevents hidden state from the previous notebook.
+The four original notebooks, blank exercises, Binder requirements and Binder controller are unchanged. **Run with Binder** continues to execute the original notebook on the website. Colab copies add only this setup section; all original cell dictionaries, ordering, metadata and saved outputs are preserved.
 
-The checkout follows `main` **once per fresh session** and records the resolved commit. Rerunning does not update it or reclone. This keeps notebooks, helper and requirements on one revision throughout the session. For reproducibility, record the printed commit and execution report. A future fresh session may obtain a newer reviewed `main` revision.
+## Compatibility and validation
 
-Each worker starts in `notebooks/MDAS/cancer/`. This makes `synthetic_data_generation.py` importable and preserves the original `../../../data/synthetic_data` path. The original cells generate the correct classification or survival cohort; sequential reruns deterministically replace files at the same path instead of creating duplicate datasets. Do not execute two workers simultaneously against the same checkout: the originals share a synthetic-data directory. The optional blank survival exercise retains its authored `./data/synthetic/` path. Blank notebooks are exercises with intentionally omitted scientific code, not candidates for automatic full execution.
+The Colab research stack uses Python 3.12, PyTorch 2.6 CPU, PyKale 0.2.1, the existing pinned KaleCancer Git commit, NumPy 2.0.2, pandas 2.2.2, scikit-learn 1.9.1 and Lightning 2.6.6. NumPy matches the documented Colab 2026.07 base version. Setup installs the required PyTorch version because the preinstalled newer release does not satisfy PyKale's cap. Unrelated kernel/IPython packages are not replaced. No Python-version or dependency constraints are bypassed.
 
-## Original notebook links
-
-The website's **Open in Google Colab** and **View on GitHub** links continue to target the original files:
-
-- [Classification in Colab](https://colab.research.google.com/github/pykale/mdas/blob/main/notebooks/MDAS/cancer/classification.ipynb)
-- [Survival Analysis in Colab](https://colab.research.google.com/github/pykale/mdas/blob/main/notebooks/MDAS/cancer/survival.ipynb)
-
-They remain reading/source links when opened in a separate runtime. Google Colab cannot automatically run a repository bootstrap before the first cell of an unchanged notebook, or guarantee that an independently opened notebook will attach to this preparation session. Fully automatic interactive execution in the original Colab tab would require changing its setup cells or manually configuring that tab's runtime. The external runner avoids modifying the scientific notebooks.
-
-## Limits and validation
-
-Initial CPU-library downloads may take several minutes. Training and bootstrap analysis run in full, so wait for each cell's progress report. The runner stops on the first error and saves a partial execution copy/report; it never treats skipped or failed scientific cells as success. Download results before the temporary Colab session ends. Use synthetic data only.
-
-Direct Colab UI execution has not been verified in this development environment. The [maintainer validation report](https://github.com/pykale/mdas/blob/main/colab/README.md) distinguishes actual notebook execution tests, dependency checks and remaining manual checks. The new preparation notebook and support files must be reviewed and published together before their public links can work. No publication is performed by this change.
+Direct Colab UI execution has not been verified in this development environment. Complete local executions, preservation checks, exact dependency details and the final fresh-session Colab checklist are documented in the [validation report](https://github.com/pykale/mdas/blob/main/notebooks/MDAS/cancer/README-colab.md). Local execution is not a claim that Colab UI/runtime behaviour has been tested. The new notebook copies and their support files must be published together after review before their public links can work.

@@ -96,8 +96,7 @@ def prepare_notebook(app, docname, source):
         if cell["cell_type"] == "markdown":
             text = "".join(cell["source"])
             cell["source"] = re.sub(r"^(#{1,5}) ", r"#\1 ", text, flags=re.M)
-    launch = """<button type="button" id="mdas-thebe-launch" class="btn btn-primary thebe-launch-button" onclick="mdasLaunchInteractive()">Run interactively on this website</button>
-<p id="mdas-thebe-status" role="status" aria-live="polite">Not connected. An interactive session starts only when you choose to launch it.</p>""" if MDAS_ENABLE_THEBE else "<p>In-page execution is disabled for this build. Read the saved notebook below or use Colab.</p>"
+    launch = """<button type="button" id="mdas-thebe-launch" class="btn btn-primary mdas-execution-button thebe-launch-button" onclick="mdasLaunchInteractive()">Run with Binder</button>""" if MDAS_ENABLE_THEBE else "<p>In-page execution is disabled for this build. Read the saved notebook below or use Colab.</p>"
     options = "".join(
         f'<option value="{name.rsplit("/", 1)[1]}.html"'
         + (' selected' if name == docname else '') + f'>{label}</option>'
@@ -123,21 +122,22 @@ MDAS_NOTEBOOK_SELECTOR
 
 **MDAS_NOTEBOOK_TITLE**
 
-Run cells on this page using the built-in **Binder kernel**, or open the notebook in **Google Colab** as an alternative. For Colab, use the separate **Prepare Colab Environment** workflow with a supported Python 3.12 runtime. It runs the original notebook unchanged in an isolated kernel; a separately opened Colab notebook does not share that environment.
+Choose Binder to run directly on this website, or Google Colab to open a self-configuring notebook.
 
+<div class="mdas-execution-actions">
 MDAS_INTERACTIVE_CONTROL
+<a class="btn btn-primary mdas-execution-button" href="https://colab.research.google.com/github/pykale/mdas/blob/main/MDAS_COLAB_PATH">Run in Google Colab</a>
+</div>
+<p id="mdas-thebe-status" role="status" aria-live="polite">Not connected. Binder starts only when you choose to launch it.</p>
+
+Colab needs **Python 3.12**. Its setup section explains the runtime choice and installs the dependencies. [Runtime help](../../docs/colab.md).
 
 MDAS_NOTEBOOK_EXPORT
-
-<a class="btn btn-primary" href="https://colab.research.google.com/github/pykale/mdas/blob/main/MDAS_NOTEBOOK_PATH">Open in Google Colab</a>
-<a class="btn btn-secondary" href="https://colab.research.google.com/github/pykale/mdas/blob/main/colab/prepare_colab.ipynb">Prepare Colab Environment</a>
-
-[Colab preparation and runtime limits](../../docs/colab.md).
 
 [View on GitHub](https://github.com/pykale/mdas/blob/main/MDAS_NOTEBOOK_PATH) | [Optional blank exercise](https://github.com/pykale/mdas/blob/main/MDAS_BLANK_PATH) | [Execution help](../../docs/notebook-execution.md).
 
 > Sessions are temporary; save work you want to keep. Use synthetic data only: do not upload private or patient data. Synthetic results do not demonstrate clinical performance.
-""".replace("MDAS_INTERACTIVE_CONTROL", launch).replace("MDAS_NOTEBOOK_SELECTOR", selector).replace("MDAS_NOTEBOOK_TITLE", title).replace("MDAS_NOTEBOOK_PATH", notebook_path).replace("MDAS_BLANK_PATH", blank_path).replace("MDAS_NOTEBOOK_EXPORT", export)
+""".replace("MDAS_INTERACTIVE_CONTROL", launch).replace("MDAS_NOTEBOOK_SELECTOR", selector).replace("MDAS_NOTEBOOK_TITLE", title).replace("MDAS_NOTEBOOK_PATH", notebook_path).replace("MDAS_BLANK_PATH", blank_path).replace("MDAS_COLAB_PATH", notebook_path.replace(".ipynb", "_colab.ipynb")).replace("MDAS_NOTEBOOK_EXPORT", export)
     notebook["cells"].insert(0, {"cell_type": "markdown", "id": "mdas-access", "metadata": {}, "source": intro})
     source[0] = json.dumps(notebook)
 

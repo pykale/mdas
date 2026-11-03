@@ -8,11 +8,11 @@ The [Cancer Live-Coding Notebook](../notebooks/MDAS/cancer/classification.ipynb)
 
 ## Run on this website
 
-Choose **Run interactively on this website** and wait for the connection status to show that the kernel is connected. The first Binder build may take several minutes. Code cells become editable, and you can run them individually, in order. A connection alone does not execute the notebook or verify that every research dependency works.
+Choose **Run with Binder** and wait for the connection status to show that the kernel is connected. The first Binder build may take several minutes. Code cells become editable, and you can run them individually, in order. A connection alone does not execute the notebook or verify that every research dependency works.
 
 The kernel is configured to start in `notebooks/MDAS/cancer/`, so the companion `synthetic_data_generation.py` module can be imported. Both notebooks' `../../../data/synthetic_data` path resolves to `data/synthetic_data` inside the temporary repository checkout. The helper generates synthetic data there; no patient dataset is needed.
 
-Binder uses the repository on GitHub, not your local checkout. The organiser has confirmed a successful remote launch and Thebe kernel connection after publishing the Binder configuration. A subsequent complete execution test passed all original Classification and Survival code cells; see the [external execution validation report](https://github.com/pykale/mdas/blob/main/colab/README.md). This does not establish direct Colab UI compatibility.
+Binder uses the repository on GitHub, not your local checkout. The organiser has confirmed a successful remote launch and Thebe kernel connection after publishing the Binder configuration. A subsequent complete execution test passed all original Classification and Survival code cells; see the [notebook validation report](https://github.com/pykale/mdas/blob/main/notebooks/MDAS/cancer/README-colab.md). This does not establish direct Colab UI compatibility.
 
 ## Switch notebooks and save edits
 
@@ -32,13 +32,13 @@ The earlier revision `ed163a322186055c8c5b79885288ad9a051f89c4` lacked Binder fi
 
 ## Open in Google Colab
 
-Use the **Open in Google Colab** button on the selected notebook page: [Classification](https://colab.research.google.com/github/pykale/mdas/blob/main/notebooks/MDAS/cancer/classification.ipynb) or [Survival Analysis](https://colab.research.google.com/github/pykale/mdas/blob/main/notebooks/MDAS/cancer/survival.ipynb).
+Use the **Run in Google Colab** button on the selected notebook page: [Classification](https://colab.research.google.com/github/pykale/mdas/blob/main/notebooks/MDAS/cancer/classification_colab.ipynb) or [Survival Analysis](https://colab.research.google.com/github/pykale/mdas/blob/main/notebooks/MDAS/cancer/survival_colab.ipynb).
 
-Each link opens its original MDAS Cancer notebook. It does not automatically install dependencies or retrieve the companion `synthetic_data_generation.py` module. For external execution without editing the originals, use [Prepare Colab Environment](colab.md). It runs the selected original in an isolated Python 3.12 kernel inside the preparation session. An original notebook opened independently does not inherit that environment. Use **Run interactively on this website** for direct interactive editing through Binder.
+Each link opens a dedicated Colab copy with an initial **Google Colab Environment Setup** section. Select the supported Python 3.12 runtime, run setup, then run the scientific cells directly in that notebook. The [Colab runtime guide](colab.md) explains runtime selection and a possible session restart if incompatible libraries are already imported. All original scientific cells are preserved in the copies; Binder continues to use the original notebooks.
 
 ## Compute and privacy limits
 
-The helper defaults to 100 synthetic subjects and 20–199 patches per subject, each with 32 features. That feature data is small, but importing the ML stack, training for 40 epochs, fitting the optional baseline and computing bootstrap intervals need additional memory and CPU time. Measured full-run timings are recorded in the [validation report](https://github.com/pykale/mdas/blob/main/colab/README.md); memory use and public-service completion times are not guaranteed. Run training deliberately; avoid repeated or simultaneous advanced runs.
+The helper defaults to 100 synthetic subjects and 20–199 patches per subject, each with 32 features. That feature data is small, but importing the ML stack, training for 40 epochs, fitting the optional baseline and computing bootstrap intervals need additional memory and CPU time. Measured full-run timings are recorded in the [validation report](https://github.com/pykale/mdas/blob/main/notebooks/MDAS/cancer/README-colab.md); memory use and public-service completion times are not guaranteed. Run training deliberately; avoid repeated or simultaneous advanced runs.
 
 Binder resources are limited and sessions are temporary; availability and completion are not guaranteed. Download work you need to keep: edits and generated files in temporary online sessions may be lost.
 

@@ -55,7 +55,7 @@ The original `classification.ipynb` and `survival.ipynb` from `notebooks/MDAS/ca
 
 A source-read hook adds the page title, GitHub and prominent Colab links, setup guidance and privacy warnings in memory. Existing notebook headings are nested beneath the page title for navigation. It leaves code, outputs and safety text unchanged. The original notebook and associated Python helper are never written or executed. Its existing Mermaid diagram is rendered using the Mermaid extension. A legacy `ipython2` display-lexer alias is registered without changing notebook metadata on disk.
 
-The Colab button opens the original notebook from GitHub. A compatible Colab environment and companion-module setup remain follow-up work; the current interactive option is Thebe/Binder. No Cardiac notebook is staged because none is currently present.
+The Colab button opens the selected `_colab.ipynb` copy from GitHub. Its setup configures the active Python 3.12 kernel, while Binder continues to use the original notebook. No Cardiac notebook is staged because none is currently present.
 
 ## Optional Thebe and Binder execution
 
@@ -118,7 +118,7 @@ The dependency resolution, helper smoke test, static builds, HTML links and cont
 
 The organiser has confirmed Binder server launch and Thebe kernel connection after publishing revision `090f1ff`. The earlier failure analysis above records the pre-publication state. Full research-training validation remains separate.
 
-The Colab button targets the original `notebooks/MDAS/cancer/classification.ipynb`. Colab environment preparation is deferred; no separate Colab-ready notebook or setup instructions are included in this version. Both complete notebooks are rendered under a single sidebar entry.
+The Colab buttons target `classification_colab.ipynb` and `survival_colab.ipynb`. Each copy adds a setup section and preserves every original cell dictionary. Both complete notebooks are rendered under a single sidebar entry.
 
 ### Disable or replace the backend
 
@@ -148,7 +148,7 @@ See [DEPLOYMENT.md](DEPLOYMENT.md) for the source inventory, exact review/stagin
 
 The configured URL is <https://pykale.github.io/mdas/>. The link checker resolves generated HTML and CSS asset URLs under `/mmai-mdas/`, checks anchors, and verifies search assets and `.nojekyll`. Notebook execution remains disabled during the build. The workflow installs only the documentation dependencies through the existing `build.py` isolated uv tool process, without installing the root research project, Binder environment or ML packages.
 
-Colab-ready work is deferred by organiser instruction. Its notebook was previously removed; the Colab button continues to open the original public notebook, which needs separate setup for execution. There is no constraints-file setup to publish or validate in this release.
+The direct Colab copies and their shared support files are under `notebooks/MDAS/cancer/`. See `docs/colab.md` for participant runtime instructions and `notebooks/MDAS/cancer/README-colab.md` for validation.
 
 ## Classification page and presentation mode
 
@@ -176,6 +176,12 @@ After an enabled Sphinx build, run `python site/tests/test_notebooks.py` to veri
 Files in this change: `build.py`, `conf.py`, `diagnose_binder.py`, `_ext/mdas_notebooks.py`, `_ext/mdas_interactive.py`, `_static/mdas-notebooks.js`, `_static/mdas-notebooks.css`, `_static/mdas-interactive.js`, `tests/notebooks.test.cjs`, `tests/test_notebooks.py`, this guide and `../docs/notebook-execution.md`. Notebook files, scientific content, helper, dependency lock, logo, venue/timing and deployment workflow are unchanged. No commit, push or publication was performed.
 
 
-## External Colab preparation
+## Direct Colab notebooks
 
-The separate `colab/prepare_colab.ipynb` prepares a supported Python 3.12 environment and executes the original notebooks through explicit isolated kernels. The scientific notebooks, Binder requirements and Binder integration remain unchanged. The website adds a preparation link alongside the original Colab link. `docs/colab.md` explains that independently opened Colab notebooks do not share the prepared runtime. See `colab/README.md` for dependency constraints, exact validation results and a fresh-session manual checklist. Earlier notes that Colab work was deferred describe the previous release.
+`site/sync_colab.py` generates `classification_colab.ipynb` and `survival_colab.ipynb` by prepending one Markdown/setup-code pair to a complete copy of the corresponding original notebook. Use `python site/sync_colab.py --check` to detect drift. Only the two new copies are written; the four authored notebooks remain untouched.
+
+Shared bootstrap code and the scientific requirement pins live beside the copies as `colab_setup.py` and `colab-requirements.txt`. Setup checks the actual kernel's Python 3.12, verifies downloaded support-file hashes, installs through ordinary pip dependency resolution, restores the original working directory, and detects stale imported libraries that require a session restart. No separate participant setup notebook or execution proxy is used.
+
+The website has exactly two primary execution actions: **Run with Binder**, using the existing controller and original notebook, and **Run in Google Colab**, targeting the selected `_colab.ipynb`. Button styling is scoped to `.mdas-execution-actions`: blue backgrounds, explicit white text including visited/hover/focus/active states, keyboard focus outline, and a responsive layout. Saved-work downloads remain secondary.
+
+Validation commands: `python -m unittest discover -s site/tests -p test_colab.py`, `python site/tests/test_notebooks.py`, and the existing Node controller tests. `site/tests/execute_notebooks.py` is a maintainer-only nbclient runner for full scientific execution in fresh kernels; it is not a participant workflow. `site/tests/check_notebook_worker.py` tests fail-fast behaviour and unchanged source bytes. The exact runtime requirements, measured results, changed/removed files and manual Colab checks are recorded in `notebooks/MDAS/cancer/README-colab.md`.
