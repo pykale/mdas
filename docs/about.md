@@ -1,6 +1,6 @@
 # What is MDAS?
 
-**MDAS 1.0** is the first edition of the Multimodal Data Analysis Session, organised by PyKale. It introduces practical research workflows through two PyKale domain packages: KaleCancer and KaleCardiac.
+The **Multimodal Data Analysis Session (MDAS)** is organised by PyKale. It introduces practical research workflows through two PyKale domain packages: KaleCancer and KaleCardiac.
 
 ## One question, complementary measurements
 
@@ -8,11 +8,9 @@ A clinical table, pathology features, an ECG and a chest X-ray describe differen
 
 The session introduces early, intermediate and late fusion. The Cancer notebooks make intermediate fusion concrete through **classification** and **Cox-style survival analysis**. The Cardiac track explores chest X-ray/ECG representation learning and lead-specific ECG workflows.
 
-## A learning journey
+## Research in practice
 
-**Discover** the question. **Prepare** an environment. **Explore** the modalities and target. **Run** a synthetic example. **Interpret** its outputs. **Continue** with a question the experiment can responsibly support.
-
-By the end, you should be better able to identify a research endpoint, follow a pipeline end to end, explain its metrics, and distinguish a synthetic workflow demonstration from clinically meaningful evaluation. MDAS is a reusable learning format; this edition focuses on Cancer and Cardiac rather than promising future events or tracks.
+The examples help you identify a research endpoint, follow an analysis from inputs to predictions, explain its metrics, and distinguish a synthetic demonstration from clinically meaningful evaluation. You can read the saved notebook outputs before choosing an execution environment.
 
 ## Workshop and independent learning
 
@@ -22,4 +20,4 @@ By the end, you should be better able to identify a research endpoint, follow a 
 
 The live session has two blocks: **Learn the Pipeline**, then **Apply the Pipeline** with the AIRE team available to help. The materials also support self-paced study after the workshop. Specific organiser-provided problems and final exercise selection remain to be confirmed.
 
-**Next:** [Prepare for the session or independent study](participation.md).
+The [Participation Guide](participation.md) covers preparation for the workshop or independent study.

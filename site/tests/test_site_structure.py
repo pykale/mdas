@@ -1,6 +1,5 @@
-"""Generated MDAS 1.0 journey/navigation/help checks; run after an enabled build."""
+"""Generated public identity, navigation and help checks; run after an enabled build."""
 from html import unescape
-from html.parser import HTMLParser
 from pathlib import Path
 import json
 import re
@@ -15,7 +14,7 @@ def page(doc):
     return (HTML / (doc + ".html")).read_text(encoding="utf-8")
 
 
-class LearningJourney(unittest.TestCase):
+class SiteStructure(unittest.TestCase):
     def test_navigation_has_only_the_requested_entries(self):
         navigation = json.loads((ROOT / "site/navigation.json").read_text(encoding="utf-8"))
         self.assertEqual(navigation["Getting Started"], [["Quick Start", "docs/quick-start"]])
@@ -24,46 +23,58 @@ class LearningJourney(unittest.TestCase):
         staged = (ROOT / "site/_staged/tutorials/kalecancer/index.md").read_text(encoding="utf-8")
         self.assertIn("Live-Coding Notebook <live-coding>", staged)
         self.assertNotIn("hands-on", staged)
+        self.assertNotIn("Getting Started <getting-started>", staged)
+        self.assertIn("# Cancer", staged)
+        for term in ("Classification: predict a category", "Survival Analysis: predict relative event risk", "ABMIL", "Cox head"):
+            self.assertIn(term, staged)
         for doc in ("index", "tutorials/kalecancer/live-coding", "tutorials/kalecancer/live-coding-survival", "tutorials/kalecardiac/cardiovae-hands-on"):
             sidebar = page(doc).split('<div class="bd-toc-item navbar-nav active">')[1].split('</nav>')[0]
             for removed in ("Tutorials Overview", "Prerequisites", "Hands-on Tutorial"):
                 self.assertNotIn(removed, sidebar)
 
     def test_legacy_urls_are_redirects_and_retired_content_is_not_staged(self):
-        for old, target in (("docs/prerequisites", "participation.html"), ("tutorials/README", "../index.html#choose-a-research-track"), ("tutorials/kalecancer/hands-on", "live-coding.html")):
+        for old, target in (("docs/prerequisites", "participation.html"), ("tutorials/README", "../index.html#explore-the-examples"), ("tutorials/kalecancer/hands-on", "live-coding.html"), ("tutorials/kalecancer/getting-started", "index.html"), ("tutorials/kalecancer/README", "index.html")):
             html = page(old)
             self.assertIn('name="robots" content="noindex"', html)
             self.assertIn(f'url={target}', html)
             self.assertIn(f'href="{target}"', html)
             self.assertFalse((ROOT / "site/_staged" / (old + ".md")).exists())
         # Internal links should go straight to the consolidated page.
-        for doc in ("index", "docs/about", "docs/participation", "docs/quick-start", "docs/agenda", "tutorials/kalecancer/getting-started", "tutorials/kalecancer/results"):
+        for doc in ("index", "docs/about", "docs/participation", "docs/quick-start", "docs/agenda", "tutorials/kalecancer/index", "tutorials/kalecancer/results"):
             links = re.findall(r'href="([^"#]+)', page(doc))
             for link in links:
                 self.assertNotIn(link.rsplit("/", 1)[-1], ("prerequisites.html", "hands-on.html"), link)
                 self.assertFalse(link.endswith("tutorials/README.html"), link)
 
-    def test_stages_and_entry_points_are_accessible_and_consistent(self):
-        stages = ("Discover", "Prepare", "Explore", "Run", "Interpret", "Continue")
-        for doc, current in (("index", "Discover"), ("docs/participation", "Prepare"), ("tutorials/kalecancer/getting-started", "Explore"), ("tutorials/kalecancer/live-coding", "Run"), ("tutorials/kalecancer/results", "Interpret"), ("tutorials/kalecardiac/lsemvae-hands-on", "Run")):
-            html = page(doc)
-            self.assertIn('role="group" aria-label="Learning journey"', html)
-            self.assertEqual(html.count('aria-current="step"'), 1)
-            self.assertIn(f'aria-current="step">{current}</li>', html)
-            indicator = html.split('aria-label="Learning journey"')[1].split('</ol>')[0]
-            for label in stages:
-                self.assertIn('>' + label + '</li>', indicator)
+    def test_public_identity_and_simple_homepage(self):
+        for path in HTML.rglob("*"):
+            if path.is_file() and path.suffix in {".html", ".js", ".css", ".json"}:
+                text = unescape(path.read_text(encoding="utf-8"))
+                self.assertNotIn("MDAS 1.0", text, str(path))
+                self.assertNotIn("mdas-learning-journey", text, str(path))
+                self.assertNotIn("mdas-track-card", text, str(path))
+        self.assertFalse((ROOT / "site/_ext/mdas_journey.py").exists())
         home = page("index")
-        self.assertIn("MDAS 1.0", home)
+        self.assertIn("Multimodal Data Analysis Session (MDAS)", home)
         self.assertIn("Explore Cancer", home)
         self.assertIn("Explore Cardiac", home)
-        self.assertIn('href="tutorials/kalecancer/getting-started.html"', home)
+        self.assertIn('href="tutorials/kalecancer/index.html"', home)
         self.assertIn('href="tutorials/kalecardiac/getting-started.html"', home)
         self.assertIn("18 November 2026", home)
         self.assertIn("13:00" + chr(8211) + "17:00", unescape(home))
         for venue in ("Regent Court", "The Diamond", "Workroom 3 (Room 205)"):
             self.assertIn(venue, home)
         self.assertIn('_static/mdas-logo.png', home)
+
+    def test_cancer_is_the_substantive_landing_page(self):
+        html = page("tutorials/kalecancer/index")
+        self.assertIn('<h1>Cancer', html)
+        for term in ("Classification: predict a category", "Survival Analysis: predict relative event risk", "ABMIL", "Cox head"):
+            self.assertIn(term, html)
+        sidebar = html.split('<div class="bd-toc-item navbar-nav active">')[1].split('</nav>')[0]
+        self.assertNotIn('kalecancer/getting-started.html', sidebar)
+        self.assertNotIn('href="getting-started.html"', sidebar)
+        self.assertIn('href="live-coding.html"', html)
 
     def test_actual_notebook_metrics_and_prediction_types_are_explained_separately(self):
         html = page("tutorials/kalecancer/results")
@@ -92,9 +103,12 @@ class LearningJourney(unittest.TestCase):
             self.assertIn('target="_blank"', help_tag)
             self.assertIn('rel="noopener"', help_tag)
             self.assertIn('aria-label="Execution Help (opens in a new tab)"', help_tag)
+            self.assertIn('<svg class="mdas-help-icon" aria-hidden="true" focusable="false"', html)
+            self.assertIn('stroke="currentColor"', html)
+            self.assertNotIn('>?</span>', html)
             self.assertIn('interpret the Cancer results', html)
             self.assertIn('href="results.html"', html)
-        presentation_css = (ROOT / "site/_static/mdas.css").read_text(encoding="utf-8").split('/* MDAS 1.0 learning components')[0]
+        presentation_css = (ROOT / "site/_static/mdas.css").read_text(encoding="utf-8")
         self.assertNotIn("mdas-notebook-tools", presentation_css)
         self.assertNotIn("mdas-execution-help", presentation_css)
 

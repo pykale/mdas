@@ -1,35 +1,16 @@
-# MDAS 1.0
+# Multimodal Data Analysis Session (MDAS)
 
-**Multimodal Data Analysis Session**
+Biomedical research often brings together measurements that describe different aspects of the same person. Multimodal data analysis asks how these complementary sources can be combined to address a research question, and how to evaluate what the combination adds.
 
-How can different biomedical data sources help answer one research question? Organised by **PyKale**, MDAS 1.0 introduces practical multimodal workflows through **KaleCancer** and **KaleCardiac**.
+Organised by **PyKale**, MDAS introduces practical examples from its biomedical research ecosystem. **KaleCancer** combines clinical variables and pathology patch features for classification and survival analysis. **KaleCardiac** explores chest X-ray and ECG representation learning with CardioVAE, and complementary ECG leads with LS-EMVAE.
 
-Learn with us at the workshop or work through the same materials at your own pace afterwards. Start with synthetic data, follow the model from inputs to predictions, and learn what its results can and cannot tell you.
+Work through the examples with us at the workshop or independently afterwards. The materials explain the inputs, modelling choices and evaluation, starting with synthetic data so no patient dataset is needed.
 
-## Choose a research track
+## Explore the examples
 
-::::{container} mdas-track-cards
-:::{container} mdas-track-card
-<h3>Cancer</h3>
+[Explore Cancer](tutorials/kalecancer/index.md) or [Explore Cardiac](tutorials/kalecardiac/getting-started.md). The Cancer notebooks can run on this website with Binder or in a dedicated Google Colab copy; Cardiac examples have local setup instructions.
 
-Combine clinical variables and pathology patch features for **classification** and **survival analysis**. Compare fused models with a clinical-only baseline.
-
-[Explore Cancer](tutorials/kalecancer/getting-started.md)
-:::
-:::{container} mdas-track-card
-<h3>Cardiac</h3>
-
-Explore chest X-ray and ECG representation learning with **CardioVAE**, or learn from complementary ECG leads with **LS-EMVAE**.
-
-[Explore Cardiac](tutorials/kalecardiac/getting-started.md)
-:::
-::::
-
-## Learn a workflow you can explain
-
-Discover the question, prepare your environment, explore the inputs, run the example, interpret its outputs, and choose a responsible next experiment. Each track guides you through these stages; Previous/Next navigation is also available.
-
-New to the session? The [Participation Guide](docs/participation.md) explains the background, preparation and privacy expectations. Ready to execute an example? Use [Quick Start](docs/quick-start.md).
+For preparation and privacy guidance, see the [Participation Guide](docs/participation.md). To start an example immediately, use [Quick Start](docs/quick-start.md).
 
 ## Workshop details
 

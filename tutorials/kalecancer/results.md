@@ -1,4 +1,4 @@
-﻿# Cancer: Results and Interpretation
+# Cancer: Results and Interpretation
 
 Start with the prediction table, then the held-out metrics, and finally the baseline comparison. The two notebooks answer different questions; a classification score and a survival concordance score are not interchangeable.
 
@@ -38,7 +38,7 @@ Concordance concerns ranking, not calibration. A useful risk ordering does not p
 
 The advanced section reports **Harrell's C** bootstrap intervals for the fused model, clinical-only baseline and their difference. It does not use Classification's AUROC comparison or an Uno's C bootstrap comparison. Censoring assumptions, follow-up, the small cohort and the synthetic data-generating process all limit interpretation.
 
-## Continue your investigation
+## Further research
 
 Before changing a model, write down a testable question: what information should the extra modality add, and how would a subject-level split assess it? The [KaleCancer research examples](https://github.com/pykale/cancer/tree/main/examples/hancock) include intermediate survival fusion, configuration-driven pipelines, cross-validation and late-fusion classification. These require access to a local HANCOCK dataset, its expected layout and appropriate compute; they are not no-data starter exercises.
 

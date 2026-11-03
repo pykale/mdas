@@ -48,7 +48,8 @@ def stage() -> None:
     STAGED.mkdir()
     excluded = {"docs/overview.md", "docs/resources.md", "notebooks/README.md",
                 "tutorials/kalecancer/README.md", "tutorials/kalecardiac/README.md",
-                "docs/prerequisites.md", "tutorials/README.md", "tutorials/kalecancer/hands-on.md"}
+                "docs/prerequisites.md", "tutorials/README.md", "tutorials/kalecancer/hands-on.md",
+                "tutorials/kalecancer/getting-started.md"}
     paths = [ROOT / "README.md", *sorted((ROOT / "docs").rglob("*.md")),
              *sorted((ROOT / "tutorials").rglob("*.md"))]
     paths = [p for p in paths if p.relative_to(ROOT).as_posix() not in excluded]
@@ -61,7 +62,8 @@ def stage() -> None:
                "tutorials/kalecancer/hands-on.md": "tutorials/kalecancer/live-coding.ipynb",
                "docs/overview.md": "docs/about.md", "docs/resources.md": "docs/quick-start.md",
                "notebooks/README.md": "tutorials/kalecancer/live-coding.ipynb",
-               "tutorials/kalecancer/README.md": "tutorials/kalecancer/getting-started.md",
+               "tutorials/kalecancer/README.md": "tutorials/kalecancer/index.md",
+               "tutorials/kalecancer/getting-started.md": "tutorials/kalecancer/index.md",
                "tutorials/kalecardiac/README.md": "tutorials/kalecardiac/getting-started.md"}
 
     def rewrite_link(match: re.Match, original: Path, destination: Path) -> str:
@@ -108,15 +110,18 @@ def stage() -> None:
     for _, notebook_path in NOTEBOOKS.values():
         shutil.copyfile(ROOT / notebook_path, STAGED / mapping[notebook_path])
     for track, entries in {
-        "kalecancer": [["Getting Started", "getting-started"],
-                       ["Live-Coding Notebook", "live-coding"], ["Results and Interpretation", "results"]],
+        "kalecancer": [["Live-Coding Notebook", "live-coding"], ["Results and Interpretation", "results"]],
         "kalecardiac": [["Getting Started", "getting-started"], ["CardioVAE Hands-on", "cardiovae-hands-on"],
                         ["LS-EMVAE Hands-on", "lsemvae-hands-on"], ["Results and Interpretation", "results"]],
     }.items():
         title = "Cancer" if track == "kalecancer" else "Cardiac"
-        # Navigation-only landing page, no duplicated introduction or setup.
-        (STAGED / f"tutorials/{track}/index.md").write_text(
-            f"# {title}\n\n[Begin with Getting Started](getting-started.md).\n" + toctree(entries), encoding="utf-8")
+        destination = STAGED / f"tutorials/{track}/index.md"
+        if track == "kalecancer":
+            # The authored Cancer landing page contains the introduction.
+            destination.write_text(destination.read_text(encoding="utf-8") + toctree(entries), encoding="utf-8")
+        else:
+            destination.write_text(
+                f"# {title}\n\n[Begin with Getting Started](getting-started.md).\n" + toctree(entries), encoding="utf-8")
     print(f"Staged {len(paths)} Markdown pages and {len(NOTEBOOKS)} original notebooks in {STAGED}", flush=True)
 
 

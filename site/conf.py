@@ -7,7 +7,6 @@ import sys
 sys.path.insert(0, str(Path(__file__).resolve().parent / "_ext"))
 
 from mdas_notebooks import NOTEBOOKS
-from mdas_journey import render_journey, prepare_journey
 
 project = "Multimodal Data Analysis Session (MDAS)"
 author = "PyKale"
@@ -44,8 +43,8 @@ myst_fence_as_directive = ["mermaid"]
 nitpicky = True
 
 html_theme = "sphinx_book_theme"
-html_title = "MDAS 1.0: Cancer & Cardiac Research"
-html_short_title = "MDAS 1.0"
+html_title = project
+html_short_title = project
 html_baseurl = "https://pykale.github.io/mdas/"
 html_static_path = ["_static"]
 templates_path = ["_templates"]
@@ -106,11 +105,9 @@ def prepare_notebook(app, docname, source):
                 f'<select id="mdas-notebook-select" onchange="mdasSwitchNotebook(this)">{options}</select></div>'
                 '<noscript><p>Choose: <a href="live-coding.html">Classification</a> | '
                 '<a href="live-coding-survival.html">Survival Analysis</a></p></noscript>')
-    intro = """<div class="mdas-notebook-tools"><a class="mdas-execution-help" href="../../docs/notebook-execution.html" target="_blank" rel="noopener" aria-label="Execution Help (opens in a new tab)"><span class="mdas-help-icon" aria-hidden="true">?</span> Execution Help</a></div>
+    intro = """<div class="mdas-notebook-tools"><a class="mdas-execution-help" href="../../docs/notebook-execution.html" target="_blank" rel="noopener" aria-label="Execution Help (opens in a new tab)"><svg class="mdas-help-icon" aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6v15"/><path d="M12 6C9 4 6 4 3 5v14c3-1 6-1 9 1"/><path d="M12 6c3-2 6-2 9-1v14c-3-1-6-1-9 1"/></svg> Execution Help</a></div>
 
 # Live-Coding Notebook
-
-MDAS_LEARNING_STAGE
 
 MDAS_NOTEBOOK_SELECTOR
 
@@ -127,7 +124,7 @@ MDAS_INTERACTIVE_CONTROL
 Colab needs a compatible **Python 3.12** runtime. Select it and run the initial setup cell; follow any restart instruction before continuing.
 
 > Sessions are temporary. Copy code edits and important results before switching or leaving; keep generated files separately. Use synthetic data only: do not upload private or patient data. Synthetic results do not demonstrate clinical performance.
-""".replace("MDAS_INTERACTIVE_CONTROL", launch).replace("MDAS_NOTEBOOK_SELECTOR", selector).replace("MDAS_NOTEBOOK_TITLE", title).replace("MDAS_NOTEBOOK_PATH", notebook_path).replace("MDAS_COLAB_PATH", notebook_path.replace(".ipynb", "_colab.ipynb")).replace("MDAS_LEARNING_STAGE", render_journey(docname))
+""".replace("MDAS_INTERACTIVE_CONTROL", launch).replace("MDAS_NOTEBOOK_SELECTOR", selector).replace("MDAS_NOTEBOOK_TITLE", title).replace("MDAS_NOTEBOOK_PATH", notebook_path).replace("MDAS_COLAB_PATH", notebook_path.replace(".ipynb", "_colab.ipynb"))
     notebook["cells"].insert(0, {"cell_type": "markdown", "id": "mdas-access", "metadata": {}, "source": intro})
     notebook["cells"].append({"cell_type": "markdown", "id": "mdas-next-step", "metadata": {},
         "source": "When you have inspected the predictions, metrics and baseline comparison, [interpret the Cancer results](results.md) before drawing conclusions."})
@@ -136,12 +133,13 @@ Colab needs a compatible **Python 3.12** runtime. Select it and run the initial 
 
 REDIRECTS = {
     "docs/prerequisites": "participation.html",
-    "tutorials/README": "../index.html#choose-a-research-track",
+    "tutorials/README": "../index.html#explore-the-examples",
     "tutorials/kalecancer/hands-on": "live-coding.html",
     "docs/overview": "about.html",
     "docs/resources": "quick-start.html",
     "notebooks/README": "../tutorials/kalecancer/live-coding.html",
-    "tutorials/kalecancer/README": "getting-started.html",
+    "tutorials/kalecancer/README": "index.html",
+    "tutorials/kalecancer/getting-started": "index.html",
     "tutorials/kalecardiac/README": "getting-started.html",
 }
 
@@ -176,7 +174,6 @@ def setup(app):
 
     app.add_lexer("ipython2", PythonLexer)
     app.connect("source-read", prepare_notebook)
-    app.connect("source-read", prepare_journey)
     app.connect("html-page-context", notebook_navigation, priority=400)
     app.add_js_file("mdas-notebooks.js", defer="defer")
     app.add_css_file("mdas-notebooks.css")
