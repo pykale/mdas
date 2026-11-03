@@ -22,7 +22,9 @@ CANCER_REF = "1f476fdba87f515286f732cd7eaa92ffeeffdbc2"
 MODULES = {"numpy": "numpy", "pandas": "pandas", "torch": "torch", "torchvision": "torchvision",
            "scipy": "scipy", "scikit-learn": "sklearn", "h5py": "h5py", "lightning": "lightning",
            "pytorch-lightning": "pytorch_lightning", "torchmetrics": "torchmetrics", "pykale": "kale",
-           "kalecancer": "kalecancer"}
+           "kalecancer": "kalecancer", "huggingface-hub": "huggingface_hub",
+           "transformers": "transformers", "tokenizers": "tokenizers",
+           "httpx": "httpx", "httpcore": "httpcore"}
 
 
 def check_python() -> None:
@@ -67,6 +69,33 @@ def _check_loaded(before: dict[str, str], pins: dict[str, str]) -> None:
         )
 
 
+def _check_transformers_hub() -> None:
+    """Colab's optional Transformers activates a TorchMetrics import path.
+
+    Check its installed metadata before importing Lightning/KaleCancer. Do not
+    install or upgrade Transformers when it is absent or already compatible.
+    """
+    from packaging.requirements import Requirement
+
+    try:
+        requirements = metadata.requires("transformers") or []
+    except metadata.PackageNotFoundError:
+        return
+    hub = metadata.version("huggingface-hub")
+    for text in requirements:
+        requirement = Requirement(text)
+        if requirement.name.lower().replace("_", "-") != "huggingface-hub":
+            continue
+        if requirement.marker and not requirement.marker.evaluate({"extra": ""}):
+            continue
+        if hub not in requirement.specifier:
+            raise RuntimeError(
+                f"Installed Transformers {metadata.version('transformers')} requires {requirement}, "
+                f"but Hub {hub} is installed. Reopen the latest MDAS Colab copy and rerun setup; "
+                "the setup pins must support this Transformers version. Do not run the scientific cells yet."
+            )
+
+
 def _ensure_helper(directory: Path) -> None:
     path = directory / "synthetic_data_generation.py"
     if path.is_file():
@@ -104,6 +133,7 @@ def prepare(directory: Path | None = None) -> None:
         _check_loaded(before, pins)
         if installed and "kalecancer" in before:
             raise RuntimeError("KaleCancer was replaced while imported. Choose Runtime > Restart session and rerun setup.")
+        _check_transformers_hub()
         _ensure_helper(directory)
         if str(directory) not in sys.path:
             sys.path.insert(0, str(directory))
@@ -119,7 +149,7 @@ def prepare(directory: Path | None = None) -> None:
         from kalecancer.model import ABMIL, Concat, ClassificationHead, CoxHead, IntermediateFusion, Unimodal
         from kalecancer.pipeline import Pipeline
         from kalecancer.evaluate import AUROC, BalancedAccuracy, HarrellC, UnoC, EvalContext, bootstrap_ci
-        print(f"MDAS ready in {time.monotonic() - started:.1f}s: Python {sys.version.split()[0]}, PyTorch {torch.__version__}. Run the scientific cells below in order.", flush=True)
+        print(f"MDAS ready in {time.monotonic() - started:.1f}s: Python {sys.version.split()[0]}, PyTorch {torch.__version__}, Hub {metadata.version('huggingface-hub')}. Run the scientific cells below in order.", flush=True)
     except (subprocess.CalledProcessError, OSError, ImportError) as error:
         raise RuntimeError(
             f"MDAS setup failed: {error}. Check internet access and the pip/import output, then rerun setup. "

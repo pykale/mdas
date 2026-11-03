@@ -19,6 +19,8 @@ def additions() -> list[dict]:
 
 Run the setup cell below, then run the scientific cells individually in order. Setup downloads the companion module and installs a pinned CPU stack in **this notebook's active Python environment**; no separate notebook, Drive mount or upload is needed. The first installation may take several minutes. If libraries with different versions are already loaded, setup will ask you to **Restart session** and rerun setup before continuing. Reruns reuse the installed packages and downloaded files.
 
+If you ran an earlier setup in this session, restart the session after the corrected packages are installed, then rerun setup. This includes Hugging Face Hub/Transformers imports: changing packages on disk does not replace already imported modules. Continue only when **MDAS ready** prints the corrected Hub version.
+
 Every cell below this setup section is preserved from the original MDAS notebook, including its full training and advanced analyses. Use synthetic data only. Colab sessions are temporary; download work you want to keep.
 """
     bootstrap = '''# Bootstrap only: scientific code below is unchanged.

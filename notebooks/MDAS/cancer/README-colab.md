@@ -2,6 +2,38 @@
 
 Validated locally on **3 November 2026**. No commit, push or deployment was performed.
 
+## Hub compatibility correction after a real Colab failure
+
+The user reported a real Colab 2026.07 import failure: Transformers required `huggingface-hub>=1.5.0,<2.0`, but this setup had pinned Hub 2.3.0. The earlier local environments lacked optional Transformers, so they did not exercise the Lightning/TorchMetrics Transformers import path. Those earlier tests did not establish compatibility with Colab's preinstalled stack.
+
+The [official Colab 2026.07 package inventory](https://github.com/googlecolab/backend-info/blob/ec53f93fe44a9cab118dc5451527b18e36e1a643/pip-freeze.txt) lists Transformers **5.13.1**. Its [release metadata](https://pypi.org/pypi/transformers/5.13.1/json) confirms Hub `>=1.5.0,<2.0`. The pinned KaleCancer commit requires Hub `>=0.24`. [Hub 1.33.0 release metadata](https://pypi.org/pypi/huggingface-hub/1.33.0/json) confirms a published Python-3.12-compatible 1.x release within both ranges. It depends on `httpx>=0.23,<1`, so the old Hub-2-only HTTP client pins were replaced as well:
+
+- `huggingface-hub==2.3.0` ? `huggingface-hub==1.33.0`
+- `httpx2==2.16.0` ? `httpx==0.28.1`
+- `httpcore2==2.16.0` ? `httpcore==1.0.9`
+
+All other research pins, the KaleCancer source commit, training code and scientific cells remain unchanged. Transformers is still optional and is not installed or upgraded by the participant setup. When present, its installed Hub constraint is checked before importing KaleCancer. The local verification environment explicitly includes Transformers 5.13.1, Tokenizers 0.22.2 and Safetensors 0.8.0, reproducing the previously missing import path.
+
+The setup now tracks already imported `huggingface_hub`, `transformers`, `tokenizers`, `httpx` and `httpcore` modules as well as the scientific stack. A real local process imported Hub 2.3.0, ran the corrected setup, installed Hub 1.33.0 on disk, and correctly stopped with **Restart session** rather than reporting readiness while the old module remained in memory. A fresh process then reached **MDAS ready** with Hub 1.33.0. This validates the Python process behaviour; it is not a direct Colab UI restart test.
+
+For the failed Colab session: open the updated Colab copy after the fix is published, run setup, choose **Runtime > Restart session** if requested, and rerun setup. Do not continue until **MDAS ready** prints **Hub 1.33.0**. Reopening a notebook without restarting its existing runtime does not unload old imported modules.
+
+Correction validation:
+
+| Check | Result |
+| --- | --- |
+| Old full requirements plus Transformers 5.13.1 | Pip reproduced `ResolutionImpossible`: Hub 2.3.0 conflicts with `>=1.5,<2` |
+| Corrected full requirements plus Transformers 5.13.1 | Fresh resolution (`--dry-run --ignore-installed`) and actual installation passed without dependency overrides |
+| Installed environment | `pip check`: **No broken requirements found**; Transformers, Hub and KaleCancer/Pipeline imports passed |
+| Classification with Transformers present | All **26 code cells** passed, including setup, full training, baseline, evaluation and advanced analysis; about **14.9 seconds** |
+| Survival with Transformers present | All **29 code cells** passed, including setup, full training, baseline, survival evaluation and bootstrap analysis; about **17.6 seconds** |
+| Already-loaded Hub downgrade | Real process blocked until restart; fresh process imported the corrected stack successfully |
+| Regressions | `sync_colab.py --check`, all 9 setup/preservation tests, generated notebook HTML/ToC/link checks and all 17 JavaScript tests passed |
+| Website rebuild | Strict Sphinx build passed; 27 HTML pages and 1,423 local links/assets checked; zero errors |
+| Copy integrity and hashes | Both copies regenerated; `python site/sync_colab.py --check` passed; all four originals byte-identical; all original scientific cells preserved in each copy |
+
+Correction artifacts are ignored under `tmp/hub-*` and `outputs/hub-fix/`. The original local validation table below is retained as history; its environments lacked Transformers. This correction changes only the requirement pins, setup safety/compatibility checks and instructions, setup-cell hashes in the two copies, regression tests and this report. Website design and Binder integration are unchanged. No commit or push was performed. Direct execution of this correction in Colab remains a final manual check.
+
 ## Participant workflow
 
 MDAS website → choose **Classification** or **Survival Analysis** → **Run in Google Colab** → select Python 3.12 → run the initial setup cell → run scientific cells directly, individually and in order.
@@ -36,6 +68,8 @@ Key pins:
 | Lightning / PyTorch Lightning | 2.6.6 |
 | torchsurv | 0.1.6 |
 | jsonargparse | 4.53.0 |
+| Hugging Face Hub | 1.33.0 |
+| HTTPX / HTTPCore | 0.28.1 / 1.0.9 |
 
 The CPU Torch index is official. No imaging, pathology, interpretation, TabICL or development extras are installed. The required PyTorch downgrade is necessary to satisfy PyKale's declared cap. Installation is into the **active interpreter** (`sys.executable -m pip`), so the following scientific cells use the installed packages directly, without a kernel proxy or notebook runner.
 
