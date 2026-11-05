@@ -27,7 +27,7 @@ class SiteStructure(unittest.TestCase):
         self.assertIn("# Cancer", staged)
         for term in ("Classification: predict a category", "Survival Analysis: predict relative event risk", "ABMIL", "Cox head"):
             self.assertIn(term, staged)
-        for doc in ("index", "tutorials/kalecancer/live-coding", "tutorials/kalecancer/live-coding-survival", "tutorials/kalecardiac/cardiovae-hands-on"):
+        for doc in ("index", "tutorials/kalecancer/live-coding", "tutorials/kalecancer/live-coding-survival", "tutorials/kalecardiac/live-coding"):
             sidebar = page(doc).split('<div class="bd-toc-item navbar-nav active">')[1].split('</nav>')[0]
             for removed in ("Tutorials Overview", "Prerequisites", "Hands-on Tutorial"):
                 self.assertNotIn(removed, sidebar)
@@ -45,6 +45,34 @@ class SiteStructure(unittest.TestCase):
             for link in links:
                 self.assertNotIn(link.rsplit("/", 1)[-1], ("prerequisites.html", "hands-on.html"), link)
                 self.assertFalse(link.endswith("tutorials/README.html"), link)
+
+    def test_cardiac_live_coding_replaces_hands_on_and_results(self):
+        staged = (ROOT / "site/_staged/tutorials/kalecardiac/index.md").read_text(encoding="utf-8")
+        self.assertIn("Getting Started <getting-started>\nLive-Coding Notebook <live-coding>\n```", staged)
+        for removed in ("hands-on", "Results and Interpretation", "results"):
+            self.assertNotIn(removed, staged)
+        for old, target in (("tutorials/kalecardiac/cardiovae-hands-on", "live-coding.html"),
+                            ("tutorials/kalecardiac/lsemvae-hands-on", "live-coding-lsemvae.html"),
+                            ("tutorials/kalecardiac/results", "live-coding.html")):
+            html = page(old)
+            self.assertIn('name="robots" content="noindex"', html)
+            self.assertIn(f'url={target}', html)
+            self.assertFalse((ROOT / "site/_staged" / (old + ".md")).exists())
+        html = page("tutorials/kalecardiac/getting-started")
+        article = html.split('<article class="bd-article">')[1].split('</article>')[0]
+        for removed in ("hands-on.html", 'href="results.html"'):
+            self.assertNotIn(removed, article)
+        for section in ("Overview", "Choose a tutorial", "The tutorial dataset", "The workflow",
+                        "Configuration files", "Run a tutorial", "As you work", "Beyond the notebooks"):
+            self.assertIn(f"<h2>{section}", article)
+        for route in ("On this website (Binder)", "In Google Colab", "On your own computer"):
+            self.assertIn(f"<h3>{route}", article)
+        self.assertIn('id="run-a-tutorial"', article)
+        self.assertIn('href="live-coding.html"', article)
+        self.assertIn('href="live-coding-lsemvae.html"', article)
+        # The local install must include the extras the notebooks import (DICOM reader, Captum).
+        source = (ROOT / "site/_staged/tutorials/kalecardiac/getting-started.md").read_text(encoding="utf-8")
+        self.assertIn('pip install -e ".[imaging,interpret]"', source)
 
     def test_public_identity_and_simple_homepage(self):
         for path in HTML.rglob("*"):

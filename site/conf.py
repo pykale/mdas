@@ -6,7 +6,7 @@ import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parent / "_ext"))
 
-from mdas_notebooks import NOTEBOOKS
+from mdas_notebooks import CARDIAC_NOTEBOOKS, NOTEBOOKS, SECONDARY_NOTEBOOKS
 
 project = "Multimodal Data Analysis Session (MDAS)"
 author = "PyKale"
@@ -24,9 +24,8 @@ if MDAS_ENABLE_THEBE:
         "selector": ".cell",
         "selector_input": ".cell_input pre",
         "selector_output": ".cell_output",
-        # Used by the page-scoped adapter to override Sphinx's staged URL path.
+        # Used by the page-scoped adapter, which also starts each kernel in its notebook's folder.
         "binder_url": os.environ.get("MDAS_BINDER_URL", "https://mybinder.org"),
-        "kernel_path": "notebooks/MDAS/cancer",
     }
 source_suffix = {".md": "myst-nb", ".ipynb": "myst-nb"}
 nb_execution_mode = "off"
@@ -70,16 +69,53 @@ html_theme_options = {
 }
 
 
+BINDER_LAUNCH = """<button type="button" id="mdas-thebe-launch" class="btn btn-primary mdas-execution-button thebe-launch-button" onclick="mdasLaunchInteractive()">Run with Binder</button>""" if MDAS_ENABLE_THEBE else "<p>In-page execution is disabled for this build. Read the saved notebook below or use Colab.</p>"
+
+CARDIAC_INTRO = """# Live-Coding Notebook
+
+MDAS_NOTEBOOK_SELECTOR
+
+**MDAS_NOTEBOOK_TITLE**
+
+Choose Binder to run the notebook directly on this website, or Google Colab to open it in a Colab runtime.
+
+<div class="mdas-execution-actions">
+MDAS_INTERACTIVE_CONTROL
+<a class="btn btn-primary mdas-execution-button" href="https://colab.research.google.com/github/pykale/mdas/blob/main/MDAS_NOTEBOOK_PATH">Run in Google Colab</a>
+</div>
+<p id="mdas-thebe-status" role="status" aria-live="polite">Not connected. Binder starts only when you choose to launch it.</p>
+
+Run the cells in order, starting with the package installation cell in Step 0, which installs KaleCardiac into the session. Binder sessions run on a CPU; in Colab, choose a T4 GPU runtime. To run the notebook on your own computer, see [Getting Started](getting-started.md#run-a-tutorial).
+
+> Sessions are temporary. Copy code edits and important results before switching or leaving. Do not upload private or patient data.
+"""
+
+
+def cardiac_intro(docname):
+    """Page title, tutorial selector and execution actions for a Cardiac notebook page."""
+    options = "".join(
+        f'<option value="{name.rsplit("/", 1)[1]}.html"'
+        + (' selected' if name == docname else '') + f'>{label}</option>'
+        for name, (label, _) in CARDIAC_NOTEBOOKS.items()
+    )
+    selector = ('<div class="mdas-notebook-picker"><label for="mdas-notebook-select">Choose a tutorial</label> '
+                f'<select id="mdas-notebook-select" onchange="mdasSwitchNotebook(this)">{options}</select></div>'
+                '<noscript><p>Choose: <a href="live-coding.html">CardioVAE</a> | '
+                '<a href="live-coding-lsemvae.html">LS-EMVAE</a></p></noscript>')
+    title, notebook_path = CARDIAC_NOTEBOOKS[docname]
+    return (CARDIAC_INTRO.replace("MDAS_INTERACTIVE_CONTROL", BINDER_LAUNCH).replace("MDAS_NOTEBOOK_SELECTOR", selector)
+            .replace("MDAS_NOTEBOOK_TITLE", title).replace("MDAS_NOTEBOOK_PATH", notebook_path))
+
+
 def prepare_notebook(app, docname, source):
     """Add access links at parse time; staged/original notebook bytes stay intact."""
-    if docname not in NOTEBOOKS:
+    if docname not in NOTEBOOKS and docname not in CARDIAC_NOTEBOOKS:
         return
     import json
     import re
 
-    title, notebook_path = NOTEBOOKS[docname]
     notebook = json.loads(source[0])
-    if docname.endswith("-survival"):
+    if docname in SECONDARY_NOTEBOOKS:
         notebook.setdefault("metadata", {})["orphan"] = True
     notebook.setdefault("metadata", {}).setdefault("mystnb", {})["execution_mode"] = "off"
     # Ignore VS Code-only viewer payloads in the in-memory rendering copy.
@@ -90,12 +126,23 @@ def prepare_notebook(app, docname, source):
             if "text/html" in data or "text/plain" in data:
                 data.pop("application/vnd.microsoft.datawrangler.viewer.v0+json", None)
     # Nest the notebook's existing section headings beneath its page title.
-    # Code, outputs, safety notes and scientific text are unchanged.
-    for cell in notebook["cells"]:
-        if cell["cell_type"] == "markdown":
+    # Code, outputs, safety notes and scientific text are unchanged. Notebooks
+    # whose sections already start at level 2 (no H1) need no nesting.
+    markdown = [cell for cell in notebook["cells"] if cell["cell_type"] == "markdown"]
+    if any(re.search(r"^# ", "".join(cell["source"]), flags=re.M) for cell in markdown):
+        for cell in markdown:
             text = "".join(cell["source"])
             cell["source"] = re.sub(r"^(#{1,5}) ", r"#\1 ", text, flags=re.M)
-    launch = """<button type="button" id="mdas-thebe-launch" class="btn btn-primary mdas-execution-button thebe-launch-button" onclick="mdasLaunchInteractive()">Run with Binder</button>""" if MDAS_ENABLE_THEBE else "<p>In-page execution is disabled for this build. Read the saved notebook below or use Colab.</p>"
+    if docname in CARDIAC_NOTEBOOKS:
+        # Their install cell uses IPython shell escapes (!pip, !git) and magics (%cd), which
+        # the plain Python lexer rejects. Highlight with IPython's lexer in this copy only.
+        notebook["metadata"].setdefault("language_info", {})["pygments_lexer"] = "ipython3"
+        notebook["cells"].insert(0, {"cell_type": "markdown", "id": "mdas-access", "metadata": {},
+                                     "source": cardiac_intro(docname)})
+        source[0] = json.dumps(notebook)
+        return
+    title, notebook_path = NOTEBOOKS[docname]
+    launch = BINDER_LAUNCH
     options = "".join(
         f'<option value="{name.rsplit("/", 1)[1]}.html"'
         + (' selected' if name == docname else '') + f'>{label}</option>'
@@ -141,6 +188,9 @@ REDIRECTS = {
     "tutorials/kalecancer/README": "index.html",
     "tutorials/kalecancer/getting-started": "index.html",
     "tutorials/kalecardiac/README": "getting-started.html",
+    "tutorials/kalecardiac/cardiovae-hands-on": "live-coding.html",
+    "tutorials/kalecardiac/lsemvae-hands-on": "live-coding-lsemvae.html",
+    "tutorials/kalecardiac/results": "live-coding.html",
 }
 
 
@@ -150,10 +200,11 @@ def redirect_pages(app):
 
 
 def notebook_navigation(app, pagename, templatename, context, doctree):
-    if pagename != "tutorials/kalecancer/live-coding-survival":
+    """Give each non-default notebook page its track's canonical sidebar and prev/next links."""
+    canonical = SECONDARY_NOTEBOOKS.get(pagename)
+    if canonical is None:
         return
     from sphinx.environment.adapters.toctree import TocTree
-    canonical = "tutorials/kalecancer/live-coding"
     def toctree(**kwargs):
         tree = TocTree(app.env).get_toctree_for(canonical, app.builder, **kwargs)
         return app.builder.render_partial(tree)["fragment"] if tree is not None else ""

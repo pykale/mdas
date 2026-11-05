@@ -1,10 +1,11 @@
-"""Scope sphinx-thebe to the Cancer notebook and use its real repository path."""
+"""Scope sphinx-thebe to the notebook pages and use each notebook's real repository path."""
 
 import json
+import posixpath
 
 from docutils import nodes
 
-from mdas_notebooks import NOTEBOOKS
+from mdas_notebooks import ALL_NOTEBOOKS, BINDER_FILES
 
 
 def configure_page(app, doctree, docname):
@@ -13,7 +14,7 @@ def configure_page(app, doctree, docname):
         text = node.astext()
         if 'type="text/x-thebe-config"' not in text and "<script>kernelName =" not in text:
             continue
-        if docname not in NOTEBOOKS:
+        if docname not in ALL_NOTEBOOKS:
             node.parent.remove(node)
             continue
         if 'type="text/x-thebe-config"' in text:
@@ -28,7 +29,8 @@ def configure_page(app, doctree, docname):
                     "binderUrl": config["binder_url"],
                     "savedSession": {"enabled": False},
                 },
-                "kernelOptions": {"name": "python3", "path": config["kernel_path"]},
+                # The kernel starts in the notebook's own folder, beside its helper or configs.
+                "kernelOptions": {"name": "python3", "path": posixpath.dirname(ALL_NOTEBOOKS[docname][1])},
                 "codeMirrorConfig": {"theme": "default", "mode": "python"},
                 "predefinedOutput": True,
                 "mathjaxUrl": False,
@@ -36,12 +38,7 @@ def configure_page(app, doctree, docname):
             preflight = {
                 "repository": repo,
                 "ref": config["repository_branch"],
-                "required_files": [
-                    ".binder/runtime.txt",
-                    ".binder/requirements.txt",
-                    NOTEBOOKS[docname][1],
-                    "notebooks/MDAS/cancer/synthetic_data_generation.py",
-                ],
+                "required_files": [".binder/runtime.txt", ".binder/requirements.txt", *BINDER_FILES[docname]],
             }
             node["format"] = "html"
             node.children[:] = [nodes.Text(
@@ -51,7 +48,7 @@ def configure_page(app, doctree, docname):
 
 
 def scope_assets(app, pagename, templatename, context, doctree):
-    if pagename in NOTEBOOKS:
+    if pagename in ALL_NOTEBOOKS:
         return
 
     def keep(asset):

@@ -18,7 +18,7 @@ STAGED = SITE / "_staged"
 HTML = SITE / "_build" / "html"
 REPOSITORY = "https://github.com/pykale/mdas"
 sys.path.insert(0, str(SITE / "_ext"))
-from mdas_notebooks import NOTEBOOKS
+from mdas_notebooks import ALL_NOTEBOOKS
 
 
 def find_uv() -> str:
@@ -49,13 +49,16 @@ def stage() -> None:
     excluded = {"docs/overview.md", "docs/resources.md", "notebooks/README.md",
                 "tutorials/kalecancer/README.md", "tutorials/kalecardiac/README.md",
                 "docs/prerequisites.md", "tutorials/README.md", "tutorials/kalecancer/hands-on.md",
-                "tutorials/kalecancer/getting-started.md"}
+                "tutorials/kalecancer/getting-started.md",
+                # Replaced by the Cardiac Live-Coding Notebook; old URLs redirect (conf.py).
+                "tutorials/kalecardiac/cardiovae-hands-on.md", "tutorials/kalecardiac/lsemvae-hands-on.md",
+                "tutorials/kalecardiac/results.md"}
     paths = [ROOT / "README.md", *sorted((ROOT / "docs").rglob("*.md")),
              *sorted((ROOT / "tutorials").rglob("*.md"))]
     paths = [p for p in paths if p.relative_to(ROOT).as_posix() not in excluded]
     mapping = {p.relative_to(ROOT).as_posix(): p.relative_to(ROOT).as_posix() for p in paths}
     mapping["README.md"] = "index.md"
-    for docname, (_, notebook_path) in NOTEBOOKS.items():
+    for docname, (_, notebook_path) in ALL_NOTEBOOKS.items():
         mapping[notebook_path] = docname + ".ipynb"
     aliases = {"docs/prerequisites.md": "docs/participation.md",
                "tutorials/README.md": "index.md",
@@ -107,12 +110,11 @@ def stage() -> None:
             text += "".join(toctree(entries, caption) for caption, entries in nav.items())
         destination.write_text(text, encoding="utf-8")
     # Byte-for-byte copy: never execute or alter the original notebook.
-    for _, notebook_path in NOTEBOOKS.values():
+    for _, notebook_path in ALL_NOTEBOOKS.values():
         shutil.copyfile(ROOT / notebook_path, STAGED / mapping[notebook_path])
     for track, entries in {
         "kalecancer": [["Live-Coding Notebook", "live-coding"], ["Results and Interpretation", "results"]],
-        "kalecardiac": [["Getting Started", "getting-started"], ["CardioVAE Hands-on", "cardiovae-hands-on"],
-                        ["LS-EMVAE Hands-on", "lsemvae-hands-on"], ["Results and Interpretation", "results"]],
+        "kalecardiac": [["Getting Started", "getting-started"], ["Live-Coding Notebook", "live-coding"]],
     }.items():
         title = "Cancer" if track == "kalecancer" else "Cardiac"
         destination = STAGED / f"tutorials/{track}/index.md"
@@ -122,7 +124,7 @@ def stage() -> None:
         else:
             destination.write_text(
                 f"# {title}\n\n[Begin with Getting Started](getting-started.md).\n" + toctree(entries), encoding="utf-8")
-    print(f"Staged {len(paths)} Markdown pages and {len(NOTEBOOKS)} original notebooks in {STAGED}", flush=True)
+    print(f"Staged {len(paths)} Markdown pages and {len(ALL_NOTEBOOKS)} original notebooks in {STAGED}", flush=True)
 
 
 def main() -> int:
