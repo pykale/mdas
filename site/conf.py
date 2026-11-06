@@ -9,7 +9,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent / "_ext"))
 from mdas_notebooks import CARDIAC_NOTEBOOKS, NOTEBOOKS, SECONDARY_NOTEBOOKS
 
 project = "Multimodal Data Analysis Session (MDAS)"
-author = "PyKale"
+author = "CMI/UKOMAIN"
 copyright = "2026, PyKale"
 language = "en"
 needs_sphinx = "9.2"

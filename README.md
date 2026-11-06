@@ -19,3 +19,9 @@ For preparation and privacy guidance, see the [Participation Guide](docs/partici
 | Wednesday, 18 November 2026 | 13:00–17:00 | Ada Lovelace, University of Sheffield |
 
 Synthetic demonstrations teach the software workflow; they do not establish clinical performance. Keep patient data and confidential research off public execution services.
+
+## Acknowledgement
+
+![Bilal Tahir](assets/bilal-tahir.jpg)
+
+We gratefully acknowledge the collaborative contributions and insightful discussions provided by Bilal Tahir, Daniele Tartarini, Zhiyang Chen and Daniel Griffin throughout the KaleCancer project.
