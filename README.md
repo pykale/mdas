@@ -2,7 +2,7 @@
 
 Biomedical research often brings together measurements that describe different aspects of the same person. Multimodal data analysis asks how these complementary sources can be combined to address a research question, and how to evaluate what the combination adds.
 
-Organised by **PyKale**, MDAS introduces practical examples from its biomedical research ecosystem. **KaleCancer** combines clinical variables and pathology patch features for classification and survival analysis. **KaleCardiac** explores chest X-ray and ECG representation learning with CardioVAE, and complementary ECG leads with LS-EMVAE.
+Organised by **CMI** with the support of **UKOMAIN**, MDAS introduces practical examples from the PyKale biomedical research ecosystem. **KaleCancer** combines clinical variables and pathology patch features for classification and survival analysis. **KaleCardiac** explores chest X-ray and ECG representation learning with CardioVAE, and complementary ECG leads with LS-EMVAE.
 
 Work through the examples with us at the workshop or independently afterwards. The materials explain the inputs, modelling choices and evaluation, starting with synthetic data so no patient dataset is needed.
 
@@ -16,8 +16,6 @@ For preparation and privacy guidance, see the [Participation Guide](docs/partici
 
 | Date | Attendee programme | Venue |
 | --- | --- | --- |
-| Wednesday, 18 November 2026 | 13:00–17:00 | Regent Court, University of Sheffield |
-
-**Venue:** Regent Court, University of Sheffield. The Diamond, Workroom 3 (Room 205), is a possible alternative venue. The final location will be confirmed with registered participants.
+| Wednesday, 18 November 2026 | 13:00–17:00 | Ada Lovelace, University of Sheffield |
 
 Synthetic demonstrations teach the software workflow; they do not establish clinical performance. Keep patient data and confidential research off public execution services.

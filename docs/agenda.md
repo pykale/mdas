@@ -2,7 +2,7 @@
 
 **Date:** Wednesday, 18 November 2026
 
-**Venue:** Regent Court, University of Sheffield. The Diamond, Workroom 3 (Room 205), is a possible alternative venue. The final location will be confirmed with registered participants.
+**Venue:** Ada Lovelace, University of Sheffield.
 
 **Attendee programme:** 13:00–17:00
 
@@ -19,9 +19,9 @@
 | 13:50–14:00 | Discussion |
 | 14:00–14:10 | Break and refreshments |
 | 14:10–16:30 | **Block 2: Apply the Pipeline** |
-| 14:10–16:20 | Make progress on a real research problem, participants' own or an organiser-provided problem, with the AIRE team available to help |
+| 14:10–16:20 | Work on your own research question with support from the AIRE team. |
 | 16:20–16:30 | Closing remarks |
 
-Specific organiser-provided problems and final tutorial exercise selection remain to be confirmed. For the session's learning goals, see [What is MDAS?](about.md).
+For the session's learning goals, see [What is MDAS?](about.md).
 
 **Next:** [Prepare with the Participation Guide](participation.md).

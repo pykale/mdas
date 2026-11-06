@@ -90,8 +90,9 @@ class SiteStructure(unittest.TestCase):
         self.assertIn('href="tutorials/kalecardiac/getting-started.html"', home)
         self.assertIn("18 November 2026", home)
         self.assertIn("13:00" + chr(8211) + "17:00", unescape(home))
-        for venue in ("Regent Court", "The Diamond", "Workroom 3 (Room 205)"):
-            self.assertIn(venue, home)
+        self.assertIn("Ada Lovelace, University of Sheffield", home)
+        for obsolete in ("Regent Court", "The Diamond", "Workroom 3 (Room 205)", "The final location will be confirmed"):
+            self.assertNotIn(obsolete, home)
         self.assertIn('_static/mdas-logo.png', home)
 
     def test_cancer_is_the_substantive_landing_page(self):
@@ -103,6 +104,31 @@ class SiteStructure(unittest.TestCase):
         self.assertNotIn('kalecancer/getting-started.html', sidebar)
         self.assertNotIn('href="getting-started.html"', sidebar)
         self.assertIn('href="live-coding.html"', html)
+
+    def test_public_workshop_credit_venue_and_execution_routes(self):
+        for doc in ("index", "docs/about"):
+            text = " ".join(re.sub(r"<[^>]+>", " ", unescape(page(doc))).split())
+            self.assertIn("organised by CMI with the support of UKOMAIN", text[0:].replace("Organised", "organised"))
+        self.assertIn("PyKale biomedical research ecosystem", page("index"))
+        self.assertIn("PyKale domain packages", page("docs/about"))
+        for doc in ("index", "docs/about", "docs/agenda", "docs/participation"):
+            self.assertIn("Ada Lovelace, University of Sheffield", page(doc))
+        for path in HTML.rglob("*.html"):
+            html = path.read_text(encoding="utf-8")
+            for obsolete in ("Regent Court", "The Diamond", "Workroom 3", "Room 205",
+                             "The final location will be confirmed", "venue confirmation arrangements",
+                             "venue details and confirmation arrangements"):
+                self.assertNotIn(obsolete, html, str(path))
+        participation = page("docs/participation")
+        rows = re.findall(r"<tr\b[^>]*>.*?</tr>", participation, re.S)
+        for label in ("Binder on this website", "Google Colab"):
+            row = next(row for row in rows if label in row)
+            self.assertIn('href="../tutorials/kalecancer/live-coding.html"', row)
+            self.assertIn('href="../tutorials/kalecardiac/live-coding.html"', row)
+            self.assertIn("documented", row)
+        self.assertIn("temporary kernel on the site", participation)
+        self.assertIn("Optional local setup", participation)
+        self.assertIn("Do not upload identifiable patient data", participation)
 
     def test_actual_notebook_metrics_and_prediction_types_are_explained_separately(self):
         html = page("tutorials/kalecancer/results")
@@ -147,8 +173,20 @@ class SiteStructure(unittest.TestCase):
             if path.endswith("quick-start.md"):
                 self.assertEqual(re.findall(r"```sh\n(.*?)```", old, re.S), re.findall(r"```sh\n(.*?)```", new, re.S))
             else:
-                self.assertEqual([line for line in old.splitlines() if line.startswith('|')], [line for line in new.splitlines() if line.startswith('|')])
-                self.assertEqual(old.split('## Programme')[0], new.split('## Programme')[0])
+                old_rows = [line for line in old.splitlines() if line.startswith('|')]
+                new_rows = [line for line in new.splitlines() if line.startswith('|')]
+                self.assertEqual([line.split('|')[1] for line in old_rows], [line.split('|')[1] for line in new_rows])
+                activity_time = "14:10" + chr(8211) + "16:20"
+                for previous, current in zip(old_rows, new_rows):
+                    if activity_time in current:
+                        self.assertIn("Work on your own research question with support from the AIRE team.", current)
+                    else:
+                        self.assertEqual(previous, current)
+                previous_header = re.sub(r"^\*\*Venue:\*\*.*$", "**Venue:** Ada Lovelace, University of Sheffield.", old.split('## Programme')[0], flags=re.M)
+                self.assertEqual(previous_header, new.split('## Programme')[0])
+                self.assertNotIn("organiser-provided", new)
+                self.assertNotIn("final tutorial exercise selection", new)
+                self.assertIn("[What is MDAS?](about.md)", new)
                 self.assertNotIn("[Prerequisites]", new)
 
 

@@ -1,6 +1,6 @@
 # What is MDAS?
 
-The **Multimodal Data Analysis Session (MDAS)** is organised by PyKale. It introduces practical research workflows through two PyKale domain packages: KaleCancer and KaleCardiac.
+The **Multimodal Data Analysis Session (MDAS)** is organised by **CMI** with the support of **UKOMAIN**. It introduces practical research workflows through two PyKale domain packages: KaleCancer and KaleCardiac.
 
 ## One question, complementary measurements
 
@@ -16,7 +16,7 @@ The examples help you identify a research endpoint, follow an analysis from inpu
 
 **Wednesday, 18 November 2026, 13:00–17:00**.
 
-**Venue:** Regent Court, University of Sheffield; The Diamond is a possible alternative. See the [Session Agenda](agenda.md) for venue details and confirmation arrangements.
+**Venue:** Ada Lovelace, University of Sheffield. See the [Session Agenda](agenda.md) for the programme.
 
 The live session has two blocks: **Learn the Pipeline**, then **Apply the Pipeline** with the AIRE team available to help. The materials also support self-paced study after the workshop. Specific organiser-provided problems and final exercise selection remain to be confirmed.
 
