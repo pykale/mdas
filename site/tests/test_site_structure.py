@@ -108,7 +108,7 @@ class SiteStructure(unittest.TestCase):
     def test_public_workshop_credit_venue_and_execution_routes(self):
         for doc in ("index", "docs/about"):
             text = " ".join(re.sub(r"<[^>]+>", " ", unescape(page(doc))).split())
-            self.assertIn("organised by CMI with the support of UKOMAIN", text[0:].replace("Organised", "organised"))
+            self.assertIn("organised by the CMI AIRE team with the support of UKOMAIN", text[0:].replace("Organised", "organised"))
         self.assertIn("PyKale biomedical research ecosystem", page("index"))
         self.assertIn("PyKale domain packages", page("docs/about"))
         for doc in ("index", "docs/about", "docs/agenda", "docs/participation"):

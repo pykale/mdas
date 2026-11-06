@@ -1,6 +1,6 @@
 # What is MDAS?
 
-The **Multimodal Data Analysis Session (MDAS)** is organised by **CMI** with the support of **UKOMAIN**. It introduces practical research workflows through two PyKale domain packages: KaleCancer and KaleCardiac.
+The **Multimodal Data Analysis Session (MDAS)** is organised by the **CMI** AIRE team with the support of **UKOMAIN**. It introduces practical research workflows through two PyKale domain packages: KaleCancer and KaleCardiac.
 
 ## One question, complementary measurements
 

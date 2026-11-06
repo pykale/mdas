@@ -2,7 +2,7 @@
 
 Biomedical research often brings together measurements that describe different aspects of the same person. Multimodal data analysis asks how these complementary sources can be combined to address a research question, and how to evaluate what the combination adds.
 
-Organised by **CMI** with the support of **UKOMAIN**, MDAS introduces practical examples from the PyKale biomedical research ecosystem. **KaleCancer** combines clinical variables and pathology patch features for classification and survival analysis. **KaleCardiac** explores chest X-ray and ECG representation learning with CardioVAE, and complementary ECG leads with LS-EMVAE.
+Organised by the **CMI** AIRE team with the support of **UKOMAIN**, MDAS introduces practical examples from the PyKale biomedical research ecosystem. **KaleCancer** combines clinical variables and pathology patch features for classification and survival analysis. **KaleCardiac** explores chest X-ray and ECG representation learning with CardioVAE, and complementary ECG leads with LS-EMVAE.
 
 Work through the examples with us at the workshop or independently afterwards. The materials explain the inputs, modelling choices and evaluation, starting with synthetic data so no patient dataset is needed.
 
