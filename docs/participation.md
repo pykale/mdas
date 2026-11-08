@@ -2,7 +2,7 @@
 
 Join us on **Wednesday, 18 November 2026, 13:00–17:00**.
 
-**Venue:** Ada Lovelace, University of Sheffield.
+**Venue:** Ada Lovelace Room (108), Level 1, Regent Court, University of Sheffield.
 
 ## Who this is for
 
@@ -26,7 +26,7 @@ Local Cancer examples support Python 3.11 or 3.12. The Cardiac instructions use 
 
 ## In person or at your own pace
 
-At the workshop, use the first block to learn the pipeline and the second to explore a research question with support from the AIRE team. Specific organiser-provided problems remain to be confirmed. The [Session Agenda](agenda.md) contains the detailed programme.
+At the session, use the first block to learn the pipeline and the second to explore a research question with support from the AIRE team. Specific organiser-provided problems remain to be confirmed. The [Session Agenda](agenda.md) contains the detailed programme.
 
 Learning independently? Choose one track, complete a synthetic run, and record the endpoint, modalities, outputs and one limitation. Return to the interpretation page before changing a configuration. The same materials remain available after the event.
 

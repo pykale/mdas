@@ -2,11 +2,9 @@
 
 **Date:** Wednesday, 18 November 2026
 
-**Venue:** Ada Lovelace, University of Sheffield.
+**Venue:** Ada Lovelace Room (108), Level 1, Regent Court, University of Sheffield.
 
 **Attendee programme:** 13:00–17:00
-
-> **Agenda review pending:** The overall session runs until 17:00. The activities below currently end at 16:30; arrangements for the final 30 minutes remain to be confirmed.
 
 ## Programme
 

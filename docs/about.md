@@ -12,12 +12,14 @@ The session introduces early, intermediate and late fusion. The Cancer notebooks
 
 The examples help you identify a research endpoint, follow an analysis from inputs to predictions, explain its metrics, and distinguish a synthetic demonstration from clinically meaningful evaluation. You can read the saved notebook outputs before choosing an execution environment.
 
-## Workshop and independent learning
+(workshop-and-independent-learning)=
+
+## Session and independent learning
 
 **Wednesday, 18 November 2026, 13:00–17:00**.
 
-**Venue:** Ada Lovelace, University of Sheffield. See the [Session Agenda](agenda.md) for the programme.
+**Venue:** Ada Lovelace Room (108), Level 1, Regent Court, University of Sheffield. See the [Session Agenda](agenda.md) for the programme.
 
-The live session has two blocks: **Learn the Pipeline**, then **Apply the Pipeline** with the AIRE team available to help. The materials also support self-paced study after the workshop. Specific organiser-provided problems and final exercise selection remain to be confirmed.
+The live session has two blocks: **Learn the Pipeline**, then **Apply the Pipeline** with the AIRE team available to help. The materials also support self-paced study after the session. Specific organiser-provided problems and final exercise selection remain to be confirmed.
 
-The [Participation Guide](participation.md) covers preparation for the workshop or independent study.
+The [Participation Guide](participation.md) covers preparation for the session or independent study.
