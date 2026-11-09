@@ -111,7 +111,7 @@ Public Binder is temporary, has limited capacity and no availability guarantee. 
 
 ### Test locally and record the layers separately
 
-Build and serve using the commands above, then open the Cancer Example Notebook page:
+Build and serve using the commands above, then open the Cancer Live-Coding Notebook page:
 
 1. Before clicking, confirm the static cells and saved outputs are visible and that no Binder connection is started.
 2. Click **Run interactively on this website**. Confirm loading/status text, editable cells and eventual kernel connection. A connected kernel does not prove that research imports work.
@@ -158,7 +158,7 @@ The direct Colab copies and their shared support files are under `notebooks/MDAS
 
 ## Classification page and presentation mode
 
-The Cancer Example Notebook defaults to `classification_showcase.ipynb`; the dropdown also opens `survival.ipynb`. Binder preflight references follow the selected notebook; Classification Colab is disabled pending compatible showcase setup. Blank exercise files remain unchanged in the repository but are not actions in the notebook interface. The byte-for-byte staged copies are adapted only in memory for HTML rendering. Scientific content and original files remain untouched.
+The Cancer Live-Coding Notebook defaults to `classification_showcase.ipynb`; the dropdown also opens `survival.ipynb`. Binder preflight references follow the selected notebook; Classification Colab is disabled pending compatible showcase setup. Blank exercise files remain unchanged in the repository but are not actions in the notebook interface. The byte-for-byte staged copies are adapted only in memory for HTML rendering. Scientific content and original files remain untouched.
 
 `_static/mdas-notebooks.js` handles page navigation and unsaved-work warnings. A cancelled selector confirmation restores the selection; `beforeunload` protects other navigation, reload and close actions after launch, including disconnected sessions. The client-side export function and its embedded notebook payload have been removed. Participants must copy edits/results before leaving; Execution Help explains saving limitations and the Colab file workflow. Help opens a new tab to keep the active notebook and kernel in place. Browser leave prompts depend on browser interaction policies.
 
@@ -205,7 +205,7 @@ Run `python site/tests/test_site_structure.py` after building for public identit
 
 ## Classification showcase execution blocker
 
-The Example Notebook now displays `classification_showcase.ipynb`; its Binder file checks include both `synthetic_showcase_data.py` and that module's dependency, `synthetic_data_generation.py`. The original Classification notebook remains in the repository, and links to its old source path still resolve to the same website page.
+The Live-Coding Notebook page now displays `classification_showcase.ipynb`; its Binder file checks include both `synthetic_showcase_data.py` and that module's dependency, `synthetic_data_generation.py`. The original Classification notebook remains in the repository, and links to its old source path still resolve to the same website page.
 
 Binder and Colab both pin KaleCancer `1f476fdba87f515286f732cd7eaa92ffeeffdbc2`. That revision exports only `attention` from `kalecancer.interpret`, while the showcase also imports `leave_one_out_ablation`, `modality_shapley`, `feature_shapley`, `permutation_importance`, `attention_heatmap` and `save_heatmap`. Full showcase execution is therefore blocked in both environments. The Classification Colab action is disabled with a visible explanation; it does not target the old example or a missing showcase copy.
 

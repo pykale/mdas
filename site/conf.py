@@ -71,9 +71,7 @@ html_theme_options = {
 
 BINDER_LAUNCH = """<button type="button" id="mdas-thebe-launch" class="btn btn-primary mdas-execution-button thebe-launch-button" onclick="mdasLaunchInteractive()">Run with Binder</button>""" if MDAS_ENABLE_THEBE else "<p>In-page execution is disabled for this build. Read the saved notebook below or use Colab.</p>"
 
-CARDIAC_INTRO = """(live-coding-notebook)=
-
-# Example Notebook
+CARDIAC_INTRO = """# Live-Coding Notebook
 
 MDAS_NOTEBOOK_SELECTOR
 
@@ -156,9 +154,7 @@ def prepare_notebook(app, docname, source):
                 '<a href="live-coding-survival.html">Survival Analysis</a></p></noscript>')
     intro = """<div class="mdas-notebook-tools"><a class="mdas-execution-help" href="../../docs/notebook-execution.html" target="_blank" rel="noopener" aria-label="Execution Help (opens in a new tab)"><svg class="mdas-help-icon" aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6v15"/><path d="M12 6C9 4 6 4 3 5v14c3-1 6-1 9 1"/><path d="M12 6c3-2 6-2 9-1v14c-3-1-6-1-9 1"/></svg> Execution Help</a></div>
 
-(live-coding-notebook)=
-
-# Example Notebook
+# Live-Coding Notebook
 
 MDAS_NOTEBOOK_SELECTOR
 

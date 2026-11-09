@@ -60,6 +60,8 @@ class Notebooks(unittest.TestCase):
                 html_path = ROOT / f"site/_build/html/tutorials/kalecancer/{page_name}.html"
                 html = html_path.read_text(encoding="utf-8")
                 page = Page(html_path)
+                self.assertIn('<h1>Live-Coding Notebook', html)
+                self.assertIn('id="live-coding-notebook"', html)
                 self.assertEqual((ROOT / f"site/_staged/tutorials/kalecancer/{page_name}.ipynb").read_bytes(), (ROOT / path).read_bytes())
                 self.assertEqual([x["value"] for x in page.options], ["live-coding.html", "live-coding-survival.html"])
                 self.assertEqual([x["value"] for x in page.options if "selected" in x], [page_name + ".html"])
@@ -124,14 +126,14 @@ class Notebooks(unittest.TestCase):
                 html = html_path.read_text(encoding="utf-8")
                 page = Page(html_path)
                 self.assertEqual((ROOT / f"site/_staged/tutorials/kalecardiac/{page_name}.ipynb").read_bytes(), (ROOT / path).read_bytes())
-                self.assertIn('<h1>Example Notebook', html)
+                self.assertIn('<h1>Live-Coding Notebook', html)
                 self.assertIn('<label for="mdas-notebook-select">Choose a tutorial</label>', html)
                 self.assertEqual([(x["value"], html.split(f'value="{x["value"]}"')[1].split(">")[1].split("<")[0]) for x in page.options],
                                  [("live-coding.html", "CardioVAE"), ("live-coding-lsemvae.html", "LS-EMVAE")])
                 self.assertEqual([x["value"] for x in page.options if "selected" in x], [page_name + ".html"])
                 self.assertEqual([s.strip() for s in page.inputs], ["".join(c["source"]).strip() for c in original["cells"] if c["cell_type"] == "code"])
                 # The notebook supplies no title of its own (the page title comes first) and no Colab badge.
-                self.assertEqual(set(re.findall(r"<h1[^>]*>([^<]*)", html)), {"Example Notebook"})
+                self.assertEqual(set(re.findall(r"<h1[^>]*>([^<]*)", html)), {"Live-Coding Notebook"})
                 article = html.split('<article class="bd-article">')[1].split('</article>')[0]
                 self.assertEqual(re.findall(r"<h2>([^<]*)", article)[0], "Step 0: Environment Preparation")
                 self.assertNotIn("Cardiac Abnormality Assessment", html)

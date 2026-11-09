@@ -57,7 +57,7 @@ The same files are in the [tutorial folder of the KaleCardiac repository](https:
 
 ## Run a tutorial
 
-Open the [Example Notebook](../../notebooks/MDAS/cardiac/tutorial-CardioVAE.ipynb) and choose a tutorial, then run it in one of three ways.
+Open the [Live-Coding Notebook](../../notebooks/MDAS/cardiac/tutorial-CardioVAE.ipynb) and choose a tutorial, then run it in one of three ways.
 
 ### On this website (Binder)
 
@@ -105,4 +105,4 @@ For details, see the [KaleCardiac quickstart](https://github.com/pykale/cardiac/
 > [!NOTE]
 > Use only the tutorial dataset on public services such as Binder and Colab, and keep identifiable patient data in approved, secure environments. See the [Participation Guide](../../docs/participation.md). The software continues to evolve; confirm the supported session environment with the organisers.
 
-**Next:** [Open the Example Notebook](../../notebooks/MDAS/cardiac/tutorial-CardioVAE.ipynb).
+**Next:** [Open the Live-Coding Notebook](../../notebooks/MDAS/cardiac/tutorial-CardioVAE.ipynb).

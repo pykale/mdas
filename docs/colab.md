@@ -4,7 +4,7 @@ orphan: true
 
 # Run the Cancer notebooks in Google Colab
 
-For **Survival Analysis**, choose it on the Example Notebook page, then select **Run in Google Colab** to open its self-configuring copy.
+For **Survival Analysis**, choose it on the Live-Coding Notebook page, then select **Run in Google Colab** to open its self-configuring copy.
 
 **Classification showcase setup is blocked:** the current KaleCancer dependency pin (`1f476fd`) lacks required interpretation APIs, including `modality_shapley`, `feature_shapley` and `attention_heatmap`. Its Colab action is disabled rather than opening the old example or an unprepared copy. The same pin also prevents full showcase execution in Binder. Read the saved showcase on the website while a compatible environment is prepared.
 
