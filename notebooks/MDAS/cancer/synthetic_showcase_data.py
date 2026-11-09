@@ -27,18 +27,24 @@ def make_showcase_cohort(
         n_patients: int = 200,
         random_state: int = 42,
         missingness: float = 0.1,
-        slide_missingness: float = 0.1
+        slide_missingness: float = 0.1,
+        task: str = 'classification'
     ):
-    """The ``make_cohort`` classification task, made messier and easier to see. Writes to a separate ``folder``.
+    """The ``make_cohort`` tasks, made messier and easier to see. Writes to a separate ``folder``.
 
-    The recipe is the same (``stage`` follows the fraction of aggressive patches, plus age), with these changes:
+    The recipe is the same (the target follows the fraction of aggressive patches, plus age), with these changes:
 
     - Patches sit on a connected piece of tissue, and the aggressive ones form one region of it.
     - That region is small (up to 20% of the tissue), so a model has to find it. Age matters more as a result.
     - Aggressive patches stand out in half of the features rather than one, as they would in a real embedding.
     - ``slide_missingness`` of patients have no slide file at all.
     - Each h5 file also stores an ``aggressive`` mask: the ground truth to check attention against.
+
+    ``task='classification'`` writes a ``stage`` column of ``'early'``/``'late'`` labels.
+    ``task='survival'`` writes ``time`` (days) and ``event`` columns instead.
     """
+    if task not in ('classification', 'survival'):
+        raise ValueError(f"task must be 'classification' or 'survival', got {task!r}")
     folder = Path(folder)
     patches_folder = folder / 'patches'
     patches_folder.mkdir(parents=True, exist_ok=True)
@@ -74,9 +80,17 @@ def make_showcase_cohort(
                 f["coords"] = grid * PATCH_SIZE
                 f["aggressive"] = aggressive
 
-    # target: stage follows the slide and age; gender plays no part
-    score = aggressive_fraction + 0.005 * (clinical["age"] - 60) + rng.normal(0, 0.03, n_patients)
-    outcome = pd.DataFrame({"stage": np.where(score > 0.1, 'late', 'early')}, index=ids)
+    # target: it follows the slide and age; gender plays no part
+    if task == 'survival':
+        risk = 20 * (aggressive_fraction - 0.1) + 0.05 * (clinical["age"] - 60)
+        event_time = rng.exponential(2000 * np.exp(-risk))
+        censoring_time = rng.uniform(200, 3000, n_patients)
+        outcome = pd.DataFrame(
+            {"time": np.minimum(event_time, censoring_time), "event": event_time <= censoring_time}, index=ids
+        )
+    else:
+        score = aggressive_fraction + 0.005 * (clinical["age"] - 60) + rng.normal(0, 0.03, n_patients)
+        outcome = pd.DataFrame({"stage": np.where(score > 0.1, 'late', 'early')}, index=ids)
 
     # missingess for tabular data
     clinical = clinical.mask(
