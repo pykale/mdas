@@ -2,6 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
+  <script>
+    const alternatives = {{ redirect_fragments | default({}) | tojson }};
+    const target = new URL(alternatives[window.location.hash] || {{ redirect_target | tojson }}, window.location.href);
+    if (!target.hash) target.hash = window.location.hash;
+    window.location.replace(target.href);
+  </script>
   <meta http-equiv="refresh" content="0; url={{ redirect_target }}">
   <meta name="robots" content="noindex">
   <title>MDAS — page moved</title>

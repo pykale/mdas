@@ -14,11 +14,11 @@ Binder runs the selected Cancer or Cardiac notebook on this website using a temp
 2. Wait for **Kernel connected**. A first build or busy public service can take several minutes. Keep the page open and read the connection status; repeated clicks do not speed up startup.
 3. Edit and run cells individually, from the first cell onwards. Later cells depend on earlier variables. Run training and advanced comparisons deliberately; they add CPU time.
 
-The kernel starts in `notebooks/MDAS/cancer/`, making `synthetic_data_generation.py` and the showcase companion `synthetic_showcase_data.py` importable and the original data path valid. Binder uses the public repository revision, not files from your local checkout.
+For Cancer, the kernel starts in `notebooks/MDAS/cancer/`, making `synthetic_data_generation.py` and the showcase companion `synthetic_showcase_data.py` importable and the original data path valid. Binder uses the public repository revision, not files from your local checkout.
 
 ### Switching, saving and temporary sessions
 
-The Classification/Survival dropdown loads a separate page. Variables, edits and results are not transferred. After launch, the site asks before switching and the browser also protects reloads, links and closing the tab. **Cancel** to stay and copy code edits and important results into local files first. A warning does not save work for you.
+Each example has its own page, linked from the sidebar and tutorial overview. Variables, edits and results are not transferred. After launch, the browser asks before leaving via links, reloads or closing the tab. **Cancel** to stay and copy code edits and important results into local files first. A warning does not save work for you.
 
 Binder sessions can disconnect or expire. The website has no edited-notebook export or general generated-file download interface. If you need to retain generated files, choose Colab and use its Files pane, or work locally. Save before leaving rather than relying on a temporary kernel.
 
@@ -41,6 +41,17 @@ An eventual kernel connection does not guarantee every research cell will finish
 5. Save a notebook copy and download needed data/results using Colab's File menu and Files pane before disconnecting. A new Colab session does not automatically retain an earlier runtime's files or variables.
 
 For runtime selection, a setup failure or a checksum/version message, follow the [Colab troubleshooting guide](colab.md). A failed setup is not permission to skip ahead to the scientific cells.
+
+## Cardiac setup
+
+Open [KaleCardiac CardioVAE](../notebooks/MDAS/cardiac/tutorial-CardioVAE.ipynb) or [KaleCardiac LS-EMVAE](../notebooks/MDAS/cardiac/tutorial-LSEMVAE.ipynb). **Run with Binder** starts a temporary kernel in `notebooks/MDAS/cardiac/`. **Run in Google Colab** opens that same authored notebook in Colab; its own Step 0 prepares the environment.
+
+1. Run the package installation cell. It installs `kalecardiac[imaging,interpret]` from its repository, fetches the tutorial configurations and changes into the tutorial folder.
+2. Run the dataset cell. It downloads and extracts about **400 MB** of public tutorial DICOM data. The unlabelled cohort is for pretraining; the labelled cohort is for fine-tuning. Both examples can reuse this data in a shared folder.
+3. Run the remaining cells in order. Each tutorial loads separate pretraining and fine-tuning configuration files; its notebook cells expose settings to explore. Checkpoints and training logs are written in separate output folders.
+4. Binder uses a CPU. For Cardiac Colab, use a compatible Python 3.12 runtime where offered; that is the Python version used in the local shared-environment checks. A T4 GPU can accelerate training, while CPU execution also works. The current default Colab runtime has not been verified here. If a compatible runtime is unavailable, use Binder or Run locally; installing another interpreter does not change the kernel. Resolve any installation error before proceeding.
+
+For **Run locally**, use [Quick Start](quick-start.md#cardiac). Do not mix a local checkout and an older installed copy. Public services must use only the tutorial data; save work before leaving a temporary session.
 
 ## Privacy and interpretation
 

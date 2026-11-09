@@ -124,3 +124,12 @@ html.mdas-presentation .bd-header-article {
 @media (max-width: 575px) {
   .mdas-presentation-label { display: none; }
 }
+
+/* The supplied Cancer figure keeps its own scoped motion and reduced-motion fallback. */
+.bd-article img[src$="kalecancer-fusion-workflow.svg"] {
+  display: block;
+  width: 100%;
+  max-width: 960px;
+  height: auto;
+  margin-inline: auto;
+}

@@ -18,7 +18,7 @@ STAGED = SITE / "_staged"
 HTML = SITE / "_build" / "html"
 REPOSITORY = "https://github.com/pykale/mdas"
 sys.path.insert(0, str(SITE / "_ext"))
-from mdas_notebooks import ALL_NOTEBOOKS
+from mdas_notebooks import ALL_NOTEBOOKS, NOTEBOOKS, CARDIAC_NOTEBOOKS
 
 
 def find_uv() -> str:
@@ -49,8 +49,9 @@ def stage() -> None:
     excluded = {"docs/overview.md", "docs/resources.md", "notebooks/README.md",
                 "tutorials/kalecancer/README.md", "tutorials/kalecardiac/README.md",
                 "docs/prerequisites.md", "tutorials/README.md", "tutorials/kalecancer/hands-on.md",
-                "tutorials/kalecancer/getting-started.md",
-                # Replaced by the Cardiac Example Notebook; old URLs redirect (conf.py).
+                "tutorials/kalecancer/getting-started.md", "tutorials/kalecancer/results.md",
+                "tutorials/kalecardiac/getting-started.md",
+                # Retired tutorial pages keep redirects (conf.py).
                 "tutorials/kalecardiac/cardiovae-hands-on.md", "tutorials/kalecardiac/lsemvae-hands-on.md",
                 "tutorials/kalecardiac/results.md"}
     paths = [ROOT / "README.md", *sorted((ROOT / "docs").rglob("*.md")),
@@ -60,7 +61,10 @@ def stage() -> None:
     mapping["README.md"] = "index.md"
     for docname, (_, notebook_path) in ALL_NOTEBOOKS.items():
         mapping[notebook_path] = docname + ".ipynb"
-    aliases = {"notebooks/MDAS/cancer/survival.ipynb": "tutorials/kalecancer/live-coding-survival.ipynb",
+    aliases = {"tutorials/kalecancer/results.md": "tutorials/kalecancer/live-coding.ipynb",
+               "tutorials/kalecardiac/getting-started.md": "tutorials/kalecardiac/index.md",
+               "tutorials/kalecardiac/results.md": "tutorials/kalecardiac/live-coding.ipynb",
+               "notebooks/MDAS/cancer/survival.ipynb": "tutorials/kalecancer/live-coding-survival.ipynb",
                "notebooks/MDAS/cancer/classification.ipynb": "tutorials/kalecancer/live-coding.ipynb",
                "docs/prerequisites.md": "docs/participation.md",
                "tutorials/README.md": "index.md",
@@ -69,7 +73,7 @@ def stage() -> None:
                "notebooks/README.md": "tutorials/kalecancer/live-coding.ipynb",
                "tutorials/kalecancer/README.md": "tutorials/kalecancer/index.md",
                "tutorials/kalecancer/getting-started.md": "tutorials/kalecancer/index.md",
-               "tutorials/kalecardiac/README.md": "tutorials/kalecardiac/getting-started.md"}
+               "tutorials/kalecardiac/README.md": "tutorials/kalecardiac/index.md"}
 
     def rewrite_link(match: re.Match, original: Path, destination: Path) -> str:
         label, target = match.groups()
@@ -114,18 +118,10 @@ def stage() -> None:
     # Byte-for-byte copy: never execute or alter the original notebook.
     for _, notebook_path in ALL_NOTEBOOKS.values():
         shutil.copyfile(ROOT / notebook_path, STAGED / mapping[notebook_path])
-    for track, entries in {
-        "kalecancer": [["Example Notebook", "live-coding"], ["Results and Interpretation", "results"]],
-        "kalecardiac": [["Getting Started", "getting-started"], ["Example Notebook", "live-coding"]],
-    }.items():
-        title = "Cancer" if track == "kalecancer" else "Cardiac"
+    for track, notebooks in {"kalecancer": NOTEBOOKS, "kalecardiac": CARDIAC_NOTEBOOKS}.items():
+        entries = [[title, docname.rsplit("/", 1)[1]] for docname, (title, _) in notebooks.items()]
         destination = STAGED / f"tutorials/{track}/index.md"
-        if track == "kalecancer":
-            # The authored Cancer landing page contains the introduction.
-            destination.write_text(destination.read_text(encoding="utf-8") + toctree(entries), encoding="utf-8")
-        else:
-            destination.write_text(
-                f"# {title}\n\n[Begin with Getting Started](getting-started.md).\n" + toctree(entries), encoding="utf-8")
+        destination.write_text(destination.read_text(encoding="utf-8") + toctree(entries), encoding="utf-8")
     print(f"Staged {len(paths)} Markdown pages and {len(ALL_NOTEBOOKS)} original notebooks in {STAGED}", flush=True)
 
 

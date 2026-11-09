@@ -4,7 +4,7 @@ orphan: true
 
 # Run the Cancer notebooks in Google Colab
 
-Choose the notebook on Cancer's Example Notebook page, then select **Run in Google Colab**.
+Open [KaleCancer Classification](../notebooks/MDAS/cancer/classification_showcase.ipynb) or [KaleCancer Survival Analysis](../notebooks/MDAS/cancer/survival_showcase.ipynb), then select **Run in Google Colab**.
 
 - [Classification showcase in Google Colab](https://colab.research.google.com/github/pykale/mdas/blob/main/notebooks/MDAS/cancer/classification_showcase_colab.ipynb)
 - [Survival Analysis in Google Colab](https://colab.research.google.com/github/pykale/mdas/blob/main/notebooks/MDAS/cancer/survival_showcase_colab.ipynb)

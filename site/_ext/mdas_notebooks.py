@@ -2,22 +2,18 @@
 
 CANCER = "notebooks/MDAS/cancer"
 NOTEBOOKS = {
-    "tutorials/kalecancer/live-coding": ("Classification", f"{CANCER}/classification_showcase.ipynb"),
-    "tutorials/kalecancer/live-coding-survival": ("Survival Analysis", f"{CANCER}/survival_showcase.ipynb"),
+    "tutorials/kalecancer/live-coding": ("KaleCancer Classification", f"{CANCER}/classification_showcase.ipynb"),
+    "tutorials/kalecancer/live-coding-survival": ("KaleCancer Survival Analysis", f"{CANCER}/survival_showcase.ipynb"),
 }
 
 CARDIAC = "notebooks/MDAS/cardiac"
 CARDIAC_NOTEBOOKS = {
-    "tutorials/kalecardiac/live-coding": ("CardioVAE", f"{CARDIAC}/tutorial-CardioVAE.ipynb"),
-    "tutorials/kalecardiac/live-coding-lsemvae": ("LS-EMVAE", f"{CARDIAC}/tutorial-LSEMVAE.ipynb"),
+    "tutorials/kalecardiac/live-coding": ("KaleCardiac CardioVAE", f"{CARDIAC}/tutorial-CardioVAE.ipynb"),
+    "tutorials/kalecardiac/live-coding-lsemvae": ("KaleCardiac LS-EMVAE", f"{CARDIAC}/tutorial-LSEMVAE.ipynb"),
 }
 
-# Every staged notebook page, and the canonical (sidebar) page of each non-default one.
+# Each notebook is a normal toctree page with its own navigation.
 ALL_NOTEBOOKS = {**NOTEBOOKS, **CARDIAC_NOTEBOOKS}
-SECONDARY_NOTEBOOKS = {
-    "tutorials/kalecancer/live-coding-survival": "tutorials/kalecancer/live-coding",
-    "tutorials/kalecardiac/live-coding-lsemvae": "tutorials/kalecardiac/live-coding",
-}
 
 # Files each page's Binder launch checks on the public revision, besides .binder/.
 # Binder kernels start in the notebook's own folder. The Cardiac notebooks install

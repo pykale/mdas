@@ -6,7 +6,7 @@ import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parent / "_ext"))
 
-from mdas_notebooks import CARDIAC_NOTEBOOKS, NOTEBOOKS, SECONDARY_NOTEBOOKS
+from mdas_notebooks import CARDIAC_NOTEBOOKS, NOTEBOOKS
 
 project = "Multimodal Data Analysis Session (MDAS)"
 author = "CMI/UKOMAIN"
@@ -72,40 +72,52 @@ html_theme_options = {
 
 BINDER_LAUNCH = """<button type="button" id="mdas-thebe-launch" class="btn btn-primary mdas-execution-button thebe-launch-button" onclick="mdasLaunchInteractive()">Run with Binder</button>""" if MDAS_ENABLE_THEBE else "<p>In-page execution is disabled for this build. Read the saved notebook below or use Colab.</p>"
 
-CARDIAC_INTRO = """# Live-Coding Notebook
+def notebook_intro(docname):
+    """Own title and matching execution routes; scientific cells are untouched."""
+    cardiac = docname in CARDIAC_NOTEBOOKS
+    title, path = (CARDIAC_NOTEBOOKS if cardiac else NOTEBOOKS)[docname]
+    colab = path if cardiac else path.replace(".ipynb", "_colab.ipynb")
+    help_target = "../../docs/notebook-execution.html" + ("#cardiac-setup" if cardiac else "")
+    setup = ("Run Step 0 in order: install KaleCardiac, fetch configurations and download the tutorial data. "
+             "Binder uses a CPU; in Colab a T4 GPU can accelerate training. "
+             if cardiac else
+             "In Colab select the documented **Python 3.12 / 2026.07** runtime, then run the initial setup cell. "
+             "Follow any restart instruction before continuing. ")
+    routes = ("Choose **Run with Binder** for a temporary kernel on this website, or **Run in Google Colab** for a separate runtime."
+              if MDAS_ENABLE_THEBE else "In-page execution is disabled in this build. Choose **Run in Google Colab** for a separate runtime.")
+    status = "Not connected. Binder starts only when you choose to launch it." if MDAS_ENABLE_THEBE else "In-page execution is disabled."
+    return f"""<div class="mdas-notebook-tools"><a class="mdas-execution-help" href="{help_target}" target="_blank" rel="noopener" aria-label="Execution Help (opens in a new tab)"><svg class="mdas-help-icon" aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 6v15 M12 6C9 4 6 4 3 5v14c3-1 6-1 9 1 M12 6c3-2 6-2 9-1v14c-3-1-6-1-9 1"/></svg> Execution Help</a></div>
 
-MDAS_NOTEBOOK_SELECTOR
+# {title}
 
-**MDAS_NOTEBOOK_TITLE**
+<span id="live-coding-notebook"></span>
 
-Choose Binder to run the notebook directly on this website, or Google Colab to open it in a Colab runtime.
+{routes}
 
 <div class="mdas-execution-actions">
-MDAS_INTERACTIVE_CONTROL
-<a class="btn btn-primary mdas-execution-button" href="https://colab.research.google.com/github/pykale/mdas/blob/main/MDAS_NOTEBOOK_PATH">Run in Google Colab</a>
+{BINDER_LAUNCH}
+<a class="btn btn-primary mdas-execution-button" href="https://colab.research.google.com/github/pykale/mdas/blob/main/{colab}">Run in Google Colab</a>
 </div>
-<p id="mdas-thebe-status" role="status" aria-live="polite">Not connected. Binder starts only when you choose to launch it.</p>
+<p id="mdas-thebe-status" role="status" aria-live="polite">{status}</p>
 
-Run the cells in order, starting with the package installation cell in Step 0, which installs KaleCardiac into the session. Binder sessions run on a CPU; in Colab, choose a T4 GPU runtime. To run the notebook on your own computer, see [Getting Started](getting-started.md#run-a-tutorial).
+{setup}For **Run locally**, see [Quick Start](../../docs/quick-start.md#{'cardiac' if cardiac else 'cancer'}).
 
-> Sessions are temporary. Copy code edits and important results before switching or leaving. Do not upload private or patient data.
+> Sessions are temporary. Save code edits, important results and generated files before leaving or opening another example. Do not upload private or patient data to public services.
 """
 
 
-def cardiac_intro(docname):
-    """Page title, tutorial selector and execution actions for a Cardiac notebook page."""
-    options = "".join(
-        f'<option value="{name.rsplit("/", 1)[1]}.html"'
-        + (' selected' if name == docname else '') + f'>{label}</option>'
-        for name, (label, _) in CARDIAC_NOTEBOOKS.items()
-    )
-    selector = ('<div class="mdas-notebook-picker"><label for="mdas-notebook-select">Choose a tutorial</label> '
-                f'<select id="mdas-notebook-select" onchange="mdasSwitchNotebook(this)">{options}</select></div>'
-                '<noscript><p>Choose: <a href="live-coding.html">CardioVAE</a> | '
-                '<a href="live-coding-lsemvae.html">LS-EMVAE</a></p></noscript>')
-    title, notebook_path = CARDIAC_NOTEBOOKS[docname]
-    return (CARDIAC_INTRO.replace("MDAS_INTERACTIVE_CONTROL", BINDER_LAUNCH).replace("MDAS_NOTEBOOK_SELECTOR", selector)
-            .replace("MDAS_NOTEBOOK_TITLE", title).replace("MDAS_NOTEBOOK_PATH", notebook_path))
+def notebook_guidance(docname):
+    if docname in CARDIAC_NOTEBOOKS:
+        detail = "Attributions describe this model's use of its inputs, not a causal explanation or a clinical diagnosis. Compare performance when inputs are withheld and use independent evaluation before drawing clinical conclusions."
+    elif docname.endswith("-survival"):
+        detail = "A log-hazard score orders relative risk; it is not an event time or a survival probability. Interpret censored follow-up correctly. Ranking and calibration answer different questions: inspect the notebook's survival probabilities and calibration analysis separately from concordance. Censoring and follow-up assumptions limit comparisons, and synthetic time units do not establish a clinical horizon."
+    else:
+        detail = "Class probabilities describe the synthetic labels; discrimination does not establish calibration or reliable individual clinical predictions. Compare modalities and uncertainty rather than assuming that fusion must improve performance. An interval spanning zero does not establish a clear positive gain; intervals from a small synthetic cohort are not external clinical validation."
+    research = ("" if docname in CARDIAC_NOTEBOOKS else
+                "\n\nThe [KaleCancer HANCOCK research examples](https://github.com/pykale/cancer/tree/main/examples/hancock) require authorised local data, the expected dataset layout and appropriate compute; they are not no-data starter exercises.")
+    return ("## Interpretation and next steps\n\n" + detail +
+            "\n\nSynthetic results demonstrate a software workflow, not clinical validity, external generalisation or causality. Keep subjects separated across splits, fit preprocessing on training data, assess uncertainty and missing inputs, and plan external evaluation. Clinical data require permissions and secure infrastructure.\n\n"
+            "Return to the [tutorial overview](index.md) or follow [Quick Start](../../docs/quick-start.md) to explore another example." + research)
 
 
 def prepare_notebook(app, docname, source):
@@ -116,8 +128,6 @@ def prepare_notebook(app, docname, source):
     import re
 
     notebook = json.loads(source[0])
-    if docname in SECONDARY_NOTEBOOKS:
-        notebook.setdefault("metadata", {})["orphan"] = True
     notebook.setdefault("metadata", {}).setdefault("mystnb", {})["execution_mode"] = "off"
     # Ignore VS Code-only viewer payloads in the in-memory rendering copy.
     # All affected outputs retain their standard HTML/text representation.
@@ -135,51 +145,18 @@ def prepare_notebook(app, docname, source):
             text = "".join(cell["source"])
             cell["source"] = re.sub(r"^(#{1,5}) ", r"#\1 ", text, flags=re.M)
     if docname in CARDIAC_NOTEBOOKS:
-        # Their install cell uses IPython shell escapes (!pip, !git) and magics (%cd), which
-        # the plain Python lexer rejects. Highlight with IPython's lexer in this copy only.
         notebook["metadata"].setdefault("language_info", {})["pygments_lexer"] = "ipython3"
-        notebook["cells"].insert(0, {"cell_type": "markdown", "id": "mdas-access", "metadata": {},
-                                     "source": cardiac_intro(docname)})
-        source[0] = json.dumps(notebook)
-        return
-    title, notebook_path = NOTEBOOKS[docname]
-    launch = BINDER_LAUNCH
-    options = "".join(
-        f'<option value="{name.rsplit("/", 1)[1]}.html"'
-        + (' selected' if name == docname else '') + f'>{label}</option>'
-        for name, (label, _) in NOTEBOOKS.items()
-    )
-    selector = ('<div class="mdas-notebook-picker"><label for="mdas-notebook-select">Choose a notebook</label> '
-                f'<select id="mdas-notebook-select" onchange="mdasSwitchNotebook(this)">{options}</select></div>'
-                '<noscript><p>Choose: <a href="live-coding.html">Classification</a> | '
-                '<a href="live-coding-survival.html">Survival Analysis</a></p></noscript>')
-    intro = """<div class="mdas-notebook-tools"><a class="mdas-execution-help" href="../../docs/notebook-execution.html" target="_blank" rel="noopener" aria-label="Execution Help (opens in a new tab)"><svg class="mdas-help-icon" aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6v15"/><path d="M12 6C9 4 6 4 3 5v14c3-1 6-1 9 1"/><path d="M12 6c3-2 6-2 9-1v14c-3-1-6-1-9 1"/></svg> Execution Help</a></div>
-
-# Live-Coding Notebook
-
-MDAS_NOTEBOOK_SELECTOR
-
-**MDAS_NOTEBOOK_TITLE**
-
-Choose Binder to run directly on this website, or Google Colab to open a self-configuring notebook.
-
-<div class="mdas-execution-actions">
-MDAS_INTERACTIVE_CONTROL
-<a class="btn btn-primary mdas-execution-button" href="https://colab.research.google.com/github/pykale/mdas/blob/main/MDAS_COLAB_PATH">Run in Google Colab</a>
-</div>
-<p id="mdas-thebe-status" role="status" aria-live="polite">Not connected. Binder starts only when you choose to launch it.</p>
-
-Colab needs a compatible **Python 3.12** runtime. Select it and run the initial setup cell; follow any restart instruction before continuing.
-
-> Sessions are temporary. Copy code edits and important results before switching or leaving; keep generated files separately. Use synthetic data only: do not upload private or patient data. Synthetic results do not demonstrate clinical performance.
-""".replace("MDAS_INTERACTIVE_CONTROL", launch).replace("MDAS_NOTEBOOK_SELECTOR", selector).replace("MDAS_NOTEBOOK_TITLE", title).replace("MDAS_NOTEBOOK_PATH", notebook_path).replace("MDAS_COLAB_PATH", notebook_path.replace(".ipynb", "_colab.ipynb"))
-    notebook["cells"].insert(0, {"cell_type": "markdown", "id": "mdas-access", "metadata": {}, "source": intro})
+    notebook["cells"].insert(0, {"cell_type": "markdown", "id": "mdas-access", "metadata": {},
+                                 "source": notebook_intro(docname)})
     notebook["cells"].append({"cell_type": "markdown", "id": "mdas-next-step", "metadata": {},
-        "source": "When you have inspected the predictions, metrics and baseline comparison, [interpret the Cancer results](results.md) before drawing conclusions."})
+                              "source": notebook_guidance(docname)})
     source[0] = json.dumps(notebook)
 
 
+
 REDIRECTS = {
+    "tutorials/kalecancer/results": "live-coding.html#interpretation-and-next-steps",
+    "tutorials/kalecardiac/getting-started": "index.html",
     "docs/prerequisites": "participation.html",
     "tutorials/README": "../index.html#explore-the-examples",
     "tutorials/kalecancer/hands-on": "live-coding.html",
@@ -188,35 +165,20 @@ REDIRECTS = {
     "notebooks/README": "../tutorials/kalecancer/live-coding.html",
     "tutorials/kalecancer/README": "index.html",
     "tutorials/kalecancer/getting-started": "index.html",
-    "tutorials/kalecardiac/README": "getting-started.html",
+    "tutorials/kalecardiac/README": "index.html",
     "tutorials/kalecardiac/cardiovae-hands-on": "live-coding.html",
     "tutorials/kalecardiac/lsemvae-hands-on": "live-coding-lsemvae.html",
-    "tutorials/kalecardiac/results": "live-coding.html",
+    "tutorials/kalecardiac/results": "live-coding.html#interpretation-and-next-steps",
 }
 
 
 def redirect_pages(app):
     for old, target in REDIRECTS.items():
-        yield old, {"redirect_target": target}, "redirect.html"
-
-
-def notebook_navigation(app, pagename, templatename, context, doctree):
-    """Give each non-default notebook page its track's canonical sidebar and prev/next links."""
-    canonical = SECONDARY_NOTEBOOKS.get(pagename)
-    if canonical is None:
-        return
-    from sphinx.environment.adapters.toctree import TocTree
-    def toctree(**kwargs):
-        tree = TocTree(app.env).get_toctree_for(canonical, app.builder, **kwargs)
-        return app.builder.render_partial(tree)["fragment"] if tree is not None else ""
-
-    context["toctree"] = toctree
-    relations = app.env.collect_relations().get(canonical)
-    if relations:
-        for key, target in zip(("prev", "next"), relations[1:]):
-            if target:
-                context[key] = {"link": app.builder.get_relative_uri(pagename, target),
-                                "title": app.env.titles[target].astext()}
+        fragments = {}
+        if old == "tutorials/kalecancer/results":
+            fragments = {key: "live-coding-survival.html#interpretation-and-next-steps"
+                         for key in ("#survival-analysis-results-and-interpretation", "#read-risk-alongside-follow-up")}
+        yield old, {"redirect_target": target, "redirect_fragments": fragments}, "redirect.html"
 
 
 def setup(app):
@@ -226,7 +188,6 @@ def setup(app):
 
     app.add_lexer("ipython2", PythonLexer)
     app.connect("source-read", prepare_notebook)
-    app.connect("html-page-context", notebook_navigation, priority=400)
     app.add_js_file("mdas-notebooks.js", defer="defer")
     app.add_css_file("mdas-notebooks.css")
     app.connect("html-collect-pages", redirect_pages)

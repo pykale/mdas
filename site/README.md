@@ -1,5 +1,10 @@
 # MDAS website build
 
+The current participant structure is **Cancer ? KaleCancer Classification / KaleCancer Survival Analysis** and **Cardiac ? KaleCardiac CardioVAE / KaleCardiac LS-EMVAE**. Both overviews are authored `index.md` files; `build.py` appends their two-entry toctrees from the shared notebook mapping. Each example is a normal Sphinx page with its own title and previous/next relations. There is no picker or canonical-secondary-page override. The leave-page guard works independently of a picker.
+
+Cardiac Getting Started and both retired Results URLs redirect to current pages, preserving useful fragments. Interpretation guidance appears beneath each notebook. The supplied Cancer SVG is a local Markdown image with additive arrow overlays and a reduced-motion static fallback. See [NAVIGATION-RESTRUCTURE-REVIEW.md](NAVIGATION-RESTRUCTURE-REVIEW.md) for the latest source-only checks and manual review items; older sections below record earlier implementations.
+
+
 This directory contains the Sphinx + MyST Parser + Sphinx Book Theme configuration. Participant content remains authoritative in the root `README.md`, `docs/`, `tutorials/` and `notebooks/README.md`. Edit those pages, then rebuild; do not edit generated copies.
 
 ## Build from Windows PowerShell

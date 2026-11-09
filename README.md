@@ -8,7 +8,12 @@ Work through the examples with us at the session or independently afterwards. Th
 
 ## Explore the examples
 
-[Explore Cancer](tutorials/kalecancer/index.md) or [Explore Cardiac](tutorials/kalecardiac/getting-started.md). The Cancer notebooks can run on this website with Binder or in a dedicated Google Colab copy; Cardiac examples have local setup instructions.
+| Track | What you will explore |
+| --- | --- |
+| [KaleCancer](tutorials/kalecancer/index.md) | Combine clinical variables and pathology features to predict a category or analyse survival. |
+| [KaleCardiac](tutorials/kalecardiac/index.md) | Learn from chest X-rays and ECGs with CardioVAE, or from complementary ECG leads with LS-EMVAE. |
+
+Open either tutorial overview and choose an example. Use **Run with Binder** or **Run in Google Colab** where offered on its notebook page, or **Run locally** using [Quick Start](docs/quick-start.md).
 
 For preparation and privacy guidance, see the [Participation Guide](docs/participation.md). To start an example immediately, use [Quick Start](docs/quick-start.md).
 
