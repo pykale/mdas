@@ -22,6 +22,8 @@ Researchers, clinicians, data scientists, research software engineers and PhD st
 | Google Colab | Open the [Cancer notebook page](../notebooks/MDAS/cancer/classification.ipynb) or [Cardiac notebook page](../notebooks/MDAS/cardiac/tutorial-CardioVAE.ipynb) and select **Run in Google Colab** to open the notebook for your chosen track. Follow its documented runtime and setup instructions, including any requested session restart. |
 | Optional local setup | Cancer and Cardiac use separate repositories and environments. Follow Quick Start for the commands; a successful install still needs a test run. |
 
+**Classification showcase limitation:** its Colab action is currently disabled, and the pinned Binder environment lacks required interpretation APIs. Read the saved example or use Survival Analysis; see [Execution Help](notebook-execution.md).
+
 Local Cancer examples support Python 3.11 or 3.12. The Cardiac instructions use Python 3.10, 3.11 or 3.12 with compatible PyTorch and PyKale. Do not assume one environment serves both tracks.
 
 ## In person or at your own pace

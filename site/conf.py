@@ -71,7 +71,9 @@ html_theme_options = {
 
 BINDER_LAUNCH = """<button type="button" id="mdas-thebe-launch" class="btn btn-primary mdas-execution-button thebe-launch-button" onclick="mdasLaunchInteractive()">Run with Binder</button>""" if MDAS_ENABLE_THEBE else "<p>In-page execution is disabled for this build. Read the saved notebook below or use Colab.</p>"
 
-CARDIAC_INTRO = """# Live-Coding Notebook
+CARDIAC_INTRO = """(live-coding-notebook)=
+
+# Example Notebook
 
 MDAS_NOTEBOOK_SELECTOR
 
@@ -154,7 +156,9 @@ def prepare_notebook(app, docname, source):
                 '<a href="live-coding-survival.html">Survival Analysis</a></p></noscript>')
     intro = """<div class="mdas-notebook-tools"><a class="mdas-execution-help" href="../../docs/notebook-execution.html" target="_blank" rel="noopener" aria-label="Execution Help (opens in a new tab)"><svg class="mdas-help-icon" aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6v15"/><path d="M12 6C9 4 6 4 3 5v14c3-1 6-1 9 1"/><path d="M12 6c3-2 6-2 9-1v14c-3-1-6-1-9 1"/></svg> Execution Help</a></div>
 
-# Live-Coding Notebook
+(live-coding-notebook)=
+
+# Example Notebook
 
 MDAS_NOTEBOOK_SELECTOR
 
@@ -172,6 +176,25 @@ Colab needs a compatible **Python 3.12** runtime. Select it and run the initial 
 
 > Sessions are temporary. Copy code edits and important results before switching or leaving; keep generated files separately. Use synthetic data only: do not upload private or patient data. Synthetic results do not demonstrate clinical performance.
 """.replace("MDAS_INTERACTIVE_CONTROL", launch).replace("MDAS_NOTEBOOK_SELECTOR", selector).replace("MDAS_NOTEBOOK_TITLE", title).replace("MDAS_NOTEBOOK_PATH", notebook_path).replace("MDAS_COLAB_PATH", notebook_path.replace(".ipynb", "_colab.ipynb"))
+    if notebook_path.endswith("/classification_showcase.ipynb"):
+        # Do not send participants to the old Classification example or to a
+        # nonexistent showcase Colab copy. Both execution environments still pin
+        # KaleCancer 1f476fd, whose interpret package exports only attention.
+        colab_link = ('<a class="btn btn-primary mdas-execution-button" '
+                      f'href="https://colab.research.google.com/github/pykale/mdas/blob/main/{notebook_path.replace(".ipynb", "_colab.ipynb")}">Run in Google Colab</a>')
+        intro = intro.replace("Read the saved notebook below or use Colab.", "Read the saved notebook below; showcase execution setup is pending.")
+        intro = intro.replace(colab_link,
+            '<button class="btn btn-primary mdas-execution-button" disabled aria-describedby="mdas-showcase-blocker">Google Colab unavailable</button>')
+        intro = intro.replace(
+            "Choose Binder to run directly on this website, or Google Colab to open a self-configuring notebook.",
+            '<p id="mdas-showcase-blocker"><strong>Showcase execution setup pending.</strong> '
+            'The current Binder and Colab KaleCancer pin lacks required showcase interpretation APIs, '
+            'including modality_shapley, feature_shapley and attention_heatmap. '
+            'You can read the saved example here, but the full showcase cannot run in the existing Binder environment. '
+            'Colab is unavailable until a compatible KaleCancer revision and setup have been verified; '
+            'it does not open the older Classification example.</p>')
+        intro = intro.replace(
+            "Colab needs a compatible **Python 3.12** runtime. Select it and run the initial setup cell; follow any restart instruction before continuing.", "")
     notebook["cells"].insert(0, {"cell_type": "markdown", "id": "mdas-access", "metadata": {}, "source": intro})
     notebook["cells"].append({"cell_type": "markdown", "id": "mdas-next-step", "metadata": {},
         "source": "When you have inspected the predictions, metrics and baseline comparison, [interpret the Cancer results](results.md) before drawing conclusions."})

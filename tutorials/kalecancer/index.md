@@ -28,4 +28,4 @@ Follow one notebook in order: generate data, load each modality and target, cons
 
 As you work, record the target, input columns, prediction shape and metric. Ask why records from the same subject must stay in one split, why transformations must be fitted on training data, and what information patches might add beyond clinical variables. The interpretation page will help you separate a runnable workflow from a research claim.
 
-**Next:** [Choose and run the Live-Coding Notebook](../../notebooks/MDAS/cancer/classification.ipynb).
+**Next:** [Choose and run the Example Notebook](../../notebooks/MDAS/cancer/classification.ipynb).

@@ -4,9 +4,10 @@ orphan: true
 
 # Run the Cancer notebooks in Google Colab
 
-Choose **Classification** or **Survival Analysis** on the Live-Coding Notebook page, then select **Run in Google Colab**. Each link opens a self-configuring copy of that notebook:
+For **Survival Analysis**, choose it on the Example Notebook page, then select **Run in Google Colab** to open its self-configuring copy.
 
-- [Classification in Google Colab](https://colab.research.google.com/github/pykale/mdas/blob/main/notebooks/MDAS/cancer/classification_colab.ipynb)
+**Classification showcase setup is blocked:** the current KaleCancer dependency pin (`1f476fd`) lacks required interpretation APIs, including `modality_shapley`, `feature_shapley` and `attention_heatmap`. Its Colab action is disabled rather than opening the old example or an unprepared copy. The same pin also prevents full showcase execution in Binder. Read the saved showcase on the website while a compatible environment is prepared.
+
 - [Survival Analysis in Google Colab](https://colab.research.google.com/github/pykale/mdas/blob/main/notebooks/MDAS/cancer/survival_colab.ipynb)
 
 ## Before running: Python 3.12
@@ -24,7 +25,7 @@ The default Python 3.13 runtime is outside the published KaleCancer and PyKale r
 
 The setup arranges `notebooks/MDAS/cancer/` beneath `/content/mdas-cancer/`, adds that directory to the import path and changes the working directory there. Thus the original `from synthetic_data_generation import make_cohort` and `../../../data/synthetic_data` work without editing any scientific cell. Each notebook generates its own appropriate synthetic task with the original deterministic generator.
 
-The four original notebooks, blank exercises, Binder requirements and Binder controller are unchanged. **Run with Binder** continues to execute the original notebook on the website. Colab copies add only this setup section; all original cell dictionaries, ordering, metadata and saved outputs are preserved.
+The four original notebooks, blank exercises, Binder requirements and Binder controller are unchanged. **Run with Binder** uses the selected notebook on the website; the Classification showcase currently has the setup limitation above. Colab copies add only this setup section; all original cell dictionaries, ordering, metadata and saved outputs are preserved.
 
 ## If setup does not reach MDAS ready
 

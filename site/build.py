@@ -50,7 +50,7 @@ def stage() -> None:
                 "tutorials/kalecancer/README.md", "tutorials/kalecardiac/README.md",
                 "docs/prerequisites.md", "tutorials/README.md", "tutorials/kalecancer/hands-on.md",
                 "tutorials/kalecancer/getting-started.md",
-                # Replaced by the Cardiac Live-Coding Notebook; old URLs redirect (conf.py).
+                # Replaced by the Cardiac Example Notebook; old URLs redirect (conf.py).
                 "tutorials/kalecardiac/cardiovae-hands-on.md", "tutorials/kalecardiac/lsemvae-hands-on.md",
                 "tutorials/kalecardiac/results.md"}
     paths = [ROOT / "README.md", *sorted((ROOT / "docs").rglob("*.md")),
@@ -60,7 +60,8 @@ def stage() -> None:
     mapping["README.md"] = "index.md"
     for docname, (_, notebook_path) in ALL_NOTEBOOKS.items():
         mapping[notebook_path] = docname + ".ipynb"
-    aliases = {"docs/prerequisites.md": "docs/participation.md",
+    aliases = {"notebooks/MDAS/cancer/classification.ipynb": "tutorials/kalecancer/live-coding.ipynb",
+               "docs/prerequisites.md": "docs/participation.md",
                "tutorials/README.md": "index.md",
                "tutorials/kalecancer/hands-on.md": "tutorials/kalecancer/live-coding.ipynb",
                "docs/overview.md": "docs/about.md", "docs/resources.md": "docs/quick-start.md",
@@ -113,8 +114,8 @@ def stage() -> None:
     for _, notebook_path in ALL_NOTEBOOKS.values():
         shutil.copyfile(ROOT / notebook_path, STAGED / mapping[notebook_path])
     for track, entries in {
-        "kalecancer": [["Live-Coding Notebook", "live-coding"], ["Results and Interpretation", "results"]],
-        "kalecardiac": [["Getting Started", "getting-started"], ["Live-Coding Notebook", "live-coding"]],
+        "kalecancer": [["Example Notebook", "live-coding"], ["Results and Interpretation", "results"]],
+        "kalecardiac": [["Getting Started", "getting-started"], ["Example Notebook", "live-coding"]],
     }.items():
         title = "Cancer" if track == "kalecancer" else "Cardiac"
         destination = STAGED / f"tutorials/{track}/index.md"

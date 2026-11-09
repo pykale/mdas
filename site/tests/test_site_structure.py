@@ -21,7 +21,7 @@ class SiteStructure(unittest.TestCase):
         self.assertEqual([title for title, _ in navigation["About the Session"]], ["What is MDAS?", "Session Agenda", "Participation Guide"])
         self.assertEqual(navigation["Tutorials"], [["Cancer", "tutorials/kalecancer/index"], ["Cardiac", "tutorials/kalecardiac/index"]])
         staged = (ROOT / "site/_staged/tutorials/kalecancer/index.md").read_text(encoding="utf-8")
-        self.assertIn("Live-Coding Notebook <live-coding>", staged)
+        self.assertIn("Example Notebook <live-coding>", staged)
         self.assertNotIn("hands-on", staged)
         self.assertNotIn("Getting Started <getting-started>", staged)
         self.assertIn("# Cancer", staged)
@@ -48,7 +48,7 @@ class SiteStructure(unittest.TestCase):
 
     def test_cardiac_live_coding_replaces_hands_on_and_results(self):
         staged = (ROOT / "site/_staged/tutorials/kalecardiac/index.md").read_text(encoding="utf-8")
-        self.assertIn("Getting Started <getting-started>\nLive-Coding Notebook <live-coding>\n```", staged)
+        self.assertIn("Getting Started <getting-started>\nExample Notebook <live-coding>\n```", staged)
         for removed in ("hands-on", "Results and Interpretation", "results"):
             self.assertNotIn(removed, staged)
         for old, target in (("tutorials/kalecardiac/cardiovae-hands-on", "live-coding.html"),

@@ -12,7 +12,7 @@ This guide opens in a new tab so your notebook page and active kernel can stay i
 2. Wait for **Kernel connected**. A first build or busy public service can take several minutes. Keep the page open and read the connection status; repeated clicks do not speed up startup.
 3. Edit and run cells individually, from the first cell onwards. Later cells depend on earlier variables. Run training and advanced comparisons deliberately; they add CPU time.
 
-The kernel starts in `notebooks/MDAS/cancer/`, making `synthetic_data_generation.py` importable and the original data path valid. Binder uses the public repository revision, not files from your local checkout.
+The kernel starts in `notebooks/MDAS/cancer/`, making `synthetic_data_generation.py` and the Classification companion `synthetic_showcase_data.py` importable and the original data path valid. Binder uses the public repository revision, not files from your local checkout.
 
 ### Switching, saving and temporary sessions
 
@@ -30,7 +30,7 @@ An eventual kernel connection does not guarantee every research cell will finish
 
 ## Colab: run the dedicated copy
 
-**Run in Google Colab** opens `classification_colab.ipynb` or `survival_colab.ipynb` for the selected task. These copies retain all original scientific cells and add an initial **Google Colab Environment Setup** section.
+**Run in Google Colab** opens `survival_colab.ipynb` for Survival Analysis, preserving its scientific cells and adding an initial **Google Colab Environment Setup** section. Classification now displays `classification_showcase.ipynb`. Its Colab action is disabled because the current KaleCancer pin lacks required showcase interpretation APIs; full Binder execution has the same blocker. It never launches the old Classification example as a substitute. See the [Colab guide](colab.md) for details.
 
 1. Select a compatible **Python 3.12** runtime as explained at the top of that notebook. Runtime selection is a participant action; installing another Python executable does not change the active kernel.
 2. Run the initial setup cell. It retrieves support files and installs compatible research packages in the active environment. The first installation may take several minutes.

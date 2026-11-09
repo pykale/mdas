@@ -53,7 +53,7 @@ class Page(HTMLParser):
 
 class Notebooks(unittest.TestCase):
     def test_generated_notebooks(self):
-        for name, page_name in (("classification", "live-coding"), ("survival", "live-coding-survival")):
+        for name, page_name in (("classification_showcase", "live-coding"), ("survival", "live-coding-survival")):
             with self.subTest(name=name):
                 path = f"notebooks/MDAS/cancer/{name}.ipynb"
                 original = json.loads((ROOT / path).read_text(encoding="utf-8"))
@@ -82,12 +82,20 @@ class Notebooks(unittest.TestCase):
                 self.assertRegex(html, r'class="left-prev"\s+href="index.html"')
                 self.assertRegex(html, r'class="right-next"\s+href="results.html"')
                 colab_path = path.replace(".ipynb", "_colab.ipynb")
-                self.assertIn(f'href="https://colab.research.google.com/github/pykale/mdas/blob/main/{colab_path}"', html)
+                if name == "classification_showcase":
+                    self.assertNotIn('href="https://colab.research.google.com/github/', html)
+                    self.assertIn('disabled aria-describedby="mdas-showcase-blocker"', html)
+                    self.assertIn("Showcase execution setup pending", html)
+                    required = json.loads(page.scripts["mdas-binder-check"])["required_files"]
+                    self.assertIn("notebooks/MDAS/cancer/synthetic_showcase_data.py", required)
+                    self.assertIn("notebooks/MDAS/cancer/synthetic_data_generation.py", required)
+                else:
+                    self.assertIn(f'href="https://colab.research.google.com/github/pykale/mdas/blob/main/{colab_path}"', html)
                 self.assertEqual(len(page.actions), 2)
-                self.assertEqual([tag for tag, _ in page.actions], ["button", "a"])
+                self.assertEqual([tag for tag, _ in page.actions], ["button", "button"] if name == "classification_showcase" else ["button", "a"])
                 self.assertEqual(page.actions[0][1]["onclick"], "mdasLaunchInteractive()")
                 self.assertIn('>Run with Binder</button>', html)
-                self.assertIn('>Run in Google Colab</a>', html)
+                self.assertIn('>Google Colab unavailable</button>' if name == 'classification_showcase' else '>Run in Google Colab</a>', html)
                 self.assertNotIn('Prepare Colab Environment', html)
                 self.assertNotIn('prepare_colab.ipynb', html)
                 config = json.loads(page.scripts["text/x-thebe-config"])
@@ -95,7 +103,7 @@ class Notebooks(unittest.TestCase):
                 self.assertFalse(config["bootstrap"])
                 self.assertIn(path, json.loads(page.scripts["mdas-binder-check"])["required_files"])
                 sidebar = html.split('<div class="bd-toc-item navbar-nav active">')[1].split('</nav>')[0]
-                entries = re.findall(r'<a class="[^"]*reference internal" href="([^"]*)">Live-Coding Notebook</a>', sidebar)
+                entries = re.findall(r'<a class="[^"]*reference internal" href="([^"]*)">Example Notebook</a>', sidebar)
                 # One Cancer entry (Survival adds none), plus the separate Cardiac track's entry.
                 self.assertEqual(len([href for href in entries if "kalecardiac/" not in href]), 1)
                 self.assertEqual(len([href for href in entries if "kalecardiac/" in href]), 1)
@@ -116,14 +124,14 @@ class Notebooks(unittest.TestCase):
                 html = html_path.read_text(encoding="utf-8")
                 page = Page(html_path)
                 self.assertEqual((ROOT / f"site/_staged/tutorials/kalecardiac/{page_name}.ipynb").read_bytes(), (ROOT / path).read_bytes())
-                self.assertIn('<h1>Live-Coding Notebook', html)
+                self.assertIn('<h1>Example Notebook', html)
                 self.assertIn('<label for="mdas-notebook-select">Choose a tutorial</label>', html)
                 self.assertEqual([(x["value"], html.split(f'value="{x["value"]}"')[1].split(">")[1].split("<")[0]) for x in page.options],
                                  [("live-coding.html", "CardioVAE"), ("live-coding-lsemvae.html", "LS-EMVAE")])
                 self.assertEqual([x["value"] for x in page.options if "selected" in x], [page_name + ".html"])
                 self.assertEqual([s.strip() for s in page.inputs], ["".join(c["source"]).strip() for c in original["cells"] if c["cell_type"] == "code"])
                 # The notebook supplies no title of its own (the page title comes first) and no Colab badge.
-                self.assertEqual(set(re.findall(r"<h1[^>]*>([^<]*)", html)), {"Live-Coding Notebook"})
+                self.assertEqual(set(re.findall(r"<h1[^>]*>([^<]*)", html)), {"Example Notebook"})
                 article = html.split('<article class="bd-article">')[1].split('</article>')[0]
                 self.assertEqual(re.findall(r"<h2>([^<]*)", article)[0], "Step 0: Environment Preparation")
                 self.assertNotIn("Cardiac Abnormality Assessment", html)
@@ -153,7 +161,7 @@ class Notebooks(unittest.TestCase):
                 self.assertRegex(html, r'class="left-prev"\s+href="getting-started.html"')
                 sidebar = html.split('<div class="bd-toc-item navbar-nav active">')[1].split('</nav>')[0]
                 current = re.findall(r'<li class="toctree-l2 current active"><a class="current reference internal" href="[^"]*">([^<]+)</a>', sidebar)
-                self.assertEqual(current, ["Live-Coding Notebook"])
+                self.assertEqual(current, ["Example Notebook"])
                 for removed in ("CardioVAE Hands-on", "LS-EMVAE Hands-on", "kalecardiac/results.html", 'href="results.html"'):
                     self.assertNotIn(removed, sidebar)
                 toc = html.split('id="pst-secondary-sidebar"')[1]

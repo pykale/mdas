@@ -51,7 +51,7 @@ The ignored `site/_staged/` directory is regenerated on every build. It preserve
 
 ### Notebook rendering
 
-The original `classification.ipynb` and `survival.ipynb` from `notebooks/MDAS/cancer/` are copied byte-for-byte into the staged tree and parsed by MyST-NB. `_ext/mdas_notebooks.py` maps their repository paths to `live-coding.html` (Classification, default) and `live-coding-survival.html` (Survival Analysis). The labelled dropdown navigates between these separate pages. Survival is an orphan page with the canonical notebook sidebar and previous/next navigation; it supplies its own page contents. Only one Live-Coding Notebook entry is included in the toctree. **Execution is disabled** with `nb_execution_mode = "off"` and an all-notebook exclusion pattern. Saved code and outputs are shown; no research environment or dataset is loaded.
+The authored `classification_showcase.ipynb` and `survival.ipynb` from `notebooks/MDAS/cancer/` are copied byte-for-byte into the staged tree and parsed by MyST-NB. `_ext/mdas_notebooks.py` maps their repository paths to `live-coding.html` (Classification, default) and `live-coding-survival.html` (Survival Analysis). The labelled dropdown navigates between these separate pages. Survival is an orphan page with the canonical notebook sidebar and previous/next navigation; it supplies its own page contents. Only one Example Notebook entry is included in the toctree. **Execution is disabled** with `nb_execution_mode = "off"` and an all-notebook exclusion pattern. Saved code and outputs are shown; no research environment or dataset is loaded.
 
 A source-read hook adds the page title, two primary execution buttons, a secondary Execution Help link and privacy guidance in memory. A short interpretation next step follows the original cells. Existing notebook headings are nested beneath the page title for navigation. It leaves code, outputs and safety text unchanged. The original notebook and associated Python helper are never written or executed. Its existing Mermaid diagram is rendered using the Mermaid extension. A legacy `ipython2` display-lexer alias is registered without changing notebook metadata on disk.
 
@@ -111,7 +111,7 @@ Public Binder is temporary, has limited capacity and no availability guarantee. 
 
 ### Test locally and record the layers separately
 
-Build and serve using the commands above, then open the Cancer Live-Coding Notebook page:
+Build and serve using the commands above, then open the Cancer Example Notebook page:
 
 1. Before clicking, confirm the static cells and saved outputs are visible and that no Binder connection is started.
 2. Click **Run interactively on this website**. Confirm loading/status text, editable cells and eventual kernel connection. A connected kernel does not prove that research imports work.
@@ -124,7 +124,7 @@ The dependency resolution, helper smoke test, static builds, HTML links and cont
 
 The organiser has confirmed Binder server launch and Thebe kernel connection after publishing revision `090f1ff`. The earlier failure analysis above records the pre-publication state. Full research-training validation remains separate.
 
-The Colab buttons target `classification_colab.ipynb` and `survival_colab.ipynb`. Each copy adds a setup section and preserves every original cell dictionary. Both complete notebooks are rendered under a single sidebar entry.
+The Survival Colab button targets `survival_colab.ipynb`. Classification displays the showcase, with Colab disabled pending compatible setup (see the blocker below). The older `classification_colab.ipynb` remains in the repository but is not the selected example. The notebook pages share a single sidebar entry.
 
 ### Disable or replace the backend
 
@@ -158,7 +158,7 @@ The direct Colab copies and their shared support files are under `notebooks/MDAS
 
 ## Classification page and presentation mode
 
-The Cancer Live-Coding Notebook defaults to `classification.ipynb`; the dropdown also opens `survival.ipynb`. Colab and Binder preflight references follow the selected notebook. Blank exercise files remain unchanged in the repository but are not actions in the notebook interface. The byte-for-byte staged copies are adapted only in memory for HTML rendering. Scientific content and original files remain untouched.
+The Cancer Example Notebook defaults to `classification_showcase.ipynb`; the dropdown also opens `survival.ipynb`. Binder preflight references follow the selected notebook; Classification Colab is disabled pending compatible showcase setup. Blank exercise files remain unchanged in the repository but are not actions in the notebook interface. The byte-for-byte staged copies are adapted only in memory for HTML rendering. Scientific content and original files remain untouched.
 
 `_static/mdas-notebooks.js` handles page navigation and unsaved-work warnings. A cancelled selector confirmation restores the selection; `beforeunload` protects other navigation, reload and close actions after launch, including disconnected sessions. The client-side export function and its embedded notebook payload have been removed. Participants must copy edits/results before leaving; Execution Help explains saving limitations and the Colab file workflow. Help opens a new tab to keep the active notebook and kernel in place. Browser leave prompts depend on browser interaction policies.
 
@@ -197,8 +197,16 @@ Validation commands: `python -m unittest discover -s site/tests -p test_colab.py
 
 The public identity is **Multimodal Data Analysis Session (MDAS)**. The homepage introduces PyKale and its Cancer/Cardiac applications, with plain text track links. There are no numbered editions, stage strips or track cards in the published site.
 
-`tutorials/kalecancer/index.md` is the authored Cancer introduction, covering both Classification and Survival. `build.py` appends its two-child toctree (Live-Coding Notebook and Results), while the former Cancer Getting Started URL redirects to this landing page. The Cardiac group has two children, Getting Started and Live-Coding Notebook. Existing Previous/Next navigation uses Cancer as the notebook's previous page, and Cardiac Getting Started as the Cardiac notebook's previous page.
+`tutorials/kalecancer/index.md` is the authored Cancer introduction, covering both Classification and Survival. `build.py` appends its two-child toctree (Example Notebook and Results), while the former Cancer Getting Started URL redirects to this landing page. The Cardiac group has two children, Getting Started and Example Notebook. Existing Previous/Next navigation uses Cancer as the notebook's previous page, and Cardiac Getting Started as the Cardiac notebook's previous page.
 
 The notebook keeps its selector and two primary execution buttons. Upper-right Execution Help uses a small inline open-book SVG with the existing accessible new-tab link; it adds no icon library or runtime dependency. The Present script, kernel controls and unsaved-work guards are unchanged.
 
 Run `python site/tests/test_site_structure.py` after building for public identity, substantive Cancer content, redirects, preserved event/setup commands and help accessibility checks. Keep running the notebook mapping, Colab preservation, JavaScript switching/Binder and presentation tests. `site/WEBSITE-REFINEMENT-REVIEW.md` records this refinement's inventory and validation. Earlier internal planning reports are not staged or published by Sphinx.
+
+## Classification showcase execution blocker
+
+The Example Notebook now displays `classification_showcase.ipynb`; its Binder file checks include both `synthetic_showcase_data.py` and that module's dependency, `synthetic_data_generation.py`. The original Classification notebook remains in the repository, and links to its old source path still resolve to the same website page.
+
+Binder and Colab both pin KaleCancer `1f476fdba87f515286f732cd7eaa92ffeeffdbc2`. That revision exports only `attention` from `kalecancer.interpret`, while the showcase also imports `leave_one_out_ablation`, `modality_shapley`, `feature_shapley`, `permutation_importance`, `attention_heatmap` and `save_heatmap`. Full showcase execution is therefore blocked in both environments. The Classification Colab action is disabled with a visible explanation; it does not target the old example or a missing showcase copy.
+
+Before enabling showcase Colab, verify a compatible KaleCancer revision and dependency set, extend `site/sync_colab.py` to generate `classification_showcase_colab.ipynb`, and include a checksum-verified download of `synthetic_showcase_data.py` alongside the existing helper setup. Preserve every showcase scientific cell. The existing Classification/Survival Colab copies and generator are unchanged pending this prerequisite; their earlier validation does not validate the showcase. No dependency pin or Binder environment was changed for this switch.
