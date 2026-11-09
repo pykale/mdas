@@ -18,7 +18,7 @@ For execution instructions, see [Quick Start](quick-start.md).
 
 ## In person or at your own pace
 
-At the session, use the first block to learn the pipeline and the second to explore a research question with support from the AIRE team. Specific organiser-provided problems remain to be confirmed. The [Session Agenda](agenda.md) contains the detailed programme.
+At the session, use the first block to learn the pipeline and the second to explore a research question with support from the AIRE team. Specific organiser-provided problems remain to be confirmed. The [programme](about.md#programme) contains the detailed programme.
 
 Learning independently? Choose one track, complete a synthetic run, and record the endpoint, modalities, outputs and one limitation. Read the interpretation guidance on the example page before changing a configuration. The same materials remain available after the event.
 

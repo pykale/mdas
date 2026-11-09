@@ -155,6 +155,7 @@ def prepare_notebook(app, docname, source):
 
 
 REDIRECTS = {
+    "docs/agenda": "about.html#programme",
     "tutorials/kalecancer/results": "live-coding.html#interpretation-and-next-steps",
     "tutorials/kalecardiac/getting-started": "index.html",
     "docs/prerequisites": "participation.html",

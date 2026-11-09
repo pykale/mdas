@@ -17,6 +17,7 @@ def plain(html):
 class SiteStructure(unittest.TestCase):
     def test_navigation_has_two_examples_per_overview(self):
         navigation = json.loads((ROOT / "site/navigation.json").read_text())
+        self.assertEqual(navigation["About the Session"], [["What is MDAS?", "docs/about"], ["Participation Guide", "docs/participation"]])
         self.assertEqual(navigation["Tutorials"], [["Cancer", "tutorials/kalecancer/index"], ["Cardiac", "tutorials/kalecardiac/index"]])
         for track, titles in (("kalecancer", ["KaleCancer Classification", "KaleCancer Survival Analysis"]),
                               ("kalecardiac", ["KaleCardiac CardioVAE", "KaleCardiac LS-EMVAE"])):
@@ -32,7 +33,7 @@ class SiteStructure(unittest.TestCase):
                 self.assertNotIn(">" + obsolete + "</a>", sidebar)
 
     def test_retired_urls_redirect_to_current_pages(self):
-        redirects = {"docs/prerequisites": "participation.html",
+        redirects = {"docs/agenda": "about.html#programme","docs/prerequisites": "participation.html",
                      "tutorials/kalecancer/getting-started": "index.html",
                      "tutorials/kalecardiac/getting-started": "index.html",
                      "tutorials/kalecancer/results": "live-coding.html#interpretation-and-next-steps",
@@ -48,11 +49,11 @@ class SiteStructure(unittest.TestCase):
 
     def test_public_identity_and_session_details(self):
         venue = "Ada Lovelace Room (108), Level 1, Regent Court, University of Sheffield"
-        for doc in ("index", "docs/about", "docs/agenda", "docs/participation"):
+        for doc in ("index", "docs/about", "docs/participation"):
             text = plain(page(doc))
             self.assertIn(venue, text)
             self.assertIn("18 November 2026", text)
-            self.assertIn("13:00?17:00", text)
+            self.assertIn("13:00–17:00", text)
         for doc in ("index", "docs/about"):
             self.assertIn("organised by the CMI AIRE team with the support of UKOMAIN", plain(page(doc)).replace("Organised", "organised"))
         self.assertIn("for the KaleCancer project", plain(page("index")))
@@ -84,9 +85,13 @@ class SiteStructure(unittest.TestCase):
         self.assertIn("Do not upload identifiable patient data", participation)
         self.assertIn('href="quick-start.html"', page("docs/participation"))
         about = page("docs/about")
-        self.assertEqual(about.count('<table'), 2)
-        for term in ("Early fusion", "Intermediate fusion", "Late fusion", "Classification", "Survival analysis"):
-            self.assertIn(term, plain(about))
+        self.assertEqual(about.count('<table'), 1)
+        self.assertIn('id="programme"', about)
+        self.assertIn('href="#programme"', about.split('id="pst-secondary-sidebar"')[1])
+        self.assertIn("Closing remarks", plain(about))
+        self.assertNotIn("Fusion approach", plain(about))
+        self.assertNotIn("Session Agenda", plain(page("index")))
+
 
 if __name__ == "__main__":
     unittest.main()

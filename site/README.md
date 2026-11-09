@@ -41,7 +41,7 @@ After changing documentation or configuration, rerun `python .\site\build.py` an
 
 ## Content and navigation
 
-Original Markdown remains the source of truth. The home page is concise; `docs/about.md` contains the merged background, audience and learning goals. The current programme and venue are in `docs/agenda.md` and agree with Home, About and Participation.
+Original Markdown remains the source of truth. The home page is concise; `docs/about.md` contains the merged background, audience and learning goals. The programme and session details are consolidated in `docs/about.md`; `docs/agenda.html` redirects to its Programme section. Participation remains a separate page.
 
 The sidebar order is **Getting Started**, **About the Session**, **Tutorials**. Tutorials contains expandable Cancer and Cardiac groups. Prerequisites is merged into Participation, and the duplicate Cancer hands-on page is replaced by the notebook journey. Their old URLs redirect to the consolidated pages. Each track has one combined Getting Started page. Home is the first entry and is linked from the logo. There are no separate Introduction, Overview, Resources or notebook-overview sidebar pages.
 

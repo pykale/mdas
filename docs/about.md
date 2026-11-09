@@ -1,34 +1,27 @@
 # What is MDAS?
 
-The **Multimodal Data Analysis Session (MDAS)** is organised by the **CMI** AIRE team with the support of **UKOMAIN**. It introduces practical research workflows through two PyKale domain packages: KaleCancer and KaleCardiac.
+The **Multimodal Data Analysis Session (MDAS)** is a practical introduction to combining different types of biomedical data using the PyKale software ecosystem. It is organised by the **CMI** AIRE team with the support of **UKOMAIN**.
 
-## One question, complementary measurements
+Attendees will choose a [Cancer](../tutorials/kalecancer/index.md) or [Cardiac](../tutorials/kalecardiac/index.md) example, follow an analysis from data to predictions, and explore their own research question with support from the AIRE team.
 
-A clinical table, pathology features, an ECG and a chest X-ray describe different aspects of a person. Multimodal research asks whether combining appropriate measurements helps answer a defined question, and how to test that claim without leakage or overinterpreting a small experiment.
+## Session details
 
-| Fusion approach | When inputs are combined |
+**Date and time:** Wednesday, 18 November 2026, 13:00–17:00
+
+**Venue:** Ada Lovelace Room (108), Level 1, Regent Court, University of Sheffield
+
+## Programme
+
+| Time | Activity |
 | --- | --- |
-| Early fusion | Put the input measurements together before learning a shared representation. |
-| Intermediate fusion | Learn a representation of each input, then combine those representations before making a prediction. |
-| Late fusion | Make a prediction from each input first, then combine the predictions. |
+| 13:00–14:00 | **Block 1: Learn the Pipeline** |
+| 13:00–13:05 | Introductions and session outline |
+| 13:05–13:10 | Environment setup |
+| 13:10–13:50 | Core content: from data loading to model evaluation |
+| 13:50–14:00 | Discussion |
+| 14:00–14:10 | Break and refreshments |
+| 14:10–16:30 | **Block 2: Apply the Pipeline** |
+| 14:10–16:20 | Work on your own research question with support from the AIRE team. |
+| 16:20–16:30 | Closing remarks |
 
-| Analysis | Question it answers | Cancer example |
-| --- | --- | --- |
-| Classification | Which category does a person belong to? | [KaleCancer Classification](../notebooks/MDAS/cancer/classification_showcase.ipynb) |
-| Survival analysis | How does event risk vary when follow-up is incomplete? | [KaleCancer Survival Analysis](../notebooks/MDAS/cancer/survival_showcase.ipynb) |
-
-## Research in practice
-
-The examples help you identify a research endpoint, follow an analysis from inputs to predictions, explain its metrics, and distinguish a synthetic demonstration from clinically meaningful evaluation. You can read the saved notebook outputs before choosing an execution environment. Synthetic demonstrations teach the software workflow; they do not establish clinical performance or replace external clinical evaluation.
-
-(workshop-and-independent-learning)=
-
-## Session and independent learning
-
-**Wednesday, 18 November 2026, 13:00–17:00**.
-
-**Venue:** Ada Lovelace Room (108), Level 1, Regent Court, University of Sheffield. See the [Session Agenda](agenda.md) for the programme.
-
-The live session has two blocks: **Learn the Pipeline**, then **Apply the Pipeline** with the AIRE team available to help. The materials also support self-paced study after the session. Specific organiser-provided problems and final exercise selection remain to be confirmed.
-
-The [Participation Guide](participation.md) covers preparation for the session or independent study.
+For preparation and participation guidance, see the [Participation Guide](participation.md).

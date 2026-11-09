@@ -46,7 +46,7 @@ def stage() -> None:
             raise RuntimeError("Refusing to replace a staging directory outside site/.")
         shutil.rmtree(STAGED)
     STAGED.mkdir()
-    excluded = {"docs/overview.md", "docs/resources.md", "notebooks/README.md",
+    excluded = {"docs/agenda.md", "docs/overview.md", "docs/resources.md", "notebooks/README.md",
                 "tutorials/kalecancer/README.md", "tutorials/kalecardiac/README.md",
                 "docs/prerequisites.md", "tutorials/README.md", "tutorials/kalecancer/hands-on.md",
                 "tutorials/kalecancer/getting-started.md", "tutorials/kalecancer/results.md",
@@ -61,7 +61,7 @@ def stage() -> None:
     mapping["README.md"] = "index.md"
     for docname, (_, notebook_path) in ALL_NOTEBOOKS.items():
         mapping[notebook_path] = docname + ".ipynb"
-    aliases = {"tutorials/kalecancer/results.md": "tutorials/kalecancer/live-coding.ipynb",
+    aliases = {"docs/agenda.md": "docs/about.md","tutorials/kalecancer/results.md": "tutorials/kalecancer/live-coding.ipynb",
                "tutorials/kalecardiac/getting-started.md": "tutorials/kalecardiac/index.md",
                "tutorials/kalecardiac/results.md": "tutorials/kalecardiac/live-coding.ipynb",
                "notebooks/MDAS/cancer/survival.ipynb": "tutorials/kalecancer/live-coding-survival.ipynb",
@@ -97,7 +97,8 @@ def stage() -> None:
         else:
             raise RuntimeError(f"Unresolved local link: {original.relative_to(ROOT)}: {target}")
         relative = Path(os.path.relpath(STAGED / new, destination.parent)).as_posix()
-        suffix = ("?" + url.query if url.query else "") + ("#" + url.fragment if url.fragment else "")
+        fragment = "programme" if key == "docs/agenda.md" else url.fragment
+        suffix = ("?" + url.query if url.query else "") + ("#" + fragment if fragment else "")
         return f"[{label}]({relative}{suffix})"
 
     for path in paths:

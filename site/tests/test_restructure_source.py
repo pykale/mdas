@@ -47,10 +47,42 @@ class RestructureSource(unittest.TestCase):
                 self.assertIn("## Interpretation and next steps", rendered["cells"][-1]["source"])
             for old in ("tutorials/kalecardiac/getting-started", "tutorials/kalecancer/results", "tutorials/kalecardiac/results"):
                 self.assertIn(old, conf.REDIRECTS)
+            self.assertFalse((build.STAGED / "docs/agenda.md").exists())
+            self.assertEqual(conf.REDIRECTS["docs/agenda"], "about.html#programme")
+            self.assertIn("## Programme", (build.STAGED / "docs/about.md").read_text())
             quick = (build.STAGED / "docs/quick-start.md").read_text()
             for track, suffix in (("kalecancer", "survival"), ("kalecardiac", "lsemvae")):
                 self.assertIn(f"../tutorials/{track}/live-coding.ipynb", quick)
                 self.assertIn(f"../tutorials/{track}/live-coding-{suffix}.ipynb", quick)
+
+    def test_about_consolidates_session_and_programme(self):
+        text = (ROOT / "docs/about.md").read_text(encoding="utf-8")
+        self.assertEqual(re.findall(r"^#{1,2} .+$", text, re.M),
+                         ["# What is MDAS?", "## Session details", "## Programme"])
+        self.assertEqual(text.count("Wednesday, 18 November 2026"), 1)
+        self.assertEqual(text.count("13:00–17:00"), 1)
+        self.assertEqual(text.count("Ada Lovelace Room (108), Level 1, Regent Court, University of Sheffield"), 1)
+        self.assertEqual(text.count("](participation.md)"), 1)
+        expected = [
+            "| Time | Activity |", "| --- | --- |",
+            "| 13:00–14:00 | **Block 1: Learn the Pipeline** |",
+            "| 13:00–13:05 | Introductions and session outline |",
+            "| 13:05–13:10 | Environment setup |",
+            "| 13:10–13:50 | Core content: from data loading to model evaluation |",
+            "| 13:50–14:00 | Discussion |",
+            "| 14:00–14:10 | Break and refreshments |",
+            "| 14:10–16:30 | **Block 2: Apply the Pipeline** |",
+            "| 14:10–16:20 | Work on your own research question with support from the AIRE team. |",
+            "| 16:20–16:30 | Closing remarks |",
+        ]
+        self.assertEqual([line for line in text.splitlines() if line.startswith("|")], expected)
+        navigation = json.loads((ROOT / "site/navigation.json").read_text())
+        self.assertEqual(navigation["About the Session"],
+                         [["What is MDAS?", "docs/about"], ["Participation Guide", "docs/participation"]])
+        self.assertIn("../tutorials/kalecancer/index.md", text)
+        self.assertIn("../tutorials/kalecardiac/index.md", text)
+        self.assertNotIn("Fusion approach", text)
+        self.assertNotIn("agenda.md", (ROOT / "docs/participation.md").read_text())
 
     def test_disabled_binder_build_has_accurate_page_actions(self):
         import os
