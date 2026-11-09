@@ -10,9 +10,12 @@ from pathlib import Path
 CANCER = Path(__file__).resolve().parents[1] / "notebooks/MDAS/cancer"
 
 
-def additions() -> list[dict]:
+def additions(showcase: bool = False) -> list[dict]:
+    support = ["colab_setup.py", "colab-requirements.txt"]
+    if showcase:
+        support += ["synthetic_data_generation.py", "synthetic_showcase_data.py"]
     checksums = {name: hashlib.sha256((CANCER / name).read_bytes().replace(b"\r\n", b"\n")).hexdigest()
-                 for name in ("colab_setup.py", "colab-requirements.txt")}
+                 for name in support}
     intro = """# Google Colab Environment Setup
 
 **Python 3.12 required.** Before running, select **Runtime > Change runtime type > Runtime Version > 2026.07**, then reconnect. Google currently lists this Python 3.12 runtime; if it is no longer offered, use **Run with Binder** on the MDAS website. The default Python 3.13 runtime is incompatible with the published KaleCancer/PyKale requirements.
@@ -51,10 +54,10 @@ try:
             _temporary = _path.with_suffix(_path.suffix + ".tmp")
             _temporary.write_bytes(_contents)
             _temporary.replace(_path)
-    runpy.run_path(str(_mdas_dir / "colab_setup.py"))["prepare"](_mdas_dir)
+    runpy.run_path(str(_mdas_dir / "colab_setup.py"))["prepare"](_mdas_dirSHOWCASE)
 except OSError as _error:
     raise RuntimeError("MDAS download/install failed. Check internet access and rerun setup. The reviewed Colab support files must exist on public main.") from _error
-'''.replace("CHECKSUMS", repr(checksums))
+'''.replace("CHECKSUMS", repr(checksums)).replace("SHOWCASE", ", showcase=True" if showcase else "")
     return [
         {"cell_type": "markdown", "id": "mdas-colab-intro", "metadata": {}, "source": intro.splitlines(keepends=True)},
         {"cell_type": "code", "id": "mdas-colab-setup", "metadata": {}, "execution_count": None, "outputs": [],
@@ -66,10 +69,10 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--check", action="store_true")
     args = parser.parse_args()
-    for name in ("classification", "survival"):
+    for name in ("classification", "survival", "classification_showcase", "survival_showcase"):
         original = json.loads((CANCER / f"{name}.ipynb").read_text(encoding="utf-8"))
         notebook = copy.deepcopy(original)
-        notebook["cells"] = additions() + notebook["cells"]
+        notebook["cells"] = additions(showcase=name.endswith("_showcase")) + notebook["cells"]
         target = CANCER / f"{name}_colab.ipynb"
         if args.check:
             if not target.is_file() or json.loads(target.read_text(encoding="utf-8")) != notebook:

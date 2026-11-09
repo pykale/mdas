@@ -1,8 +1,8 @@
-# CPU-only execution environment. Versions follow the existing research lock.
+# CPU-only Binder environment, aligned with the validated showcase stack.
 # Recompile with the command documented in .binder/README.md.
 --extra-index-url https://download.pytorch.org/whl/cpu
 torch==2.6.0+cpu
-kalecancer @ git+https://github.com/pykale/cancer.git@1f476fdba87f515286f732cd7eaa92ffeeffdbc2
+kalecancer @ git+https://github.com/pykale/cancer.git@f8dff11372587c4ae97ce86b7d869ace511a6a17
 numpy==2.5.4
 pandas==2.2.2
 h5py==3.16.0
@@ -10,3 +10,10 @@ scikit-learn==1.9.1
 lightning==2.6.6
 torchsurv==0.1.6
 ipykernel==7.4.0
+
+# Showcase plotting and constraint-compatible research APIs.
+matplotlib==3.11.2
+jsonargparse[signatures]==4.52.0
+huggingface-hub==1.33.0
+pykale==0.2.1
+torchvision==0.21.0+cpu

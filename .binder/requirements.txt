@@ -10,13 +10,15 @@ aiohttp==3.14.5
 aiosignal==1.4.0
     # via aiohttp
 anyio==4.15.1
-    # via httpx2
+    # via httpx
 asttokens==3.0.2
     # via stack-data
 attrs==26.1.0
     # via aiohttp
 certifi==2026.10.23
     # via
+    #   httpcore
+    #   httpx
     #   kalecancer
     #   requests
 charset-normalizer==3.5.2
@@ -27,6 +29,10 @@ cloudpickle==3.1.2
     # via joblib
 comm==0.2.3
     # via ipykernel
+contourpy==1.4.0
+    # via matplotlib
+cycler==0.12.1
+    # via matplotlib
 debugpy==1.8.22
     # via ipykernel
 docstring-parser==0.18.0
@@ -37,6 +43,8 @@ filelock==4.2.4
     # via
     #   huggingface-hub
     #   torch
+fonttools==4.68.0
+    # via matplotlib
 frozenlist==1.8.0
     # via
     #   aiohttp
@@ -48,23 +56,25 @@ fsspec==2026.9.0
     #   pytorch-lightning
     #   torch
 h11==0.16.0
-    # via httpcore2
+    # via httpcore
 h5py==3.16.0
     # via
     #   -r .binder/requirements.in
     #   kalecancer
 hf-xet==1.7.0
     # via huggingface-hub
-httpcore2==2.16.0
-    # via httpx2
-httpx2==2.16.0
+httpcore==1.0.9
+    # via httpx
+httpx==0.28.1
     # via huggingface-hub
-huggingface-hub==2.3.0
-    # via kalecancer
+huggingface-hub==1.33.0
+    # via
+    #   -r .binder/requirements.in
+    #   kalecancer
 idna==3.20
     # via
     #   anyio
-    #   httpx2
+    #   httpx
     #   requests
     #   yarl
 ipykernel==7.4.0
@@ -79,16 +89,20 @@ jinja2==3.1.6
     # via torch
 joblib==1.6.0
     # via scikit-learn
-jsonargparse==4.53.0
-    # via kalecancer
+jsonargparse==4.52.0
+    # via
+    #   -r .binder/requirements.in
+    #   kalecancer
 jupyter-client==8.10.0
     # via ipykernel
 jupyter-core==5.9.1
     # via
     #   ipykernel
     #   jupyter-client
-kalecancer @ git+https://github.com/pykale/cancer.git@1f476fdba87f515286f732cd7eaa92ffeeffdbc2
+kalecancer @ git+https://github.com/pykale/cancer.git@f8dff11372587c4ae97ce86b7d869ace511a6a17
     # via -r .binder/requirements.in
+kiwisolver==1.5.1
+    # via matplotlib
 lightning==2.6.6
     # via
     #   -r .binder/requirements.in
@@ -100,6 +114,8 @@ lightning-utilities==0.15.3
     #   torchmetrics
 markupsafe==3.0.4
     # via jinja2
+matplotlib==3.11.2
+    # via -r .binder/requirements.in
 matplotlib-inline==0.2.2
     # via
     #   ipykernel
@@ -119,8 +135,10 @@ networkx==3.7
 numpy==2.5.4
     # via
     #   -r .binder/requirements.in
+    #   contourpy
     #   h5py
     #   kalecancer
+    #   matplotlib
     #   pandas
     #   pykale
     #   scikit-learn
@@ -135,6 +153,7 @@ packaging==26.3
     #   ipykernel
     #   lightning
     #   lightning-utilities
+    #   matplotlib
     #   pooch
     #   pytorch-lightning
     #   torchmetrics
@@ -148,7 +167,9 @@ parso==0.8.7
 pexpect==4.9.0
     # via ipython
 pillow==13.0.0
-    # via torchvision
+    # via
+    #   matplotlib
+    #   torchvision
 platformdirs==4.13.5
     # via
     #   jupyter-core
@@ -172,10 +193,15 @@ pygments==2.21.0
     #   ipython
     #   ipython-pygments-lexers
 pykale==0.2.1
-    # via kalecancer
+    # via
+    #   -r .binder/requirements.in
+    #   kalecancer
+pyparsing==3.3.3
+    # via matplotlib
 python-dateutil==3.0.0
     # via
     #   jupyter-client
+    #   matplotlib
     #   pandas
 pytorch-lightning==2.6.6
     # via
@@ -239,7 +265,9 @@ torchsurv==0.1.6
     #   -r .binder/requirements.in
     #   kalecancer
 torchvision==0.21.0+cpu
-    # via pykale
+    # via
+    #   -r .binder/requirements.in
+    #   pykale
 tornado==6.6
     # via
     #   ipykernel
@@ -256,10 +284,6 @@ traitlets==5.16.1
     #   jupyter-client
     #   jupyter-core
     #   matplotlib-inline
-truststore==0.10.5
-    # via
-    #   httpcore2
-    #   httpx2
 typeshed-client==2.14.0
     # via jsonargparse
 typing-extensions==4.16.0
@@ -267,7 +291,6 @@ typing-extensions==4.16.0
     #   aiohttp
     #   aiosignal
     #   anyio
-    #   httpx2
     #   huggingface-hub
     #   jupyter-client
     #   lightning

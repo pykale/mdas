@@ -16,10 +16,13 @@ def execute(name: str, root: Path, output: Path, timeout: int = 1200, variant: s
     from jupyter_client import KernelManager
     from jupyter_client.kernelspec import KernelSpecManager
 
-    if name not in {"classification", "survival"}:
-        raise ValueError("Only complete classification and survival notebooks can be executed.")
+    if name not in {"classification", "survival", "classification_showcase", "survival_showcase", "tutorial-CardioVAE", "tutorial-LSEMVAE"}:
+        raise ValueError("Choose a complete Cancer or Cardiac tutorial notebook.")
     stem = name + ("_colab" if variant == "colab" else "")
-    source = root / "notebooks" / "MDAS" / "cancer" / f"{stem}.ipynb"
+    track = "cardiac" if name.startswith("tutorial-") else "cancer"
+    if track == "cardiac" and variant != "original":
+        raise ValueError("Cardiac notebooks run directly; no generated Colab variant is used.")
+    source = root / "notebooks" / "MDAS" / track / f"{stem}.ipynb"
     source_bytes = source.read_bytes()
     notebook = nbformat.reads(source_bytes.decode("utf-8"), as_version=4)
     # This affects the execution copy only; source bytes/metadata/outputs are never written.
@@ -52,7 +55,9 @@ def execute(name: str, root: Path, output: Path, timeout: int = 1200, variant: s
         cell_times.append({"index": cell_index, "seconds": round(time.monotonic() - cell_started, 3),
                            "status": execute_reply["content"]["status"]})
 
-    client = NotebookClient(notebook, km=manager, timeout=timeout, allow_errors=False,
+    # Validation must execute authored setup/download cells even when tagged
+    # skip-execution for automated documentation builds. Source metadata is untouched.
+    client = NotebookClient(notebook, km=manager, timeout=timeout, allow_errors=False, skip_cells_with_tag="",
                             resources={"metadata": {"path": str(source.parent)}},
                             on_cell_execute=begin, on_cell_executed=complete)
     result = {"notebook": stem, "source_sha256": hashlib.sha256(source_bytes).hexdigest(),
@@ -74,6 +79,9 @@ def execute(name: str, root: Path, output: Path, timeout: int = 1200, variant: s
             manager.shutdown_kernel(now=True)
         result["seconds"] = round(time.monotonic() - started, 2)
         result["source_unchanged"] = source.read_bytes() == source_bytes
+        if not result["source_unchanged"]:
+            result["status"] = "failed"
+            result["error"] = "Source notebook changed during execution"
         nbformat.write(notebook, output / f"{stem}.executed.ipynb")
         (output / f"{stem}.execution.json").write_text(json.dumps(result, indent=2), encoding="utf-8")
         if not result["source_unchanged"]:
@@ -86,7 +94,7 @@ def execute(name: str, root: Path, output: Path, timeout: int = 1200, variant: s
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("notebook", choices=["classification", "survival", "both"])
+    parser.add_argument("notebook", choices=["classification", "survival", "classification_showcase", "survival_showcase", "tutorial-CardioVAE", "tutorial-LSEMVAE", "both"])
     parser.add_argument("--variant", choices=["original", "colab"], default="colab")
     parser.add_argument("--root", type=Path, default=Path(__file__).resolve().parents[2])
     parser.add_argument("--output", type=Path)

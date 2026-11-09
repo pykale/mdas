@@ -4,15 +4,16 @@ orphan: true
 
 # Run the Cancer notebooks in Google Colab
 
-For **Survival Analysis**, choose it on the Live-Coding Notebook page, then select **Run in Google Colab** to open its self-configuring copy.
+Choose the notebook on Cancer's Example Notebook page, then select **Run in Google Colab**.
 
-**Classification showcase setup is blocked:** the current KaleCancer dependency pin (`1f476fd`) lacks required interpretation APIs, including `modality_shapley`, `feature_shapley` and `attention_heatmap`. Its Colab action is disabled rather than opening the old example or an unprepared copy. The same pin also prevents full showcase execution in Binder. Read the saved showcase on the website while a compatible environment is prepared.
+- [Classification showcase in Google Colab](https://colab.research.google.com/github/pykale/mdas/blob/main/notebooks/MDAS/cancer/classification_showcase_colab.ipynb)
+- [Survival Analysis in Google Colab](https://colab.research.google.com/github/pykale/mdas/blob/main/notebooks/MDAS/cancer/survival_showcase_colab.ipynb)
 
-- [Survival Analysis in Google Colab](https://colab.research.google.com/github/pykale/mdas/blob/main/notebooks/MDAS/cancer/survival_colab.ipynb)
+Each selected task uses a complete copy of the authored showcase with its scientific cells unchanged. Each setup downloads both synthetic helpers with checksum verification and pins KaleCancer `f8dff11372587c4ae97ce86b7d869ace511a6a17`, including the interpretation APIs. Binder provides a separate in-page execution route using its own compatible environment.
 
 ## Before running: Python 3.12
 
-In Colab select **Runtime > Change runtime type > Runtime Version > 2026.07**, then reconnect. Google currently lists this Python 3.12 runtime in its [runtime documentation](https://research.google.com/colaboratory/runtime-version-faq.html), checked on 3 November 2026. Runtime availability can change; if it is not offered, use **Run with Binder** on the website.
+In Colab select **Runtime > Change runtime type > Runtime Version > 2026.07**, then reconnect. Google currently lists this Python 3.12 runtime in its [runtime documentation](https://research.google.com/colaboratory/runtime-version-faq.html), checked on 9 November 2026. Runtime availability can change; if it is not offered, use **Run with Binder** on the website, or local Python 3.12.
 
 The default Python 3.13 runtime is outside the published KaleCancer and PyKale requirements. Installing another interpreter does not change the active notebook kernel. The setup checks that kernel's Python version before downloading or installing anything.
 

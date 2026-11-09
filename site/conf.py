@@ -50,6 +50,7 @@ templates_path = ["_templates"]
 html_css_files = ["mdas.css"]
 html_js_files = [("mdas-presentation.js", {"defer": "defer"})]
 html_logo = "_static/mdas-logo.png"
+html_permalinks = False
 html_show_sourcelink = False
 html_copy_source = False
 html_show_sphinx = False
@@ -172,25 +173,6 @@ Colab needs a compatible **Python 3.12** runtime. Select it and run the initial 
 
 > Sessions are temporary. Copy code edits and important results before switching or leaving; keep generated files separately. Use synthetic data only: do not upload private or patient data. Synthetic results do not demonstrate clinical performance.
 """.replace("MDAS_INTERACTIVE_CONTROL", launch).replace("MDAS_NOTEBOOK_SELECTOR", selector).replace("MDAS_NOTEBOOK_TITLE", title).replace("MDAS_NOTEBOOK_PATH", notebook_path).replace("MDAS_COLAB_PATH", notebook_path.replace(".ipynb", "_colab.ipynb"))
-    if notebook_path.endswith("/classification_showcase.ipynb"):
-        # Do not send participants to the old Classification example or to a
-        # nonexistent showcase Colab copy. Both execution environments still pin
-        # KaleCancer 1f476fd, whose interpret package exports only attention.
-        colab_link = ('<a class="btn btn-primary mdas-execution-button" '
-                      f'href="https://colab.research.google.com/github/pykale/mdas/blob/main/{notebook_path.replace(".ipynb", "_colab.ipynb")}">Run in Google Colab</a>')
-        intro = intro.replace("Read the saved notebook below or use Colab.", "Read the saved notebook below; showcase execution setup is pending.")
-        intro = intro.replace(colab_link,
-            '<button class="btn btn-primary mdas-execution-button" disabled aria-describedby="mdas-showcase-blocker">Google Colab unavailable</button>')
-        intro = intro.replace(
-            "Choose Binder to run directly on this website, or Google Colab to open a self-configuring notebook.",
-            '<p id="mdas-showcase-blocker"><strong>Showcase execution setup pending.</strong> '
-            'The current Binder and Colab KaleCancer pin lacks required showcase interpretation APIs, '
-            'including modality_shapley, feature_shapley and attention_heatmap. '
-            'You can read the saved example here, but the full showcase cannot run in the existing Binder environment. '
-            'Colab is unavailable until a compatible KaleCancer revision and setup have been verified; '
-            'it does not open the older Classification example.</p>')
-        intro = intro.replace(
-            "Colab needs a compatible **Python 3.12** runtime. Select it and run the initial setup cell; follow any restart instruction before continuing.", "")
     notebook["cells"].insert(0, {"cell_type": "markdown", "id": "mdas-access", "metadata": {}, "source": intro})
     notebook["cells"].append({"cell_type": "markdown", "id": "mdas-next-step", "metadata": {},
         "source": "When you have inspected the predictions, metrics and baseline comparison, [interpret the Cancer results](results.md) before drawing conclusions."})

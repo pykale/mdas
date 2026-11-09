@@ -1,3 +1,40 @@
+# Showcase Colab integration ? 9 November 2026
+
+This section supersedes the historical validation below for the website's selected Cancer notebooks.
+
+- Classification displays `classification_showcase.ipynb` and opens `classification_showcase_colab.ipynb` in Colab.
+- Survival Analysis displays `survival_showcase.ipynb` and opens `survival_showcase_colab.ipynb` in Colab.
+- The Survival source and matching `synthetic_showcase_data.py` were copied byte-for-byte from MDAS revision `ff4a8ddd7fed5bba229392505b98aa160fbbeda8` after fetching origin. Existing local edits were retained and HEAD was not advanced. The four original notebooks, existing Classification showcase and Cardiac notebooks were not rewritten.
+- Both generated showcase copies prepend setup only. All source scientific cell dictionaries, metadata and outputs are preserved. The generator also refreshes the setup hashes in the retained legacy Colab copies.
+- KaleCancer is pinned to `f8dff11372587c4ae97ce86b7d869ace511a6a17`, which provides the interpretation, survival calibration, risk-group and patient-report APIs used by the showcases. `jsonargparse==4.52.0` satisfies this revision's exact requirement; Matplotlib 3.11.2 and its plotting dependencies are included. Existing Hub 1.33.0 and the remaining scientific pins are retained.
+- Bootstrap downloads the setup, requirements and both synthetic helpers from public MDAS main, verifies embedded SHA-256 values with LF normalization, and prepares the active Python 3.12 kernel. Helpers are importable from the Cancer working directory; scientific cells generate data at their authored relative paths. Restart and rerun setup when requested for already loaded packages. A final `pip check` and API imports must pass before readiness.
+
+## Local validation
+
+Windows / Python 3.12.10, a newly created isolated environment, ordinary pip resolution (no dependency overrides), and a separate fresh notebook kernel for each execution:
+
+| Check | Result |
+| --- | --- |
+| Final Classification showcase Colab copy | All 25 code cells passed, including setup and the final cell; 88.91 seconds; source unchanged |
+| Final Survival showcase Colab copy | All 29 code cells passed, including setup and the final cell; 98.62 seconds; source unchanged |
+| Existing Survival Colab copy on the new dependency pin | All 29 code cells passed; 19.36 seconds |
+| Dependencies | Full installation resolved; `pip check` passed |
+| Colab regression tests | All 10 passed: preserved cells, both generated page targets, runtime guards, provenance, Hub compatibility, mocked fresh helper/support downloads, checksums and cache reuse |
+| Generator | `python site/sync_colab.py --check` passed for all four generated copies |
+| Upstream integration | New Survival source and updated helper match origin/main bytes exactly |
+
+Scientific training, cross-validation, bootstrap, interpretation, patient reports and pipeline reconstruction cells were not reduced or skipped. Environment packages were installed before notebook execution; setup reused and checked those exact pins. Fresh network bootstrap is covered by mocks, not a real Colab service test. Final execution reports and rendered notebook outputs are in ignored `outputs/showcase-validation-final/`. An earlier Survival run was invalidated when setup was regenerated during execution; only final unchanged-source runs are reported above.
+
+## Remaining service checks
+
+The browser runtime failed to start, so authenticated Google Colab execution, Colab's preinstalled-package interactions and visual website checks remain unverified. Google's runtime FAQ was checked on 9 November 2026 and lists 2026.07 / Python 3.12.13. Select that runtime before setup; installing another interpreter does not change the kernel. If it is unavailable, use a local Python 3.12 environment for these showcases. If `pip check` reports a Colab-specific conflict, setup stops rather than reporting readiness; retain that output for investigation.
+
+Binder has subsequently been updated to the compatible KaleCancer revision with its own NumPy 2.5.4 lock, and both Cancer Binder buttons are restored. Full local Linux execution of both Cancer showcases and both Cardiac tutorials passed; see `.binder/README.md` for current results and hosted limitations. Cardiac setup and the Binder controller are unchanged.
+
+After review, publish both generated showcase copies and all matching support files together; hash mismatches deliberately stop setup on mixed revisions. Public Colab URLs serving the new copies cannot be verified before publication. No Sphinx build, site preview, commit or push was performed.
+
+---
+
 # Direct Google Colab notebooks: implementation and validation
 
 Validated locally on **3 November 2026**. No commit, push or deployment was performed.

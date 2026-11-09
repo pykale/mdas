@@ -53,7 +53,7 @@ class Page(HTMLParser):
 
 class Notebooks(unittest.TestCase):
     def test_generated_notebooks(self):
-        for name, page_name in (("classification_showcase", "live-coding"), ("survival", "live-coding-survival")):
+        for name, page_name in (("classification_showcase", "live-coding"), ("survival_showcase", "live-coding-survival")):
             with self.subTest(name=name):
                 path = f"notebooks/MDAS/cancer/{name}.ipynb"
                 original = json.loads((ROOT / path).read_text(encoding="utf-8"))
@@ -84,20 +84,15 @@ class Notebooks(unittest.TestCase):
                 self.assertRegex(html, r'class="left-prev"\s+href="index.html"')
                 self.assertRegex(html, r'class="right-next"\s+href="results.html"')
                 colab_path = path.replace(".ipynb", "_colab.ipynb")
-                if name == "classification_showcase":
-                    self.assertNotIn('href="https://colab.research.google.com/github/', html)
-                    self.assertIn('disabled aria-describedby="mdas-showcase-blocker"', html)
-                    self.assertIn("Showcase execution setup pending", html)
+                self.assertIn(f'href="https://colab.research.google.com/github/pykale/mdas/blob/main/{colab_path}"', html)
+                if name.endswith("_showcase"):
                     required = json.loads(page.scripts["mdas-binder-check"])["required_files"]
                     self.assertIn("notebooks/MDAS/cancer/synthetic_showcase_data.py", required)
                     self.assertIn("notebooks/MDAS/cancer/synthetic_data_generation.py", required)
-                else:
-                    self.assertIn(f'href="https://colab.research.google.com/github/pykale/mdas/blob/main/{colab_path}"', html)
-                self.assertEqual(len(page.actions), 2)
-                self.assertEqual([tag for tag, _ in page.actions], ["button", "button"] if name == "classification_showcase" else ["button", "a"])
+                self.assertEqual([tag for tag, _ in page.actions], ["button", "a"])
                 self.assertEqual(page.actions[0][1]["onclick"], "mdasLaunchInteractive()")
                 self.assertIn('>Run with Binder</button>', html)
-                self.assertIn('>Google Colab unavailable</button>' if name == 'classification_showcase' else '>Run in Google Colab</a>', html)
+                self.assertIn('>Run in Google Colab</a>', html)
                 self.assertNotIn('Prepare Colab Environment', html)
                 self.assertNotIn('prepare_colab.ipynb', html)
                 config = json.loads(page.scripts["text/x-thebe-config"])

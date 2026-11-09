@@ -18,11 +18,11 @@ spec.loader.exec_module(setup)
 
 class DirectColab(unittest.TestCase):
     def test_original_payloads_and_copies(self):
-        for name in ("classification", "survival", "classification_blank", "survival_blank"):
+        for name in ("classification", "survival", "classification_blank", "survival_blank", "classification_showcase"):
             path = f"notebooks/MDAS/cancer/{name}.ipynb"
             authored = subprocess.check_output(["git", "show", f"HEAD:{path}"], cwd=ROOT)
             self.assertEqual((ROOT / path).read_bytes().replace(b"\r\n", b"\n"), authored.replace(b"\r\n", b"\n"))
-        for name in ("classification", "survival"):
+        for name in ("classification", "survival", "classification_showcase", "survival_showcase"):
             original = json.loads((CANCER / f"{name}.ipynb").read_text(encoding="utf-8"))
             direct = json.loads((CANCER / f"{name}_colab.ipynb").read_text(encoding="utf-8"))
             self.assertEqual(direct["cells"][2:], original["cells"])  # includes source, metadata and saved outputs
@@ -30,6 +30,30 @@ class DirectColab(unittest.TestCase):
             self.assertIn("Google Colab Environment Setup", "".join(direct["cells"][0]["source"]))
             compile("".join(direct["cells"][1]["source"]), "setup cell", "exec")
         subprocess.run([sys.executable, str(ROOT / "site/sync_colab.py"), "--check"], check=True)
+
+    def test_showcase_bootstrap_and_page_targets(self):
+        spec = importlib.util.spec_from_file_location("mdas_site_conf", ROOT / "site/conf.py")
+        conf = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(conf)
+        self.assertFalse(conf.html_permalinks)
+        for docname, (_, source_path) in conf.NOTEBOOKS.items():
+            source = json.loads((ROOT / source_path).read_text(encoding="utf-8"))
+            rendered = [json.dumps(source)]
+            conf.prepare_notebook(None, docname, rendered)
+            intro = json.loads(rendered[0])["cells"][0]["source"]
+            target = source_path.replace(".ipynb", "_colab.ipynb")
+            self.assertIn(f'href="https://colab.research.google.com/github/pykale/mdas/blob/main/{target}"', intro)
+            self.assertTrue((ROOT / target).is_file())
+            self.assertNotIn("(live-coding-notebook)=", intro)
+            if "_showcase" in source_path:
+                self.assertNotIn("Binder unavailable", intro)
+                self.assertIn('onclick="mdasLaunchInteractive()"', intro)
+                bootstrap = "".join(json.loads((ROOT / target).read_text(encoding="utf-8"))["cells"][1]["source"])
+                for helper in ("synthetic_showcase_data.py", "synthetic_data_generation.py"):
+                    digest = hashlib.sha256((CANCER / helper).read_bytes().replace(b"\r\n", b"\n")).hexdigest()
+                    self.assertIn(digest, bootstrap)
+                    self.assertIn(helper, bootstrap)
+                self.assertIn("showcase=True", bootstrap)
 
     def test_unsupported_python_does_not_install_or_download(self):
         with patch.object(setup.sys, "version_info", (3, 13)), patch.object(setup.subprocess, "run") as install, patch.object(setup, "urlopen") as fetch:
@@ -89,8 +113,8 @@ class DirectColab(unittest.TestCase):
             self.assertFalse((Path(tmp) / "synthetic_data_generation.py").exists())
 
     def test_fresh_bootstrap_downloads_verified_support_and_reuses_cache(self):
-        bootstrap = "".join(json.loads((CANCER / "classification_colab.ipynb").read_text(encoding="utf-8"))["cells"][1]["source"])
-        contents = {name: (CANCER / name).read_bytes().replace(b"\r\n", b"\n") for name in ("colab_setup.py", "colab-requirements.txt")}
+        bootstrap = "".join(json.loads((CANCER / "classification_showcase_colab.ipynb").read_text(encoding="utf-8"))["cells"][1]["source"])
+        contents = {name: (CANCER / name).read_bytes().replace(b"\r\n", b"\n") for name in ("colab_setup.py", "colab-requirements.txt", "synthetic_data_generation.py", "synthetic_showcase_data.py")}
         prepare = MagicMock()
         with tempfile.TemporaryDirectory() as tmp:
             directory = Path(tmp) / "notebooks/MDAS/cancer"
@@ -105,8 +129,9 @@ class DirectColab(unittest.TestCase):
                 exec(code, {})
                 (directory / "colab_setup.py").write_bytes(contents["colab_setup.py"].replace(b"\n", b"\r\n"))
                 exec(code, {})
-                self.assertEqual(fetch.call_count, 2)
+                self.assertEqual(fetch.call_count, 4)
                 self.assertEqual(prepare.call_count, 2)
+                prepare.assert_called_with(directory, showcase=True)
                 self.assertEqual((directory / "colab_setup.py").read_bytes().replace(b"\r\n", b"\n"), contents["colab_setup.py"])
 
     def test_buttons_have_white_text_in_all_states_and_accessible_focus(self):

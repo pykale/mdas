@@ -27,8 +27,8 @@ huggingface-hub==1.33.0
 idna==3.20
 jinja2==3.1.6
 joblib==1.6.0
-jsonargparse==4.53.0
-kalecancer @ git+https://github.com/pykale/cancer.git@1f476fdba87f515286f732cd7eaa92ffeeffdbc2
+jsonargparse==4.52.0
+kalecancer @ git+https://github.com/pykale/cancer.git@f8dff11372587c4ae97ce86b7d869ace511a6a17
 lightning==2.6.6
 lightning-utilities==0.15.3
 markupsafe==3.0.4
@@ -67,3 +67,11 @@ typing-extensions==4.16.0
 tzdata==2026.5
 urllib3==2.8.0
 yarl==1.25.1
+
+# Showcase plotting, resolved with the scientific pins on Python 3.12.
+matplotlib==3.11.2
+contourpy==1.4.0
+cycler==0.12.1
+fonttools==4.68.0
+kiwisolver==1.5.1
+pyparsing==3.3.3

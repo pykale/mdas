@@ -60,7 +60,8 @@ def stage() -> None:
     mapping["README.md"] = "index.md"
     for docname, (_, notebook_path) in ALL_NOTEBOOKS.items():
         mapping[notebook_path] = docname + ".ipynb"
-    aliases = {"notebooks/MDAS/cancer/classification.ipynb": "tutorials/kalecancer/live-coding.ipynb",
+    aliases = {"notebooks/MDAS/cancer/survival.ipynb": "tutorials/kalecancer/live-coding-survival.ipynb",
+               "notebooks/MDAS/cancer/classification.ipynb": "tutorials/kalecancer/live-coding.ipynb",
                "docs/prerequisites.md": "docs/participation.md",
                "tutorials/README.md": "index.md",
                "tutorials/kalecancer/hands-on.md": "tutorials/kalecancer/live-coding.ipynb",

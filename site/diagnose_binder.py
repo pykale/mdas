@@ -15,7 +15,7 @@ ROOT = Path(__file__).resolve().parent.parent
 REPO = "pykale/mdas"
 REQUIRED = [".binder/runtime.txt", ".binder/requirements.txt",
             "notebooks/MDAS/cancer/classification_showcase.ipynb",
-            "notebooks/MDAS/cancer/survival.ipynb",
+            "notebooks/MDAS/cancer/survival_showcase.ipynb",
             "notebooks/MDAS/cancer/synthetic_data_generation.py",
             "notebooks/MDAS/cancer/synthetic_showcase_data.py"]
 

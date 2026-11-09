@@ -1,31 +1,58 @@
-# Temporary Cancer notebook environment
+# Shared Binder notebook environment
 
-`runtime.txt` selects Python 3.12. `requirements.in` describes the deliberately CPU-only environment; `requirements.txt` pins the resolved Linux x86-64 dependency graph, including the Cancer commit already recorded in the research `uv.lock`. No imaging, pathology, TabICL or interpretation extras are requested. Torchvision is a transitive PyKale dependency and is also resolved to a CPU wheel. There are no CUDA/NVIDIA runtime packages.
+`runtime.txt` selects Python 3.12. `requirements.in` defines Binder's CPU-only environment; `requirements.txt` is its resolved Linux x86-64 lock. Binder supplies its own Jupyter server, while the lock includes the Python kernel. The root research project and Colab bootstrap are not installed or run by Binder. No postBuild/start hooks are required.
 
-These files use the standard repo2docker `.binder/` layout and do not install or change the MDAS research project itself. No postBuild/start hooks, credentials, private data or Windows paths are needed. Binder supplies its own Jupyter server; the environment includes the Python kernel. The full repository checkout supplies the companion helper.
+## Research dependencies
 
-Thebe requests a Python kernel with working directory `notebooks/MDAS/cancer/`. Thus `from synthetic_data_generation import make_cohort` works as a same-directory import, and `../../../data/synthetic_data` resolves to repository-local synthetic data. The helper creates this directory at the participant's request; neither the Binder build nor the website build trains a model or generates data.
+- KaleCancer: `f8dff11372587c4ae97ce86b7d869ace511a6a17`, including the interpretation and survival APIs used by both showcases.
+- CPU PyTorch / Torchvision: 2.6.0+cpu / 0.21.0+cpu; PyKale 0.2.1.
+- NumPy 2.5.4 and pandas 2.2.2. Binder retains its original NumPy pin; Colab independently uses 2.0.2. The initial attempt to align Binder to Colab's NumPy allowed Cardiac's existing setup to upgrade it; the final Binder pin matches the version used successfully by both Cardiac tutorials.
+- jsonargparse[signatures] 4.52.0 satisfies KaleCancer's exact requirement.
+- Matplotlib 3.11.2 and its resolved plotting dependencies; Hugging Face Hub 1.33.0 with HTTPX 0.28.1.
 
-## Regenerate dependency pins
+No CUDA packages or optional Cancer imaging/pathology/TabICL extras are added. Cardiac's original setup cell still installs `kalecardiac[imaging,interpret]` and fetches its tutorial configuration. Neither Cardiac notebook nor its setup was changed.
 
-From the repository root, using uv:
+Cancer kernels start in `notebooks/MDAS/cancer/`, next to `synthetic_data_generation.py` and `synthetic_showcase_data.py`. The authored relative data paths resolve within the repository. Participants generate synthetic data by running the notebook's cells. Cardiac kernels start in `notebooks/MDAS/cardiac/`; their setup then changes into the downloaded tutorial folder. A Binder launch starts no scientific cells automatically.
 
-```powershell
+## Regenerate the Linux lock
+
+```sh
 uv pip compile .binder/requirements.in --python-version 3.12 --python-platform x86_64-unknown-linux-gnu --index-strategy unsafe-best-match --emit-index-url --output-file .binder/requirements.txt
 ```
 
-Review any changed packages before publishing. Both the PyPI registry and official PyTorch CPU registry are used. The Cancer code is pinned to commit `1f476fdba87f515286f732cd7eaa92ffeeffdbc2`. The requirements pin the Python dependency graph, not the Binder base image or every OS library, so the entire image is not a bit-for-bit lock. Do not add large optional extras just to make an import error disappear.
+## Validation on 9 November 2026
 
-## Validation status
+Local Ubuntu/WSL, Python 3.12.15, CPU, two numerical-library threads. A newly created environment installed the final Binder lock using ordinary pip resolution, with nbclient 0.11.0 and nbconvert 7.17.2 as validation-only tools. Each notebook used a fresh kernel and byte-for-byte source copies in isolated Linux-native input trees. Cancer began with no generated data. Cardiac executed its original install and public Dropbox download cells.
 
-- A direct public Binder launch cloned `main` at `ed163a322186055c8c5b79885288ad9a051f89c4`, then returned `No environment specification found` followed by `phase: failed`. This is an environment-discovery failure, before dependency installation or kernel connection. That public revision has neither `.binder/runtime.txt` nor `.binder/requirements.txt`; the notebook and helper are already public.
-- The local runtime definitions are ready for review but cannot repair the public launch while they remain local. The minimum remote change is to add `.binder/runtime.txt` and `.binder/requirements.txt` on the configured ref. Publish `requirements.in` and this README with them for maintainability. No notebook/helper replacement is needed for this failure, and no patient data or generated HTML is needed in the Binder environment.
-- The complete CPU dependency graph resolved successfully for Python 3.12/Linux x86-64.
-- The helper was smoke-tested locally with its pinned NumPy, pandas and h5py versions: it generated 100 synthetic clinical rows and 100 valid patch files, totalling about 1.76 MB. Temporary test data were removed; no training ran.
-- The final Binder image, full ML import stack and notebook training have **not** been tested. Docker was not running locally. Public Binder cannot see these local files until the reviewed changes are pushed to the configured revision.
-- The original notebook is unchanged, including saved outputs. Training is 40 epochs; the optional baseline and bootstrap comparisons can add CPU time. Public Binder has limited, temporary resources. The complete run needs a timed memory/CPU smoke test before participants rely on it.
-- Colab requires the separate setup procedure in `docs/notebook-execution.md`. No claim of a verified Colab session is made.
+| Original source notebook | Code cells passed | Elapsed |
+| --- | ---: | ---: |
+| `classification_showcase.ipynb` | 24 | 65.06 s |
+| `survival_showcase.ipynb` | 28 | 81.50 s |
+| `tutorial-CardioVAE.ipynb` | 21 | 185.01 s |
+| `tutorial-LSEMVAE.ipynb` | 21 | 69.86 s |
 
-See `site/README.md` for end-to-end tests, disabling Thebe, or choosing another BinderHub. The Binder configuration can also be used with a local repo2docker installation or another compatible service; the static documentation remains independently buildable.
+No scientific cells, epochs, folds, bootstrap intervals or interpretation steps were reduced or skipped. The validation runner explicitly executes Cardiac cells tagged `skip-execution`; source tags and cells are unchanged. All source hashes stayed unchanged.
 
-References: [repo2docker configuration](https://repo2docker.readthedocs.io/en/latest/configuration/), [Python runtime selection](https://repo2docker.readthedocs.io/en/latest/configuration/system/), and [public Binder resource limits](https://mybinder.readthedocs.io/en/latest/about/user-guidelines.html).
+All 90 locked package versions and KaleCancer VCS provenance matched after installation and after both Cardiac runs. `pip check` passed. Cardiac's validated main revision was `55d1e404026e16cfe5467c44acd91a2971e303ee`; its unchanged install command subsequently proposed zero package changes in a pip dry-run. There is no remaining conflict with the final Binder pins. Cardiac still follows upstream main, so this records the tested revision rather than changing its setup.
+
+Reproduce in a disposable Linux checkout (notebook cells create synthetic data, clones, downloaded data and model outputs):
+
+```sh
+python3.12 -m venv /tmp/mdas-binder-check
+. /tmp/mdas-binder-check/bin/activate
+python -m pip install -r .binder/requirements.txt nbclient==0.11.0 nbconvert==7.17.2
+python -m pip check
+python site/tests/execute_notebooks.py classification_showcase --variant original --output outputs/binder-cancer
+python site/tests/execute_notebooks.py survival_showcase --variant original --output outputs/binder-cancer
+python site/tests/execute_notebooks.py tutorial-CardioVAE --variant original --output outputs/binder-cardiac
+python site/tests/execute_notebooks.py tutorial-LSEMVAE --variant original --output outputs/binder-cardiac
+python -m pip check
+```
+
+Final local execution reports and rendered outputs are ignored under `outputs/binder-final-cancer/` and `outputs/binder-linux-native-cardiac/`. Earlier mounted-drive exploratory runs are not the reported results.
+
+## Hosted checks still required
+
+This verifies Linux dependencies and complete notebook execution, not a repo2docker image or hosted Binder launch. Docker was not running. The proposed environment cannot be tested by public Binder before the reviewed files are published on the configured ref. No commit, push, deployment, Sphinx build or browser preview was performed.
+
+After publication, launch both Cancer selections and both Cardiac selections through the website. Check image build, kernel connection, notebook working directories, cell execution, active-session switching guards and downloadable outputs where supported. Public Binder's RAM, CPU, startup latency and session lifetime may differ from the local machine; full training under those limits is unverified. Preserve work before leaving a temporary session.

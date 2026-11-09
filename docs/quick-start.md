@@ -4,7 +4,7 @@ Start with Cancer in a browser, or run a Cardiac example locally. Local commands
 
 ## Cancer Quick Start
 
-**Online:** [Open the Live-Coding Notebook](../notebooks/MDAS/cancer/classification.ipynb), choose Classification or Survival Analysis. The Classification showcase is available to read, but full execution is blocked by missing APIs in the current KaleCancer pin; its Colab action is disabled. For Survival Analysis, select Binder or Google Colab. Binder runs here; Colab opens a dedicated copy and requires a compatible Python 3.12 runtime and its initial setup cell.
+**Online:** [Open the Live-Coding Notebook](../notebooks/MDAS/cancer/classification.ipynb), choose Classification or Survival Analysis. Choose **Run with Binder** for a temporary kernel on this website, or **Run in Google Colab** and its setup cell for a separate runtime. Colab opens a dedicated copy and requires a compatible Python 3.12 runtime and its initial setup cell.
 
 ### Optional local example
 

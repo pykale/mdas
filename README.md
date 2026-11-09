@@ -24,4 +24,4 @@ Synthetic demonstrations teach the software workflow; they do not establish clin
 
 ## Acknowledgement
 
-We gratefully acknowledge the collaborative contributions and insightful discussions provided by Bilal Tahir, Daniele Tartarini, Zhiyang Chen and Daniel Griffin throughout the KaleCancer project.
+We gratefully acknowledge the collaborative contributions and insightful discussions provided by Bilal Tahir, Daniele Tartarini, Zhiyang Chen and Daniel Griffin for the KaleCancer project.

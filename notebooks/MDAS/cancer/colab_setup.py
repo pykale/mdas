@@ -18,9 +18,9 @@ from urllib.request import Request, urlopen
 
 DATA_REF = "5e3eac4145944c38932b8ec2c78cbc08b7af068a"
 DATA_SHA256 = "4c599967243fb0f8f782bbcac4ae2bf3978884598ffbd54c048c87c147d89a22"
-CANCER_REF = "1f476fdba87f515286f732cd7eaa92ffeeffdbc2"
+CANCER_REF = "f8dff11372587c4ae97ce86b7d869ace511a6a17"
 MODULES = {"numpy": "numpy", "pandas": "pandas", "torch": "torch", "torchvision": "torchvision",
-           "scipy": "scipy", "scikit-learn": "sklearn", "h5py": "h5py", "lightning": "lightning",
+           "matplotlib": "matplotlib", "scipy": "scipy", "scikit-learn": "sklearn", "h5py": "h5py", "lightning": "lightning",
            "pytorch-lightning": "pytorch_lightning", "torchmetrics": "torchmetrics", "pykale": "kale",
            "kalecancer": "kalecancer", "huggingface-hub": "huggingface_hub",
            "transformers": "transformers", "tokenizers": "tokenizers",
@@ -33,7 +33,7 @@ def check_python() -> None:
             f"The active kernel is Python {sys.version_info[0]}.{sys.version_info[1]}. "
             "KaleCancer and PyKale require Python below 3.13. In Colab choose Runtime > Change runtime type > "
             "Runtime Version > 2026.07 (Python 3.12), reconnect, then rerun this setup cell. "
-            "If this runtime is not offered, use Run with Binder. Installing another interpreter does not change this kernel."
+            "If this runtime is not offered, use Run with Binder or a local Python 3.12 environment. Installing another interpreter does not change this kernel."
         )
 
 
@@ -110,7 +110,7 @@ def _ensure_helper(directory: Path) -> None:
     temporary.replace(path)
 
 
-def prepare(directory: Path | None = None) -> None:
+def prepare(directory: Path | None = None, *, showcase: bool = False) -> None:
     """Install in this kernel's interpreter and preserve the originals' cwd/imports."""
     check_python()  # Before installation or download.
     started = time.monotonic()
@@ -149,9 +149,19 @@ def prepare(directory: Path | None = None) -> None:
         from kalecancer.model import ABMIL, Concat, ClassificationHead, CoxHead, IntermediateFusion, Unimodal
         from kalecancer.pipeline import Pipeline
         from kalecancer.evaluate import AUROC, BalancedAccuracy, HarrellC, UnoC, EvalContext, bootstrap_ci
+        if showcase:
+            from synthetic_showcase_data import make_showcase_cohort, PATCH_SIZE
+            from kalecancer.interpret import (leave_one_out_ablation, modality_shapley,
+                feature_shapley, permutation_importance, attention, attention_heatmap, save_heatmap,
+                patient_report, save_reports)
+            from kalecancer.evaluate import (risk_groups, kaplan_meier, LogRank, calibration_table,
+                CalibrationError, IntegratedBrier, TimeDependentAUC)
+            from kalecancer.pipeline import EarlyStopping, dump_config, load_pipeline
+            from kalecancer.model import MLP, MaskedMean, LateFusion
+        subprocess.run([sys.executable, "-m", "pip", "check"], check=True)
         print(f"MDAS ready in {time.monotonic() - started:.1f}s: Python {sys.version.split()[0]}, PyTorch {torch.__version__}, Hub {metadata.version('huggingface-hub')}. Run the scientific cells below in order.", flush=True)
     except (subprocess.CalledProcessError, OSError, ImportError) as error:
         raise RuntimeError(
             f"MDAS setup failed: {error}. Check internet access and the pip/import output, then rerun setup. "
-            "If packages were already imported, restart the session first. Use Run with Binder if the supported Colab runtime is unavailable."
+            "If packages were already imported, restart the session first. Use Run with Binder or local Python 3.12 if the supported Colab runtime is unavailable."
         ) from error

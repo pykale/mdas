@@ -3,7 +3,7 @@
 CANCER = "notebooks/MDAS/cancer"
 NOTEBOOKS = {
     "tutorials/kalecancer/live-coding": ("Classification", f"{CANCER}/classification_showcase.ipynb"),
-    "tutorials/kalecancer/live-coding-survival": ("Survival Analysis", f"{CANCER}/survival.ipynb"),
+    "tutorials/kalecancer/live-coding-survival": ("Survival Analysis", f"{CANCER}/survival_showcase.ipynb"),
 }
 
 CARDIAC = "notebooks/MDAS/cardiac"
@@ -23,10 +23,9 @@ SECONDARY_NOTEBOOKS = {
 # Binder kernels start in the notebook's own folder. The Cardiac notebooks install
 # KaleCardiac in the session from their first code cell; .binder/ is shared and unchanged.
 BINDER_FILES = {
-    **{docname: [path, f"{CANCER}/synthetic_data_generation.py"] for docname, (_, path) in NOTEBOOKS.items()},
-    "tutorials/kalecancer/live-coding": [f"{CANCER}/classification_showcase.ipynb",
-                                          f"{CANCER}/synthetic_data_generation.py",
-                                          f"{CANCER}/synthetic_showcase_data.py"],
+    **{docname: [path, f"{CANCER}/synthetic_data_generation.py"]
+       + ([f"{CANCER}/synthetic_showcase_data.py"] if path.endswith("_showcase.ipynb") else [])
+       for docname, (_, path) in NOTEBOOKS.items()},
     "tutorials/kalecardiac/live-coding": [f"{CARDIAC}/tutorial-CardioVAE.ipynb",
                                           f"{CARDIAC}/configs/config_cardiovae_pretrain.yaml",
                                           f"{CARDIAC}/configs/config_cardiovae_finetune.yaml"],
