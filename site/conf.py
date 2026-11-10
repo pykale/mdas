@@ -186,11 +186,14 @@ REDIRECTS = {
     "tutorials/kalecancer/README": "index.html",
     "tutorials/kalecancer/getting-started": "index.html",
     "tutorials/kalecardiac/README": "index.html",
-    "tutorials/kalecardiac/cardiovae-hands-on": "cardiovae.html",
-    "tutorials/kalecardiac/lsemvae-hands-on": "lsemvae.html",
-    "tutorials/kalecardiac/results": "cardiovae.html#step-3-evaluation",
-    "tutorials/kalecardiac/live-coding": "cardiovae.html",
-    "tutorials/kalecardiac/live-coding-lsemvae": "lsemvae.html",
+    "tutorials/kalecardiac/cardiovae-hands-on": "chest-xray-ecg.html",
+    "tutorials/kalecardiac/lsemvae-hands-on": "12-lead-ecg.html",
+    "tutorials/kalecardiac/results": "chest-xray-ecg.html#step-3-evaluation",
+    "tutorials/kalecardiac/live-coding": "chest-xray-ecg.html",
+    "tutorials/kalecardiac/live-coding-lsemvae": "12-lead-ecg.html",
+    # The tutorial pages' former, model-named addresses; a section link keeps its fragment.
+    "tutorials/kalecardiac/cardiovae": "chest-xray-ecg.html",
+    "tutorials/kalecardiac/lsemvae": "12-lead-ecg.html",
 }
 
 

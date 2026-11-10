@@ -102,8 +102,8 @@ class Notebooks(unittest.TestCase):
         sys.path.insert(0, str(ROOT / "site/_ext"))
         from mdas_notebooks import CARDIAC_NOTEBOOKS
         labels = [label for label, _ in CARDIAC_NOTEBOOKS.values()]
-        previous = {"tutorials/kalecardiac/cardiovae": "index.html",
-                    "tutorials/kalecardiac/lsemvae": "cardiovae.html"}
+        previous = {"tutorials/kalecardiac/chest-xray-ecg": "index.html",
+                    "tutorials/kalecardiac/12-lead-ecg": "chest-xray-ecg.html"}
         for doc, (label, path) in CARDIAC_NOTEBOOKS.items():
             with self.subTest(doc=doc):
                 source = (ROOT / path).read_text(encoding="utf-8")

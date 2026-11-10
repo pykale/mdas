@@ -63,7 +63,7 @@ def stage() -> None:
         mapping[notebook_path] = docname + ".ipynb"
     aliases = {"docs/agenda.md": "docs/about.md","tutorials/kalecancer/results.md": "tutorials/kalecancer/live-coding.ipynb",
                "tutorials/kalecardiac/getting-started.md": "tutorials/kalecardiac/index.md",
-               "tutorials/kalecardiac/results.md": "tutorials/kalecardiac/cardiovae.ipynb",
+               "tutorials/kalecardiac/results.md": "tutorials/kalecardiac/chest-xray-ecg.ipynb",
                "notebooks/MDAS/cancer/survival.ipynb": "tutorials/kalecancer/live-coding-survival.ipynb",
                "notebooks/MDAS/cancer/classification.ipynb": "tutorials/kalecancer/live-coding.ipynb",
                "docs/prerequisites.md": "docs/participation.md",

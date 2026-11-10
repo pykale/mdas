@@ -16,7 +16,7 @@ Each notebook builds a published model from raw DICOM files using the [KaleCardi
 | | Chest X-ray and ECG | 12-lead ECG |
 | --- | --- | --- |
 | **Input data (Modality)** | Chest X-ray and 12-lead ECG | 12-lead ECG, with each lead as separate modality |
-| **Model** | CardioVAE: an encoder and a decoder for each modality, fused by a product of experts | LS-EMVAE: an encoder for each lead, hierarchical fusion and one decoder shared by all leads |
+| **Model** | An encoder and a decoder for each modality; the two encodings are fused by a product of experts (PoE) into one shared latent representation | An encoder for each of the 12 leads and one decoder shared by all of them; the 12 encodings are fused by hierarchical modality experts (HiME) into one shared latent representation |
 | **Pretrained on** | Paired 12-lead ECGs and chest X-rays | 12-lead ECGs |
 | **Fine-tuned on** | Both modalities, or 12-lead ECG or chest X-rays  | Six limb lead ECG, or 12-lead ECG |
 | **Missing modalities** | 12-lead ECG or chest X-rays | Any ECG leads |

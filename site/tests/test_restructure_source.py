@@ -25,7 +25,7 @@ class RestructureSource(unittest.TestCase):
             build.STAGED = Path(folder) / "source"
             build.stage()
             for track, entries in (("kalecancer", ["Classification <live-coding>", "Survival Analysis <live-coding-survival>"]),
-                                   ("kalecardiac", ["Chest X-ray and ECG <cardiovae>", "12-lead ECG <lsemvae>"])):
+                                   ("kalecardiac", ["Chest X-ray and ECG <chest-xray-ecg>", "12-lead ECG <12-lead-ecg>"])):
                 text = (build.STAGED / f"tutorials/{track}/index.md").read_text(encoding="utf-8")
                 for entry in entries:
                     self.assertIn(entry, text)
@@ -54,7 +54,7 @@ class RestructureSource(unittest.TestCase):
             self.assertIn("## Programme", (build.STAGED / "docs/about.md").read_text())
             quick = (build.STAGED / "docs/quick-start.md").read_text()
             for track, pages in (("kalecancer", ("live-coding", "live-coding-survival")),
-                                 ("kalecardiac", ("cardiovae", "lsemvae"))):
+                                 ("kalecardiac", ("chest-xray-ecg", "12-lead-ecg"))):
                 for page in pages:
                     self.assertIn(f"../tutorials/{track}/{page}.ipynb", quick)
 
