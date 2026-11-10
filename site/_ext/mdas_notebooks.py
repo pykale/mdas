@@ -2,8 +2,8 @@
 
 CANCER = "notebooks/MDAS/cancer"
 NOTEBOOKS = {
-    "tutorials/kalecancer/live-coding": ("KaleCancer Classification", f"{CANCER}/classification_showcase.ipynb"),
-    "tutorials/kalecancer/live-coding-survival": ("KaleCancer Survival Analysis", f"{CANCER}/survival_showcase.ipynb"),
+    "tutorials/kalecancer/live-coding": ("Classification", f"{CANCER}/classification_showcase.ipynb"),
+    "tutorials/kalecancer/live-coding-survival": ("Survival Analysis", f"{CANCER}/survival_showcase.ipynb"),
 }
 
 # The Cardiac tutorials share one sidebar entry and heading; the first is its default page.

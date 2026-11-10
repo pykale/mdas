@@ -24,11 +24,11 @@ class RestructureSource(unittest.TestCase):
         with tempfile.TemporaryDirectory() as folder:
             build.STAGED = Path(folder) / "source"
             build.stage()
-            for track, titles in (("kalecancer", ["KaleCancer Classification", "KaleCancer Survival Analysis"]),
-                                  ("kalecardiac", ["KaleCardiac CardioVAE", "KaleCardiac LS-EMVAE"])):
+            for track, titles in (("kalecancer", ["Classification", "Survival Analysis"]),
+                                  ("kalecardiac", ["KaleCardiac API Notebooks"])):
                 text = (build.STAGED / f"tutorials/{track}/index.md").read_text()
                 for title in titles:
-                    self.assertIn(title + " <live-coding", text)
+                    self.assertIn(title + (" <live-coding" if track == "kalecancer" else " <cardiovae"), text)
                 for old in ("getting-started", "results", "Example Notebook"):
                     self.assertNotIn(old + " <", text)
                 self.assertFalse((build.STAGED / f"tutorials/{track}/results.md").exists())
@@ -40,7 +40,8 @@ class RestructureSource(unittest.TestCase):
                 conf.prepare_notebook(None, doc, source)
                 rendered = json.loads(source[0])
                 intro = rendered["cells"][0]["source"]
-                self.assertIn("# " + title, intro)
+                heading = conf.CARDIAC_TUTORIALS_TITLE if doc in conf.CARDIAC_NOTEBOOKS else title
+                self.assertIn("# " + heading, intro)
                 self.assertNotIn("mdas-notebook-select", intro)
                 self.assertNotIn("Live-Coding Notebook", intro)
                 self.assertNotIn("orphan", rendered.get("metadata", {}))
@@ -51,9 +52,10 @@ class RestructureSource(unittest.TestCase):
             self.assertEqual(conf.REDIRECTS["docs/agenda"], "about.html#programme")
             self.assertIn("## Programme", (build.STAGED / "docs/about.md").read_text())
             quick = (build.STAGED / "docs/quick-start.md").read_text()
-            for track, suffix in (("kalecancer", "survival"), ("kalecardiac", "lsemvae")):
-                self.assertIn(f"../tutorials/{track}/live-coding.ipynb", quick)
-                self.assertIn(f"../tutorials/{track}/live-coding-{suffix}.ipynb", quick)
+            for track, pages in (("kalecancer", ("live-coding", "live-coding-survival")),
+                                 ("kalecardiac", ("cardiovae", "lsemvae"))):
+                for page in pages:
+                    self.assertIn(f"../tutorials/{track}/{page}.ipynb", quick)
 
     def test_about_consolidates_session_and_programme(self):
         text = (ROOT / "docs/about.md").read_text(encoding="utf-8")
@@ -92,9 +94,38 @@ class RestructureSource(unittest.TestCase):
         self.assertFalse(conf.MDAS_ENABLE_THEBE)
         for doc in {**conf.NOTEBOOKS, **conf.CARDIAC_NOTEBOOKS}:
             intro = conf.notebook_intro(doc)
-            self.assertIn("In-page execution is disabled", intro)
+            self.assertNotIn("Binder", intro)
             self.assertNotIn('onclick="mdasLaunchInteractive()"', intro)
             self.assertIn("Run in Google Colab", intro)
+
+    def test_cancer_colab_only_actions_and_guidance(self):
+        conf = module("mdas_colab_only_source_test", ROOT / "site/conf.py")
+        self.assertEqual([title for title, _ in conf.NOTEBOOKS.values()],
+                         ["Classification", "Survival Analysis"])
+        navigation = json.loads((ROOT / "site/navigation.json").read_text())
+        self.assertIn(["Cancer Overview", "tutorials/kalecancer/index"], navigation["Tutorials"])
+        home = (ROOT / "README.md").read_text(encoding="utf-8")
+        self.assertIn("[Cancer](tutorials/kalecancer/index.md)", home)
+        for path in ("README.md", "docs/quick-start.md", "docs/colab.md", "tutorials/kalecancer/index.md"):
+            text = (ROOT / path).read_text(encoding="utf-8")
+            self.assertNotIn("KaleCancer Classification", text)
+            self.assertNotIn("KaleCancer Survival Analysis", text)
+        self.assertEqual(conf.mdas_binder_pages, [])
+        for doc, (_, path) in conf.NOTEBOOKS.items():
+            intro = conf.notebook_intro(doc)
+            self.assertNotIn("Binder", intro)
+            self.assertNotIn("mdas-thebe", intro)
+            self.assertEqual(intro.count('class="btn btn-primary mdas-execution-button"'), 1)
+            self.assertIn(path.replace(".ipynb", "_colab.ipynb"), intro)
+            self.assertTrue((ROOT / path.replace(".ipynb", "_colab.ipynb")).is_file())
+            self.assertIn("Python 3.12 / 2026.07", intro)
+            self.assertIn("quick-start.md#cancer", intro)
+            self.assertIn("Do not upload private or patient data", intro)
+        for path in ("README.md", "docs/quick-start.md", "docs/notebook-execution.md", "docs/colab.md", "tutorials/kalecancer/index.md"):
+            self.assertNotIn("Run with Binder", (ROOT / path).read_text(encoding="utf-8"))
+        overview = (ROOT / "tutorials/kalecancer/index.md").read_text(encoding="utf-8")
+        self.assertIn("## What you will do", overview)
+        self.assertEqual(len(re.findall(r"^[1-4]\. ", overview, re.M)), 4)
 
     def test_parallel_routes_and_preserved_local_commands(self):
         text = (ROOT / "docs/quick-start.md").read_text()

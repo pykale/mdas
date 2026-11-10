@@ -14,7 +14,7 @@ def configure_page(app, doctree, docname):
         text = node.astext()
         if 'type="text/x-thebe-config"' not in text and "<script>kernelName =" not in text:
             continue
-        if docname not in NOTEBOOKS:
+        if docname not in app.config.mdas_binder_pages:
             node.parent.remove(node)
             continue
         if 'type="text/x-thebe-config"' in text:
@@ -48,7 +48,7 @@ def configure_page(app, doctree, docname):
 
 
 def scope_assets(app, pagename, templatename, context, doctree):
-    if pagename in NOTEBOOKS:
+    if pagename in app.config.mdas_binder_pages:
         return
 
     def keep(asset):
@@ -62,6 +62,7 @@ def scope_assets(app, pagename, templatename, context, doctree):
 
 
 def setup(app):
+    app.add_config_value("mdas_binder_pages", list(NOTEBOOKS), "html")
     app.add_js_file("mdas-interactive.js", defer="defer")
     app.add_css_file("mdas-interactive.css")
     app.connect("doctree-resolved", configure_page, priority=800)

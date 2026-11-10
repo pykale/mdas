@@ -6,9 +6,9 @@ Choose a Cancer or Cardiac example and an execution route. Local commands belong
 
 ### Run online
 
-Open [KaleCancer Classification](../notebooks/MDAS/cancer/classification_showcase.ipynb) or [KaleCancer Survival Analysis](../notebooks/MDAS/cancer/survival_showcase.ipynb).
+Open [Classification](../notebooks/MDAS/cancer/classification_showcase.ipynb) or [Survival Analysis](../notebooks/MDAS/cancer/survival_showcase.ipynb).
 
-**Run with Binder** starts a temporary kernel on this website. **Run in Google Colab** opens the corresponding dedicated notebook in Colab. Follow [Execution Help](notebook-execution.md); Cancer Colab requires the documented **Python 3.12 / 2026.07** runtime and its initial setup cell, including any requested restart. This Colab requirement is separate from the local Python guidance below.
+**Run in Google Colab** is the sole online option and opens the corresponding dedicated notebook in Colab. Follow [Execution Help](notebook-execution.md); Cancer Colab requires the documented **Python 3.12 / 2026.07** runtime and its initial setup cell, including any requested restart. This Colab requirement is separate from the local Python guidance below.
 
 ### Run locally
 

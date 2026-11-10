@@ -4,16 +4,16 @@ orphan: true
 
 # Run the Cancer notebooks in Google Colab
 
-Open [KaleCancer Classification](../notebooks/MDAS/cancer/classification_showcase.ipynb) or [KaleCancer Survival Analysis](../notebooks/MDAS/cancer/survival_showcase.ipynb), then select **Run in Google Colab**.
+Open [Classification](../notebooks/MDAS/cancer/classification_showcase.ipynb) or [Survival Analysis](../notebooks/MDAS/cancer/survival_showcase.ipynb), then select **Run in Google Colab**.
 
 - [Classification showcase in Google Colab](https://colab.research.google.com/github/pykale/mdas/blob/main/notebooks/MDAS/cancer/classification_showcase_colab.ipynb)
 - [Survival Analysis in Google Colab](https://colab.research.google.com/github/pykale/mdas/blob/main/notebooks/MDAS/cancer/survival_showcase_colab.ipynb)
 
-Each selected task uses a complete copy of the authored showcase with its scientific cells unchanged. Each setup downloads both synthetic helpers with checksum verification and pins KaleCancer `f8dff11372587c4ae97ce86b7d869ace511a6a17`, including the interpretation APIs. Binder provides a separate in-page execution route using its own compatible environment.
+Each selected task uses a complete copy of the authored showcase with its scientific cells unchanged. Each setup downloads both synthetic helpers with checksum verification and pins KaleCancer `f8dff11372587c4ae97ce86b7d869ace511a6a17`, including the interpretation APIs. Google Colab is the sole online execution option for both Cancer examples.
 
 ## Before running: Python 3.12
 
-In Colab select **Runtime > Change runtime type > Runtime Version > 2026.07**, then reconnect. Google currently lists this Python 3.12 runtime in its [runtime documentation](https://research.google.com/colaboratory/runtime-version-faq.html), checked on 9 November 2026. Runtime availability can change; if it is not offered, use **Run with Binder** on the website, or local Python 3.12.
+In Colab select **Runtime > Change runtime type > Runtime Version > 2026.07**, then reconnect. Google currently lists this Python 3.12 runtime in its [runtime documentation](https://research.google.com/colaboratory/runtime-version-faq.html), checked on 9 November 2026. Runtime availability can change; if it is not offered, use local Python 3.12 following [Quick Start](quick-start.md#cancer).
 
 The default Python 3.13 runtime is outside the published KaleCancer and PyKale requirements. Installing another interpreter does not change the active notebook kernel. The setup checks that kernel's Python version before downloading or installing anything.
 
@@ -26,7 +26,7 @@ The default Python 3.13 runtime is outside the published KaleCancer and PyKale r
 
 The setup arranges `notebooks/MDAS/cancer/` beneath `/content/mdas-cancer/`, adds that directory to the import path and changes the working directory there. Thus the original `from synthetic_data_generation import make_cohort` and `../../../data/synthetic_data` work without editing any scientific cell. Each notebook generates its own appropriate synthetic task with the original deterministic generator.
 
-The four original notebooks, blank exercises, Binder requirements and Binder controller are unchanged. **Run with Binder** uses the selected notebook on the website; the Classification showcase currently has the setup limitation above. Colab copies add only this setup section; all original cell dictionaries, ordering, metadata and saved outputs are preserved.
+The four original notebooks, blank exercises, Binder requirements and Binder controller are unchanged. The Cancer website pages offer Google Colab only. Colab copies add only this setup section; all original cell dictionaries, ordering, metadata and saved outputs are preserved.
 
 ## If setup does not reach MDAS ready
 
