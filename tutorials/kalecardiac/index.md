@@ -1,19 +1,13 @@
-# KaleCardiac Overview
+# Overview
 
-[KaleCardiac](https://github.com/pykale/cardiac) is a Python library for multimodal cardiovascular machine learning, built on [PyKale](https://github.com/pykale/pykale). It works with ECG, chest X-ray, cardiac imaging and clinical data. Its API is a pipeline of modules, each named for what it does:
+[KaleCardiac](https://github.com/pykale/cardiac) is a Python library for multimodal cardiovascular machine learning, built on [PyKale](https://github.com/pykale/pykale). It supports multiple data modalities, including cardiac imaging, physiological signals, and clinical data. Its API follows a modular pipeline architecture, with each module named according to its functionality:
 
 ```text
 loaddata  →  prepdata  →  model  →  pipeline  →  evaluate  →  interpret
- access      transform    learn      train        score        explain
-                            │
-                            ├─ layers   building blocks
-                            ├─ embed    CardioVAE, LS-EMVAE and fusion
-                            └─ predict  heads and objectives
+(access)    (transform)  (learn)     (train)    (metrics)     (explain)
 ```
 
-The `auto` module runs these stages from a single configuration, and the tutorials use it for pretraining and fine-tuning.
-
-The library is organised around two features of cardiac data. Recordings are easy to collect but labels are expensive, so a model first learns from unlabelled recordings and is then fine-tuned on a labelled cohort. Modalities also go missing in practice, so models keep working when an input is absent.
+The library is organised around two features of cardiac data. Data are easy to collect but labels are expensive, so a model first learns from unlabelled datas and is then fine-tuned on a labelled cohort. Modalities also go missing in practice, so models keep working when an input is absent.
 
 ## The tutorial notebooks
 
@@ -21,11 +15,11 @@ Each notebook builds a published model from raw DICOM files using the [KaleCardi
 
 | | CardioVAE | LS-EMVAE |
 | --- | --- | --- |
-| **Input data** | Chest X-ray and twelve-lead ECG | Twelve-lead ECG, with each lead as its own modality |
+| **Input data (Modality)** | Chest X-ray and 12-lead ECG | 12-lead ECG, with each lead as separate modality |
 | **Model** | An encoder and a decoder for each modality, fused by a product of experts | An encoder for each lead, hierarchical fusion and one decoder shared by all leads |
-| **Pretrained on** | Paired ECGs and chest X-rays | All twelve leads |
-| **Fine-tuned on** | Both modalities | The six limb leads, or all twelve |
-| **Missing inputs** | Withholds each modality in turn and scores again | Withholds leads one after another, down to lead I |
+| **Pretrained on** | Paired 12-lead ECGs and chest X-rays | 12-lead ECGs |
+| **Fine-tuned on** | Both modalities, or 12-lead ECG or chest X-rays  | Six limb lead ECG, or 12-lead ECG |
+| **Missing modalities** | 12-lead ECG or chest X-rays | Any ECG leads |
 | **Notebook** | [Open CardioVAE](../../notebooks/MDAS/cardiac/tutorial-CardioVAE.ipynb) | [Open LS-EMVAE](../../notebooks/MDAS/cardiac/tutorial-LSEMVAE.ipynb) |
 
 ## What you will do
