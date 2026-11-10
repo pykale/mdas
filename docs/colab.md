@@ -9,13 +9,13 @@ Open [Classification](../notebooks/MDAS/cancer/classification_showcase.ipynb) or
 - [Classification showcase in Google Colab](https://colab.research.google.com/github/pykale/mdas/blob/main/notebooks/MDAS/cancer/classification_showcase_colab.ipynb)
 - [Survival Analysis in Google Colab](https://colab.research.google.com/github/pykale/mdas/blob/main/notebooks/MDAS/cancer/survival_showcase_colab.ipynb)
 
-Each selected task uses a complete copy of the authored showcase with its scientific cells unchanged. Each setup downloads both synthetic helpers with checksum verification and pins KaleCancer `f8dff11372587c4ae97ce86b7d869ace511a6a17`, including the interpretation APIs. Google Colab is the sole online execution option for both Cancer examples.
+Each selected task uses a complete copy of the authored showcase with its scientific cells unchanged. Each setup downloads both synthetic helpers with checksum verification and pins Cancer `f8dff11372587c4ae97ce86b7d869ace511a6a17`, including the interpretation APIs. Google Colab is the sole online execution option for both Cancer examples.
 
 ## Before running: Python 3.12
 
 In Colab select **Runtime > Change runtime type > Runtime Version > 2026.07**, then reconnect. Google currently lists this Python 3.12 runtime in its [runtime documentation](https://research.google.com/colaboratory/runtime-version-faq.html), checked on 9 November 2026. Runtime availability can change; if it is not offered, use local Python 3.12 following [Quick Start](quick-start.md#cancer).
 
-The default Python 3.13 runtime is outside the published KaleCancer and PyKale requirements. Installing another interpreter does not change the active notebook kernel. The setup checks that kernel's Python version before downloading or installing anything.
+The default Python 3.13 runtime is outside the published Cancer and PyKale requirements. Installing another interpreter does not change the active notebook kernel. The setup checks that kernel's Python version before downloading or installing anything.
 
 ## Run cells directly
 
@@ -36,6 +36,6 @@ For notebook switching, temporary sessions and saving work across both execution
 
 ## Compatibility and validation
 
-The Colab research stack uses Python 3.12, PyTorch 2.6 CPU, PyKale 0.2.1, the existing pinned KaleCancer Git commit, NumPy 2.0.2, pandas 2.2.2, scikit-learn 1.9.1 and Lightning 2.6.6. NumPy matches the documented Colab 2026.07 base version. Setup installs the required PyTorch version because the preinstalled newer release does not satisfy PyKale's cap. Unrelated kernel/IPython packages are not replaced. No Python-version or dependency constraints are bypassed.
+The Colab research stack uses Python 3.12, PyTorch 2.6 CPU, PyKale 0.2.1, the existing pinned Cancer Git commit, NumPy 2.0.2, pandas 2.2.2, scikit-learn 1.9.1 and Lightning 2.6.6. NumPy matches the documented Colab 2026.07 base version. Setup installs the required PyTorch version because the preinstalled newer release does not satisfy PyKale's cap. Unrelated kernel/IPython packages are not replaced. No Python-version or dependency constraints are bypassed.
 
 Direct Colab UI execution has not been verified in this development environment. Complete local executions, preservation checks, exact dependency details and the final fresh-session Colab checklist are documented in the [validation report](https://github.com/pykale/mdas/blob/main/notebooks/MDAS/cancer/README-colab.md). Local execution is not a claim that Colab UI/runtime behaviour has been tested. The new notebook copies and their support files must be published together after review before their public links can work.

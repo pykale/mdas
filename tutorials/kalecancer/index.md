@@ -1,6 +1,6 @@
 # Cancer
 
-[KaleCancer](https://github.com/pykale/cancer) combines clinical variables and pathology slide features to explore cancer research questions. The examples follow the same workflow: load the inputs, prepare a model, train it, then evaluate and interpret its predictions.
+[Cancer](https://github.com/pykale/cancer) combines clinical variables and pathology slide features to explore cancer research questions. The examples follow the same workflow: load the inputs, prepare a model, train it, then evaluate and interpret its predictions.
 
 ## Choose an example
 
@@ -13,7 +13,7 @@ Both examples use synthetic clinical data and generated pathology patch features
 
 ## From data to interpretation
 
-![KaleCancer workflow: clinical tables and pathology patch features are loaded, combined during model training, then evaluated and interpreted.](../../assets/kalecancer-fusion-workflow.svg)
+![Cancer workflow: clinical tables and pathology patch features are loaded, combined during model training, then evaluated and interpreted.](../../assets/kalecancer-fusion-workflow.svg)
 
 The arrows trace the existing workflow from data loading through model training to evaluation and interpretation. Motion is decorative; the complete diagram remains readable without animation and when reduced motion is requested.
 

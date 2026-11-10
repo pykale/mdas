@@ -2,7 +2,7 @@
 
 Biomedical research often brings together measurements that describe different aspects of the same person. Multimodal data analysis asks how these complementary sources can be combined to address a research question, and how to evaluate what the combination adds.
 
-Organised by the AI Research Engineering team at the Centre for Machine Intelligence, with support from the EPSRC-funded UK Open Multimodal AI Network, MDAS introduces practical examples from the PyKale biomedical research ecosystem. **KaleCancer** combines clinical variables and pathology patch features for classification and survival analysis. **KaleCardiac** explores chest X-ray and ECG representation learning with CardioVAE, and complementary ECG leads with LS-EMVAE.
+Organised by the AI Research Engineering team at the Centre for Machine Intelligence, with support from the EPSRC-funded UK Open Multimodal AI Network, MDAS introduces practical examples from the PyKale biomedical research ecosystem. **Cancer** combines clinical variables and pathology patch features for classification and survival analysis. **Cardiac** explores chest X-ray and ECG representation learning with CardioVAE, and complementary ECG leads with LS-EMVAE.
 
 Work through the examples with us at the session or independently afterwards. The materials explain the inputs, modelling choices and evaluation, starting with synthetic data so no patient dataset is needed.
 
@@ -11,7 +11,7 @@ Work through the examples with us at the session or independently afterwards. Th
 | Track | What you will explore |
 | --- | --- |
 | [Cancer](tutorials/kalecancer/index.md) | Combine clinical variables and pathology features to predict a category or analyse survival. |
-| [KaleCardiac](tutorials/kalecardiac/index.md) | Learn from chest X-rays and ECGs with CardioVAE, or from complementary ECG leads with LS-EMVAE. |
+| [Cardiac](tutorials/kalecardiac/index.md) | Learn from chest X-rays and ECGs with CardioVAE, or from complementary ECG leads with LS-EMVAE. |
 
 Open either tutorial overview and choose an example. Use **Run in Google Colab** on its notebook page, or **Run locally** using [Quick Start](docs/quick-start.md).
 

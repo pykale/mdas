@@ -40,7 +40,7 @@ The advanced section reports **Harrell's C** bootstrap intervals for the fused m
 
 ## Further research
 
-Before changing a model, write down a testable question: what information should the extra modality add, and how would a subject-level split assess it? The [KaleCancer research examples](https://github.com/pykale/cancer/tree/main/examples/hancock) include intermediate survival fusion, configuration-driven pipelines, cross-validation and late-fusion classification. These require access to a local HANCOCK dataset, its expected layout and appropriate compute; they are not no-data starter exercises.
+Before changing a model, write down a testable question: what information should the extra modality add, and how would a subject-level split assess it? The [Cancer research examples](https://github.com/pykale/cancer/tree/main/examples/hancock) include intermediate survival fusion, configuration-driven pipelines, cross-validation and late-fusion classification. These require access to a local HANCOCK dataset, its expected layout and appropriate compute; they are not no-data starter exercises.
 
 ## Responsible interpretation
 

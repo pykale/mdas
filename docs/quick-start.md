@@ -12,14 +12,14 @@ Open [Classification](../notebooks/MDAS/cancer/classification_showcase.ipynb) or
 
 ### Run locally
 
-Use Python **3.11 or 3.12**, [uv](https://docs.astral.sh/uv/), and a checkout of [KaleCancer](https://github.com/pykale/cancer). Run these commands from the **KaleCancer repository root**, not the MDAS checkout. The [repository quickstart](https://github.com/pykale/cancer/blob/main/docs/quickstart.md) provides:
+Use Python **3.11 or 3.12**, [uv](https://docs.astral.sh/uv/), and a checkout of [Cancer](https://github.com/pykale/cancer). Run these commands from the **Cancer repository root**, not the MDAS checkout. The [repository quickstart](https://github.com/pykale/cancer/blob/main/docs/quickstart.md) provides:
 
 ```sh
 uv sync --all-extras
 uv run python examples/synthetic/synthetic_survival.py
 ```
 
-This CPU-capable starter generates clinical variables, pathology patch features and censored survival times, then trains an intermediate-fusion Cox model. No patient dataset is required. The MDAS browser notebooks are a separate entry point with both classification and survival tasks. To run those authored showcases locally, select the installed KaleCancer environment as your kernel in Jupyter or VS Code and open `classification_showcase.ipynb` or `survival_showcase.ipynb` from the **MDAS checkout's `notebooks/MDAS/cancer/` directory**. Keep both synthetic helper modules beside them and keep the kernel working in that directory so the authored imports and relative data paths remain valid.
+This CPU-capable starter generates clinical variables, pathology patch features and censored survival times, then trains an intermediate-fusion Cox model. No patient dataset is required. The MDAS browser notebooks are a separate entry point with both classification and survival tasks. To run those authored showcases locally, select the installed Cancer environment as your kernel in Jupyter or VS Code and open `classification_showcase.ipynb` or `survival_showcase.ipynb` from the **MDAS checkout's `notebooks/MDAS/cancer/` directory**. Keep both synthetic helper modules beside them and keep the kernel working in that directory so the authored imports and relative data paths remain valid.
 
 ## Cardiac
 
@@ -31,7 +31,7 @@ Open the [Chest X-ray and ECG](../notebooks/MDAS/cardiac/tutorial-CardioVAE.ipyn
 
 ### Run locally
 
-Use Python **3.11 or 3.12**, the shared local recommendation for both tracks. Install a [PyTorch build compatible with your hardware](https://pytorch.org/get-started/locally/), then follow the [KaleCardiac quickstart](https://github.com/pykale/cardiac/blob/main/docs/quickstart.md):
+Use Python **3.11 or 3.12**, the shared local recommendation for both tracks. Install a [PyTorch build compatible with your hardware](https://pytorch.org/get-started/locally/), then follow the [Cardiac quickstart](https://github.com/pykale/cardiac/blob/main/docs/quickstart.md):
 
 ```sh
 git clone https://github.com/pykale/cardiac.git
@@ -40,7 +40,7 @@ pip install -e .
 python -c "import kalecardiac, torch, kale; print(kalecardiac.__version__)"
 ```
 
-The commands above clone **KaleCardiac** and change into its repository root. Run the commands below from that same **cardiac repository root**.
+The commands above clone **Cardiac** and change into its repository root. Run the commands below from that same **cardiac repository root**.
 
 The core install includes PyKale. Optional extras cover ECG file formats (`.[ecg]`), imaging (`.[imaging]`), interpretation (`.[interpret]`) and development (`.[dev]`); only add those your experiment needs. Avoid mixing a local checkout with an older installed package.
 

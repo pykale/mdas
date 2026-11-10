@@ -2,7 +2,7 @@
 
 ## Overview
 
-The two Cardiac tutorials show how [KaleCardiac](https://github.com/pykale/cardiac) learns representations from multiple cardiac modalities. **CardioVAE** fuses a **chest X-ray (CXR)** with a **twelve-lead electrocardiogram (ECG)**; **LS-EMVAE** treats each of the twelve ECG leads as a modality of its own.
+The two Cardiac tutorials show how [Cardiac](https://github.com/pykale/cardiac) learns representations from multiple cardiac modalities. **CardioVAE** fuses a **chest X-ray (CXR)** with a **twelve-lead electrocardiogram (ECG)**; **LS-EMVAE** treats each of the twelve ECG leads as a modality of its own.
 
 Each tutorial pretrains a multimodal variational autoencoder (VAE) without labels, then fine-tunes a classifier for a binary endpoint: **0**, healthy, or **1**, cardiothoracic abnormality. Both start from raw DICOM files, the format in which hospitals export these investigations.
 
@@ -32,7 +32,7 @@ A notebook cell downloads it as one ZIP archive of about **400 MB**, without sig
 
 ## The workflow
 
-Both notebooks follow the same five steps, each a few calls to the KaleCardiac API:
+Both notebooks follow the same five steps, each a few calls to the Cardiac API:
 
 | Step | What you do |
 | --- | --- |
@@ -46,14 +46,14 @@ Each subject's ECG is prepared as ten seconds recorded at 500 Hz, which gives 5,
 
 ## Configuration files
 
-Each tutorial reads two [YACS](https://github.com/rbgirshick/yacs) configuration files from its `configs/` folder, each merged onto KaleCardiac's defaults. Fine-tuning starts from the pretrained model, so the fine-tuning file is merged onto the pretraining configuration.
+Each tutorial reads two [YACS](https://github.com/rbgirshick/yacs) configuration files from its `configs/` folder, each merged onto Cardiac's defaults. Fine-tuning starts from the pretrained model, so the fine-tuning file is merged onto the pretraining configuration.
 
 | Tutorial | Pretraining | Fine-tuning |
 | --- | --- | --- |
 | **CardioVAE** | `config_cardiovae_pretrain.yaml`: ECG and CXR shape, latent width, tri-stream objective and a 10-epoch schedule | `config_cardiovae_finetune.yaml`: labelled cohort, endpoint, train/validation/test split and a 20-epoch schedule |
 | **LS-EMVAE** | `config_lsemvae_pretrain.yaml`: the twelve leads, lead encoders, HiME fusion, alignment term and a 10-epoch schedule | `config_lsemvae_finetune.yaml`: the six limb leads, endpoint, split and a 20-epoch schedule |
 
-The same files are in the [tutorial folder of the KaleCardiac repository](https://github.com/pykale/cardiac/tree/main/tutorials/mdas_tutorial). Change a setting in a file, or override it in the notebook's **Hyperparameters to play with** cells.
+The same files are in the [tutorial folder of the Cardiac repository](https://github.com/pykale/cardiac/tree/main/tutorials/mdas_tutorial). Change a setting in a file, or override it in the notebook's **Hyperparameters to play with** cells.
 
 ## Run a tutorial
 
@@ -62,7 +62,7 @@ Open the [example notebook](../../notebooks/MDAS/cardiac/tutorial-CardioVAE.ipyn
 ### On this website (Binder)
 
 1. Select **Run with Binder** and wait for **Kernel connected**. Starting a session can take several minutes.
-2. Run the cells in order, starting with the package installation cell in Step 0. It installs KaleCardiac into the session and fetches the configuration files; the dataset cell then downloads the data.
+2. Run the cells in order, starting with the package installation cell in Step 0. It installs Cardiac into the session and fetches the configuration files; the dataset cell then downloads the data.
 3. Binder runs on a CPU, so training takes longer than on a GPU. Sessions are temporary: copy any code edits or results you want to keep.
 
 ### In Google Colab
@@ -93,14 +93,14 @@ Each tutorial writes its checkpoints and training logs under `outputs/` beside t
 
 ## Beyond the notebooks
 
-The KaleCardiac repository runs both models from the command line, with cross-validation, ablations and a written report. Without a dataset path, these examples generate synthetic cohorts:
+The Cardiac repository runs both models from the command line, with cross-validation, ablations and a written report. Without a dataset path, these examples generate synthetic cohorts:
 
 ```sh
 python -m examples.cardiovae_multimodal.main --cfg examples/cardiovae_multimodal/configs/quick.yaml
 python -m examples.lsemvae_ecg.main --cfg examples/lsemvae_ecg/configs/quick.yaml
 ```
 
-For details, see the [KaleCardiac quickstart](https://github.com/pykale/cardiac/blob/main/docs/quickstart.md), the [examples overview](https://github.com/pykale/cardiac/blob/main/examples/README.md), the [CardioVAE](https://github.com/pykale/cardiac/blob/main/examples/cardiovae_multimodal/README.md) and [LS-EMVAE](https://github.com/pykale/cardiac/blob/main/examples/lsemvae_ecg/README.md) example READMEs, and the [API overview](https://github.com/pykale/cardiac/blob/main/API_overview.md).
+For details, see the [Cardiac quickstart](https://github.com/pykale/cardiac/blob/main/docs/quickstart.md), the [examples overview](https://github.com/pykale/cardiac/blob/main/examples/README.md), the [CardioVAE](https://github.com/pykale/cardiac/blob/main/examples/cardiovae_multimodal/README.md) and [LS-EMVAE](https://github.com/pykale/cardiac/blob/main/examples/lsemvae_ecg/README.md) example READMEs, and the [API overview](https://github.com/pykale/cardiac/blob/main/API_overview.md).
 
 > [!NOTE]
 > Use only the tutorial dataset on public services such as Binder and Colab, and keep identifiable patient data in approved, secure environments. See the [Participation Guide](../../docs/participation.md). The software continues to evolve; confirm the supported session environment with the organisers.

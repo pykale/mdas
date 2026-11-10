@@ -1,6 +1,6 @@
 # Overview
 
-[KaleCardiac](https://github.com/pykale/cardiac) is a Python library for multimodal cardiovascular machine learning, built on [PyKale](https://github.com/pykale/pykale). It supports multiple data modalities, including cardiac imaging, physiological signals, and clinical data. Its API follows a modular pipeline architecture, with each module named according to its functionality:
+[Cardiac](https://github.com/pykale/cardiac) is a Python library for multimodal cardiovascular machine learning, built on [PyKale](https://github.com/pykale/pykale). It supports multiple data modalities, including cardiac imaging, physiological signals, and clinical data. Its API follows a modular pipeline architecture, with each module named according to its functionality:
 
 ```text
 loaddata  →  prepdata  →  model  →  pipeline  →  evaluate  →  interpret
@@ -11,7 +11,7 @@ The library is organised around two features of cardiac data. Data are easy to c
 
 ## The tutorial notebooks
 
-Each notebook builds a published model from raw DICOM files using the [KaleCardiac API](https://github.com/pykale/cardiac/blob/main/API_overview.md). You will find both under **Cardiac Overview** in the sidebar.
+Each notebook builds a published model from raw DICOM files using the [Cardiac API](https://github.com/pykale/cardiac/blob/main/API_overview.md). You will find both under **Cardiac Overview** in the sidebar.
 
 | | Chest X-ray and ECG | 12-lead ECG |
 | --- | --- | --- |
