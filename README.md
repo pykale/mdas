@@ -10,10 +10,10 @@ Work through the examples with us at the session or independently afterwards. Th
 
 | Track | What you will explore |
 | --- | --- |
-| [KaleCancer](tutorials/kalecancer/index.md) | Combine clinical variables and pathology features to predict a category or analyse survival. |
+| [Cancer](tutorials/kalecancer/index.md) | Combine clinical variables and pathology features to predict a category or analyse survival. |
 | [KaleCardiac](tutorials/kalecardiac/index.md) | Learn from chest X-rays and ECGs with CardioVAE, or from complementary ECG leads with LS-EMVAE. |
 
-Open either tutorial overview and choose an example. Use **Run with Binder** or **Run in Google Colab** where offered on its notebook page, or **Run locally** using [Quick Start](docs/quick-start.md).
+Open either tutorial overview and choose an example. Use **Run in Google Colab** on its notebook page, or **Run locally** using [Quick Start](docs/quick-start.md).
 
 For preparation and privacy guidance, see the [Participation Guide](docs/participation.md). To start an example immediately, use [Quick Start](docs/quick-start.md).
 

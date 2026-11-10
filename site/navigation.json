@@ -17,11 +17,11 @@
   ],
   "Tutorials": [
     [
-      "Cancer",
+      "Cancer Overview",
       "tutorials/kalecancer/index"
     ],
     [
-      "Cardiac",
+      "Cardiac Overview",
       "tutorials/kalecardiac/index"
     ]
   ]

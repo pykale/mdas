@@ -2,15 +2,15 @@
 
 CANCER = "notebooks/MDAS/cancer"
 NOTEBOOKS = {
-    "tutorials/kalecancer/live-coding": ("KaleCancer Classification", f"{CANCER}/classification_showcase.ipynb"),
-    "tutorials/kalecancer/live-coding-survival": ("KaleCancer Survival Analysis", f"{CANCER}/survival_showcase.ipynb"),
+    "tutorials/kalecancer/live-coding": ("Classification", f"{CANCER}/classification_showcase.ipynb"),
+    "tutorials/kalecancer/live-coding-survival": ("Survival Analysis", f"{CANCER}/survival_showcase.ipynb"),
 }
 
 # Each Cardiac tutorial is its own page, titled by the data it learns from, so participants can
 # choose without knowing the model; its summary and notebook name the model.
 CARDIAC = "notebooks/MDAS/cardiac"
 CARDIAC_NOTEBOOKS = {
-    "tutorials/kalecardiac/cardiovae": ("Chest X-ray + ECG", f"{CARDIAC}/tutorial-CardioVAE.ipynb"),
+    "tutorials/kalecardiac/cardiovae": ("Chest X-ray and ECG", f"{CARDIAC}/tutorial-CardioVAE.ipynb"),
     "tutorials/kalecardiac/lsemvae": ("12-lead ECG", f"{CARDIAC}/tutorial-LSEMVAE.ipynb"),
 }
 # The sentence beneath each page's title, in MyST Markdown; [1] links to the model's paper in the

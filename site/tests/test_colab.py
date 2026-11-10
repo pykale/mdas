@@ -47,7 +47,7 @@ class DirectColab(unittest.TestCase):
             self.assertNotIn("(live-coding-notebook)=", intro)
             if "_showcase" in source_path:
                 self.assertNotIn("Binder unavailable", intro)
-                self.assertIn('onclick="mdasLaunchInteractive()"', intro)
+                self.assertNotIn('onclick="mdasLaunchInteractive()"', intro)  # Colab is the only route
                 bootstrap = "".join(json.loads((ROOT / target).read_text(encoding="utf-8"))["cells"][1]["source"])
                 for helper in ("synthetic_showcase_data.py", "synthetic_data_generation.py"):
                     digest = hashlib.sha256((CANCER / helper).read_bytes().replace(b"\r\n", b"\n")).hexdigest()

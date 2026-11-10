@@ -10,7 +10,7 @@ Multimodal cancer research workflows, including clinical and pathology data, mod
 
 ## Cardiac
 
-Cardiac analysis workflows, including CardioVAE for chest X-ray + ECG representation learning and LS-EMVAE for lead-specific ECG representations and fine-tuning.
+Cardiac analysis workflows, including CardioVAE for chest X-ray and ECG representation learning and LS-EMVAE for lead-specific ECG representations and fine-tuning.
 
 [Start the Cardiac tutorial](kalecardiac/getting-started.md).
 

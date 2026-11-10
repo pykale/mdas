@@ -6,9 +6,9 @@ Choose a Cancer or Cardiac example and an execution route. Local commands belong
 
 ### Run online
 
-Open [KaleCancer Classification](../notebooks/MDAS/cancer/classification_showcase.ipynb) or [KaleCancer Survival Analysis](../notebooks/MDAS/cancer/survival_showcase.ipynb).
+Open [Classification](../notebooks/MDAS/cancer/classification_showcase.ipynb) or [Survival Analysis](../notebooks/MDAS/cancer/survival_showcase.ipynb).
 
-**Run with Binder** starts a temporary kernel on this website. **Run in Google Colab** opens the corresponding dedicated notebook in Colab. Follow [Execution Help](notebook-execution.md); Cancer Colab requires the documented **Python 3.12 / 2026.07** runtime and its initial setup cell, including any requested restart. This Colab requirement is separate from the local Python guidance below.
+**Run in Google Colab** is the sole online option and opens the corresponding dedicated notebook in Colab. Follow [Execution Help](notebook-execution.md); Cancer Colab requires the documented **Python 3.12 / 2026.07** runtime and its initial setup cell, including any requested restart. This Colab requirement is separate from the local Python guidance below.
 
 ### Run locally
 
@@ -25,7 +25,7 @@ This CPU-capable starter generates clinical variables, pathology patch features 
 
 ### Run online
 
-Open the [Chest X-ray + ECG](../notebooks/MDAS/cardiac/tutorial-CardioVAE.ipynb) or [12-lead ECG](../notebooks/MDAS/cardiac/tutorial-LSEMVAE.ipynb) tutorial.
+Open the [Chest X-ray and ECG](../notebooks/MDAS/cardiac/tutorial-CardioVAE.ipynb) or [12-lead ECG](../notebooks/MDAS/cardiac/tutorial-LSEMVAE.ipynb) tutorial.
 
 **Run in Google Colab** opens the corresponding notebook in Colab. Run the notebook's Step 0 installation and dataset cells in order; they install KaleCardiac with the required extras, fetch configurations and download the tutorial dataset (about 400 MB). For Colab, follow the compatible Python runtime guidance in Cardiac setup; a T4 GPU can accelerate training, and CPU execution is also supported. See [Cardiac setup instructions](notebook-execution.md#cardiac-setup).
 
@@ -44,7 +44,7 @@ The commands above clone **KaleCardiac** and change into its repository root. Ru
 
 The core install includes PyKale. Optional extras cover ECG file formats (`.[ecg]`), imaging (`.[imaging]`), interpretation (`.[interpret]`) and development (`.[dev]`); only add those your experiment needs. Avoid mixing a local checkout with an older installed package.
 
-#### Chest X-ray + ECG (CardioVAE)
+#### Chest X-ray and ECG (CardioVAE)
 
 ```sh
 python -m examples.cardiovae_multimodal.main --cfg examples/cardiovae_multimodal/configs/quick.yaml

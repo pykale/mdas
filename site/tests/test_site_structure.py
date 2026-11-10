@@ -18,9 +18,9 @@ class SiteStructure(unittest.TestCase):
     def test_navigation_has_two_examples_per_overview(self):
         navigation = json.loads((ROOT / "site/navigation.json").read_text())
         self.assertEqual(navigation["About the Session"], [["What is MDAS?", "docs/about"], ["Participation Guide", "docs/participation"]])
-        self.assertEqual(navigation["Tutorials"], [["Cancer", "tutorials/kalecancer/index"], ["Cardiac", "tutorials/kalecardiac/index"]])
-        for track, entries in (("kalecancer", ["KaleCancer Classification <live-coding>", "KaleCancer Survival Analysis <live-coding-survival>"]),
-                               ("kalecardiac", ["Chest X-ray + ECG <cardiovae>", "12-lead ECG <lsemvae>"])):
+        self.assertEqual(navigation["Tutorials"], [["Cancer Overview", "tutorials/kalecancer/index"], ["Cardiac Overview", "tutorials/kalecardiac/index"]])
+        for track, entries in (("kalecancer", ["Classification <live-coding>", "Survival Analysis <live-coding-survival>"]),
+                               ("kalecardiac", ["Chest X-ray and ECG <cardiovae>", "12-lead ECG <lsemvae>"])):
             staged = (ROOT / f"site/_staged/tutorials/{track}/index.md").read_text(encoding="utf-8")
             for entry in entries:
                 self.assertIn(entry, staged)

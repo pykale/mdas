@@ -11,16 +11,16 @@ The library is organised around two features of cardiac data. Data are easy to c
 
 ## The tutorial notebooks
 
-Each notebook builds a published model from raw DICOM files using the [KaleCardiac API](https://github.com/pykale/cardiac/blob/main/API_overview.md). You will find both under **Cardiac** in the sidebar.
+Each notebook builds a published model from raw DICOM files using the [KaleCardiac API](https://github.com/pykale/cardiac/blob/main/API_overview.md). You will find both under **Cardiac Overview** in the sidebar.
 
-| | Chest X-ray + ECG | 12-lead ECG |
+| | Chest X-ray and ECG | 12-lead ECG |
 | --- | --- | --- |
 | **Input data (Modality)** | Chest X-ray and 12-lead ECG | 12-lead ECG, with each lead as separate modality |
 | **Model** | CardioVAE: an encoder and a decoder for each modality, fused by a product of experts | LS-EMVAE: an encoder for each lead, hierarchical fusion and one decoder shared by all leads |
 | **Pretrained on** | Paired 12-lead ECGs and chest X-rays | 12-lead ECGs |
 | **Fine-tuned on** | Both modalities, or 12-lead ECG or chest X-rays  | Six limb lead ECG, or 12-lead ECG |
 | **Missing modalities** | 12-lead ECG or chest X-rays | Any ECG leads |
-| **Notebook** | [Open Chest X-ray + ECG](../../notebooks/MDAS/cardiac/tutorial-CardioVAE.ipynb) | [Open 12-lead ECG](../../notebooks/MDAS/cardiac/tutorial-LSEMVAE.ipynb) |
+| **Notebook** | [Open Chest X-ray and ECG](../../notebooks/MDAS/cardiac/tutorial-CardioVAE.ipynb) | [Open 12-lead ECG](../../notebooks/MDAS/cardiac/tutorial-LSEMVAE.ipynb) |
 
 ## What you will do
 

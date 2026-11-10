@@ -15,6 +15,7 @@ language = "en"
 needs_sphinx = "9.2"
 extensions = ["myst_nb", "sphinx.ext.githubpages", "sphinxcontrib.mermaid"]
 MDAS_ENABLE_THEBE = os.environ.get("MDAS_ENABLE_THEBE", "1") != "0"
+mdas_binder_pages = []  # Public notebook pages offer Colab only; retain the Binder environment separately.
 if MDAS_ENABLE_THEBE:
     extensions += ["sphinx_thebe", "mdas_interactive"]
     thebe_config = {
@@ -107,22 +108,17 @@ def notebook_intro(docname):
     colab = path.replace(".ipynb", "_colab.ipynb")
     setup = ("In Colab select the documented **Python 3.12 / 2026.07** runtime, then run the initial setup cell. "
              "Follow any restart instruction before continuing. ")
-    routes = ("Choose **Run with Binder** for a temporary kernel on this website, or **Run in Google Colab** for a separate runtime."
-              if MDAS_ENABLE_THEBE else "In-page execution is disabled in this build. Choose **Run in Google Colab** for a separate runtime.")
-    status = "Not connected. Binder starts only when you choose to launch it." if MDAS_ENABLE_THEBE else "In-page execution is disabled."
     return f"""{execution_help("../../docs/notebook-execution.html")}
 
 # {title}
 
 <span id="live-coding-notebook"></span>
 
-{routes}
+Run this example in Google Colab, which opens the matching showcase copy in a separate runtime.
 
 <div class="mdas-execution-actions">
-{BINDER_LAUNCH}
 <a class="btn btn-primary mdas-execution-button" href="https://colab.research.google.com/github/pykale/mdas/blob/main/{colab}">Run in Google Colab</a>
 </div>
-<p id="mdas-thebe-status" role="status" aria-live="polite">{status}</p>
 
 {setup}For **Run locally**, see [Quick Start](../../docs/quick-start.md#cancer).
 
