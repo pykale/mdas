@@ -103,10 +103,11 @@ class Notebooks(unittest.TestCase):
                     self.assertIn(f'href="#{anchor}"', toc)
 
     def test_cardiac_tutorial_pages(self):
-        """Colab only, one shared heading, a tutorial picker and a sidebar branch for both methods."""
+        """Colab only, each with its own title and sidebar entry, as the Cancer examples have."""
         import sys
         sys.path.insert(0, str(ROOT / "site/_ext"))
-        from mdas_notebooks import CARDIAC_NOTEBOOKS, CARDIAC_TUTORIALS_TITLE
+        from mdas_notebooks import CARDIAC_NOTEBOOKS
+        labels = [label for label, _ in CARDIAC_NOTEBOOKS.values()]
         previous = {"tutorials/kalecardiac/cardiovae": "index.html",
                     "tutorials/kalecardiac/lsemvae": "cardiovae.html"}
         for doc, (label, path) in CARDIAC_NOTEBOOKS.items():
@@ -117,14 +118,12 @@ class Notebooks(unittest.TestCase):
                 html = html_path.read_text(encoding="utf-8")
                 page = Page(html_path)
                 self.assertEqual((ROOT / "site/_staged" / (doc + ".ipynb")).read_bytes(), (ROOT / path).read_bytes())
-                self.assertEqual(set(re.findall(r"<h1[^>]*>([^<]*)", html)), {CARDIAC_TUTORIALS_TITLE})
-                self.assertIn('<label for="mdas-tutorial-select">Choose a tutorial</label>', html)
-                self.assertEqual([x["value"] for x in page.options], ["cardiovae.html", "lsemvae.html"])
+                self.assertEqual(set(re.findall(r"<h1[^>]*>([^<]*)", html)), {label})
+                # The sidebar switches tutorials, so there is no picker.
+                self.assertEqual(page.options, [])
+                self.assertNotIn("mdas-tutorial-select", html)
                 self.assertNotIn("live-coding", doc)
                 self.assertNotIn("live-coding", html.split('<article class="bd-article">')[1].split("</article>")[0])
-                self.assertEqual([x["value"] for x in page.options if "selected" in x], [doc.rsplit("/", 1)[1] + ".html"])
-                self.assertIn(f"<strong>{label}</strong>", html)
-                self.assertIn("mdas-tutorial-picker.css", html)
                 self.assertEqual([s.strip() for s in page.inputs], ["".join(c["source"]).strip() for c in original["cells"] if c["cell_type"] == "code"])
                 # Google Colab is the only execution route: no Binder or Thebe anywhere.
                 self.assertEqual([tag for tag, _ in page.actions], ["a"])
@@ -138,11 +137,14 @@ class Notebooks(unittest.TestCase):
                 self.assertRegex(html, r'class="left-prev"\s+href="' + re.escape(previous[doc]) + '"')
                 sidebar = html.split('<div class="bd-toc-item navbar-nav active">')[1].split('</nav>')[0]
                 entries = re.findall(r'<li class="toctree-l(\d)[^"]*"><a class="[^"]*reference internal" href="[^"]*">([^<]+)</a>', sidebar)
-                start = entries.index(("1", "KaleCardiac"))
-                self.assertEqual(entries[start:], [("1", "KaleCardiac"), ("2", "Overview"), ("2", CARDIAC_TUTORIALS_TITLE), ("3", "CardioVAE"), ("3", "LS-EMVAE")])
-                current = re.findall(r'<li class="toctree-l3 current active"><a class="current reference internal" href="[^"]*">([^<]+)</a>', sidebar)
+                start = entries.index(("1", "Cardiac"))
+                self.assertEqual(entries[start:], [("1", "Cardiac")] + [("2", title) for title in labels])
+                current = re.findall(r'<li class="toctree-l2 current active"><a class="[^"]*reference internal" href="[^"]*">([^<]+)</a>', sidebar)
                 self.assertEqual(current, [label])
-                self.assertIn('id="interpretation-and-next-steps"', html)
+                # The notebook ends with its own references, which the summary's [1] links to.
+                self.assertNotIn('id="interpretation-and-next-steps"', html)
+                self.assertIn('id="references"', html)
+                self.assertIn('href="#references">[1]</a>', html)
                 toc = html.split('id="pst-secondary-sidebar"')[1]
                 for anchor in re.findall(r'<section id="([^"]+)"', html):
                     self.assertIn(f'href="#{anchor}"', toc)

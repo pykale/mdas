@@ -18,7 +18,7 @@ STAGED = SITE / "_staged"
 HTML = SITE / "_build" / "html"
 REPOSITORY = "https://github.com/pykale/mdas"
 sys.path.insert(0, str(SITE / "_ext"))
-from mdas_notebooks import ALL_NOTEBOOKS, CARDIAC_TUTORIALS_TITLE, NOTEBOOKS
+from mdas_notebooks import ALL_NOTEBOOKS, CARDIAC_NOTEBOOKS, NOTEBOOKS
 
 
 def find_uv() -> str:
@@ -119,11 +119,9 @@ def stage() -> None:
     # Byte-for-byte copy: never execute or alter the original notebook.
     for _, notebook_path in ALL_NOTEBOOKS.values():
         shutil.copyfile(ROOT / notebook_path, STAGED / mapping[notebook_path])
-    for track, entries in {
-        "kalecancer": [[title, docname.rsplit("/", 1)[1]] for docname, (title, _) in NOTEBOOKS.items()],
-        # The tutorials page adds its own CardioVAE / LS-EMVAE branch to the sidebar (conf.py).
-        "kalecardiac": [["Overview", "self"], [CARDIAC_TUTORIALS_TITLE, "cardiovae"]],
-    }.items():
+    # Each track lists its example pages beneath its overview, in mapping order.
+    for track, pages in {"kalecancer": NOTEBOOKS, "kalecardiac": CARDIAC_NOTEBOOKS}.items():
+        entries = [[title, docname.rsplit("/", 1)[1]] for docname, (title, _) in pages.items()]
         destination = STAGED / f"tutorials/{track}/index.md"
         destination.write_text(destination.read_text(encoding="utf-8") + toctree(entries), encoding="utf-8")
     print(f"Staged {len(paths)} Markdown pages and {len(ALL_NOTEBOOKS)} original notebooks in {STAGED}", flush=True)

@@ -6,7 +6,7 @@ import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parent / "_ext"))
 
-from mdas_notebooks import CARDIAC_NOTEBOOKS, CARDIAC_TUTORIALS_TITLE, NOTEBOOKS
+from mdas_notebooks import CARDIAC_NOTEBOOKS, CARDIAC_SUMMARIES, NOTEBOOKS
 
 project = "Multimodal Data Analysis Session (MDAS)"
 author = "CMI/UKOMAIN"
@@ -61,8 +61,9 @@ html_theme_options = {
     "use_download_button": False,
     "use_fullscreen_button": False,
     "home_page_in_toc": True,
-    "show_navbar_depth": 3,
-    "max_navbar_depth": 4,
+    # Two levels: each track, then its example pages.
+    "show_navbar_depth": 2,
+    "max_navbar_depth": 2,
     "show_toc_level": 2,
     "toc_title": "On this page",
     "navigation_with_keys": False,
@@ -78,31 +79,13 @@ def execution_help(target):
 
 
 def cardiac_intro(docname):
-    """Shared heading, tutorial picker and the Colab action for a Cardiac tutorial page."""
+    """Own title, a one-sentence summary and the Colab action for a Cardiac tutorial page."""
     label, path = CARDIAC_NOTEBOOKS[docname]
-    pages = {name: (name.rsplit("/", 1)[1], title) for name, (title, _) in CARDIAC_NOTEBOOKS.items()}
-    options = "".join(
-        f'<option value="{page}.html"' + (" selected" if name == docname else "") + f">{title}</option>"
-        for name, (page, title) in pages.items()
-    )
-    # Reset before leaving, so returning with the back button shows this page's tutorial.
-    picker = ('<div class="mdas-tutorial-picker"><label for="mdas-tutorial-select">Choose a tutorial</label> '
-              '<select id="mdas-tutorial-select" onchange="const target = this.value; '
-              "this.value = this.querySelector('option[selected]').value; location.assign(target);\">"
-              f"{options}</select></div>")
-    fallback = " | ".join(f'<a href="{page}.html">{title}</a>' for page, title in pages.values())
-    # The default page also holds the sidebar branch beneath the shared entry.
-    branch = ""
-    if docname == next(iter(CARDIAC_NOTEBOOKS)):
-        items = "\n".join(f"{title} <{'self' if name == docname else page}>" for name, (page, title) in pages.items())
-        branch = f"\n```{{toctree}}\n:hidden:\n:titlesonly:\n\n{items}\n```\n"
     return f"""{execution_help("../../docs/notebook-execution.html#cardiac-setup")}
 
-# {CARDIAC_TUTORIALS_TITLE}
+# {label}
 
-{picker}<noscript><p>Choose: {fallback}</p></noscript>
-
-**{label}**
+{CARDIAC_SUMMARIES[docname]}
 
 Run this tutorial in Google Colab, which provides the GPU it uses for training.
 
@@ -113,7 +96,7 @@ Run this tutorial in Google Colab, which provides the GPU it uses for training.
 In Colab, choose a T4 GPU runtime, then run Step 0 in order: install KaleCardiac, fetch configurations and download the tutorial data. For **Run locally**, see [Quick Start](../../docs/quick-start.md#cardiac).
 
 > Sessions are temporary. Save code edits, important results and generated files before leaving or opening another example. Do not upload private or patient data to public services.
-{branch}"""
+"""
 
 
 def notebook_intro(docname):
@@ -148,14 +131,12 @@ def notebook_intro(docname):
 
 
 def notebook_guidance(docname):
-    if docname in CARDIAC_NOTEBOOKS:
-        detail = "Attributions describe this model's use of its inputs, not a causal explanation or a clinical diagnosis. Compare performance when inputs are withheld and use independent evaluation before drawing clinical conclusions."
-    elif docname.endswith("-survival"):
+    """Closing guidance for a Cancer page; the Cardiac notebooks end with their own references."""
+    if docname.endswith("-survival"):
         detail = "A log-hazard score orders relative risk; it is not an event time or a survival probability. Interpret censored follow-up correctly. Ranking and calibration answer different questions: inspect the notebook's survival probabilities and calibration analysis separately from concordance. Censoring and follow-up assumptions limit comparisons, and synthetic time units do not establish a clinical horizon."
     else:
         detail = "Class probabilities describe the synthetic labels; discrimination does not establish calibration or reliable individual clinical predictions. Compare modalities and uncertainty rather than assuming that fusion must improve performance. An interval spanning zero does not establish a clear positive gain; intervals from a small synthetic cohort are not external clinical validation."
-    research = ("" if docname in CARDIAC_NOTEBOOKS else
-                "\n\nThe [KaleCancer HANCOCK research examples](https://github.com/pykale/cancer/tree/main/examples/hancock) require authorised local data, the expected dataset layout and appropriate compute; they are not no-data starter exercises.")
+    research = ("\n\nThe [KaleCancer HANCOCK research examples](https://github.com/pykale/cancer/tree/main/examples/hancock) require authorised local data, the expected dataset layout and appropriate compute; they are not no-data starter exercises.")
     return ("## Interpretation and next steps\n\n" + detail +
             "\n\nSynthetic results demonstrate a software workflow, not clinical validity, external generalisation or causality. Keep subjects separated across splits, fit preprocessing on training data, assess uncertainty and missing inputs, and plan external evaluation. Clinical data require permissions and secure infrastructure.\n\n"
             "Return to the [tutorial overview](index.md) or follow [Quick Start](../../docs/quick-start.md) to explore another example." + research)
@@ -189,8 +170,9 @@ def prepare_notebook(app, docname, source):
         notebook["metadata"].setdefault("language_info", {})["pygments_lexer"] = "ipython3"
     notebook["cells"].insert(0, {"cell_type": "markdown", "id": "mdas-access", "metadata": {},
                                  "source": notebook_intro(docname)})
-    notebook["cells"].append({"cell_type": "markdown", "id": "mdas-next-step", "metadata": {},
-                              "source": notebook_guidance(docname)})
+    if docname in NOTEBOOKS:
+        notebook["cells"].append({"cell_type": "markdown", "id": "mdas-next-step", "metadata": {},
+                                  "source": notebook_guidance(docname)})
     source[0] = json.dumps(notebook)
 
 
@@ -210,21 +192,10 @@ REDIRECTS = {
     "tutorials/kalecardiac/README": "index.html",
     "tutorials/kalecardiac/cardiovae-hands-on": "cardiovae.html",
     "tutorials/kalecardiac/lsemvae-hands-on": "lsemvae.html",
-    "tutorials/kalecardiac/results": "cardiovae.html#interpretation-and-next-steps",
+    "tutorials/kalecardiac/results": "cardiovae.html#step-3-evaluation",
     "tutorials/kalecardiac/live-coding": "cardiovae.html",
     "tutorials/kalecardiac/live-coding-lsemvae": "lsemvae.html",
 }
-
-
-def cardiac_tutorial_page(app, pagename, templatename, context, doctree):
-    """Load the picker style, and name the method in previous/next links (the pages share one heading)."""
-    if pagename not in CARDIAC_NOTEBOOKS:
-        return
-    app.add_css_file("mdas-tutorial-picker.css")
-    titles ={app.builder.get_relative_uri(pagename, name): label for name, (label, _) in CARDIAC_NOTEBOOKS.items()}
-    for key in ("prev", "next"):
-        if context.get(key) and context[key]["link"] in titles:
-            context[key]["title"] = titles[context[key]["link"]]
 
 
 def redirect_pages(app):
@@ -243,7 +214,6 @@ def setup(app):
 
     app.add_lexer("ipython2", PythonLexer)
     app.connect("source-read", prepare_notebook)
-    app.connect("html-page-context", cardiac_tutorial_page)
     app.add_js_file("mdas-notebooks.js", defer="defer")
     app.add_css_file("mdas-notebooks.css")
     app.connect("html-collect-pages", redirect_pages)

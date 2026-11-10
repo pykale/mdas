@@ -44,7 +44,7 @@ For runtime selection, a setup failure or a checksum/version message, follow the
 
 ## Cardiac setup
 
-Open [KaleCardiac CardioVAE](../notebooks/MDAS/cardiac/tutorial-CardioVAE.ipynb) or [KaleCardiac LS-EMVAE](../notebooks/MDAS/cardiac/tutorial-LSEMVAE.ipynb). **Run in Google Colab** opens that authored notebook in Colab; its own Step 0 prepares the environment.
+Open the [Chest X-ray + ECG](../notebooks/MDAS/cardiac/tutorial-CardioVAE.ipynb) or [12-lead ECG](../notebooks/MDAS/cardiac/tutorial-LSEMVAE.ipynb) tutorial. **Run in Google Colab** opens that authored notebook in Colab; its own Step 0 prepares the environment.
 
 1. Run the package installation cell. It installs `kalecardiac[imaging,interpret]` from its repository, fetches the tutorial configurations and changes into the tutorial folder.
 2. Run the dataset cell. It downloads and extracts about **400 MB** of public tutorial DICOM data. The unlabelled cohort is for pretraining; the labelled cohort is for fine-tuning. Both examples can reuse this data in a shared folder.

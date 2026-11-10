@@ -25,7 +25,7 @@ This CPU-capable starter generates clinical variables, pathology patch features 
 
 ### Run online
 
-Open [KaleCardiac CardioVAE](../notebooks/MDAS/cardiac/tutorial-CardioVAE.ipynb) or [KaleCardiac LS-EMVAE](../notebooks/MDAS/cardiac/tutorial-LSEMVAE.ipynb).
+Open the [Chest X-ray + ECG](../notebooks/MDAS/cardiac/tutorial-CardioVAE.ipynb) or [12-lead ECG](../notebooks/MDAS/cardiac/tutorial-LSEMVAE.ipynb) tutorial.
 
 **Run in Google Colab** opens the corresponding notebook in Colab. Run the notebook's Step 0 installation and dataset cells in order; they install KaleCardiac with the required extras, fetch configurations and download the tutorial dataset (about 400 MB). For Colab, follow the compatible Python runtime guidance in Cardiac setup; a T4 GPU can accelerate training, and CPU execution is also supported. See [Cardiac setup instructions](notebook-execution.md#cardiac-setup).
 
@@ -44,13 +44,13 @@ The commands above clone **KaleCardiac** and change into its repository root. Ru
 
 The core install includes PyKale. Optional extras cover ECG file formats (`.[ecg]`), imaging (`.[imaging]`), interpretation (`.[interpret]`) and development (`.[dev]`); only add those your experiment needs. Avoid mixing a local checkout with an older installed package.
 
-#### CardioVAE: chest X-ray + ECG
+#### Chest X-ray + ECG (CardioVAE)
 
 ```sh
 python -m examples.cardiovae_multimodal.main --cfg examples/cardiovae_multimodal/configs/quick.yaml
 ```
 
-#### LS-EMVAE: multi-lead ECG
+#### 12-lead ECG (LS-EMVAE)
 
 ```sh
 python -m examples.lsemvae_ecg.main --cfg examples/lsemvae_ecg/configs/quick.yaml

@@ -18,19 +18,19 @@ class SiteStructure(unittest.TestCase):
     def test_navigation_has_two_examples_per_overview(self):
         navigation = json.loads((ROOT / "site/navigation.json").read_text())
         self.assertEqual(navigation["About the Session"], [["What is MDAS?", "docs/about"], ["Participation Guide", "docs/participation"]])
-        self.assertEqual(navigation["Tutorials"], [["Cancer", "tutorials/kalecancer/index"], ["KaleCardiac", "tutorials/kalecardiac/index"]])
-        for track, titles in (("kalecancer", ["KaleCancer Classification", "KaleCancer Survival Analysis"]),
-                              ("kalecardiac", ["KaleCardiac API Notebooks"])):
-            staged = (ROOT / f"site/_staged/tutorials/{track}/index.md").read_text()
-            for title in titles:
-                self.assertIn(title + (" <live-coding" if track == "kalecancer" else " <cardiovae"), staged)
+        self.assertEqual(navigation["Tutorials"], [["Cancer", "tutorials/kalecancer/index"], ["Cardiac", "tutorials/kalecardiac/index"]])
+        for track, entries in (("kalecancer", ["KaleCancer Classification <live-coding>", "KaleCancer Survival Analysis <live-coding-survival>"]),
+                               ("kalecardiac", ["Chest X-ray + ECG <cardiovae>", "12-lead ECG <lsemvae>"])):
+            staged = (ROOT / f"site/_staged/tutorials/{track}/index.md").read_text(encoding="utf-8")
+            for entry in entries:
+                self.assertIn(entry, staged)
             self.assertNotIn("Getting Started <", staged)
             self.assertNotIn("Results and Interpretation <", staged)
             self.assertNotIn("Example Notebook <", staged)
-        self.assertIn("Overview <self>", (ROOT / "site/_staged/tutorials/kalecardiac/index.md").read_text())
         for doc in ("index", "tutorials/kalecancer/index", "tutorials/kalecardiac/index"):
             sidebar = page(doc).split('<div class="bd-toc-item navbar-nav active">')[1].split('</nav>')[0]
-            for obsolete in ("Live-Coding Notebook", "Example Notebook", "Results and Interpretation"):
+            # Each track's own entry opens its overview, so neither track lists a separate Overview.
+            for obsolete in ("Live-Coding Notebook", "Example Notebook", "Results and Interpretation", "Overview"):
                 self.assertNotIn(">" + obsolete + "</a>", sidebar)
 
     def test_retired_urls_redirect_to_current_pages(self):
@@ -38,7 +38,7 @@ class SiteStructure(unittest.TestCase):
                      "tutorials/kalecancer/getting-started": "index.html",
                      "tutorials/kalecardiac/getting-started": "index.html",
                      "tutorials/kalecancer/results": "live-coding.html#interpretation-and-next-steps",
-                     "tutorials/kalecardiac/results": "cardiovae.html#interpretation-and-next-steps",
+                     "tutorials/kalecardiac/results": "cardiovae.html#step-3-evaluation",
                      "tutorials/kalecardiac/cardiovae-hands-on": "cardiovae.html",
                      "tutorials/kalecardiac/lsemvae-hands-on": "lsemvae.html",
                      "tutorials/kalecardiac/live-coding": "cardiovae.html",

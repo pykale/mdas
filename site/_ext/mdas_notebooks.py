@@ -6,12 +6,22 @@ NOTEBOOKS = {
     "tutorials/kalecancer/live-coding-survival": ("KaleCancer Survival Analysis", f"{CANCER}/survival_showcase.ipynb"),
 }
 
-# The Cardiac tutorials share one sidebar entry and heading; the first is its default page.
+# Each Cardiac tutorial is its own page, titled by the data it learns from, so participants can
+# choose without knowing the model; its summary and notebook name the model.
 CARDIAC = "notebooks/MDAS/cardiac"
-CARDIAC_TUTORIALS_TITLE = "KaleCardiac API Notebooks"
 CARDIAC_NOTEBOOKS = {
-    "tutorials/kalecardiac/cardiovae": ("CardioVAE", f"{CARDIAC}/tutorial-CardioVAE.ipynb"),
-    "tutorials/kalecardiac/lsemvae": ("LS-EMVAE", f"{CARDIAC}/tutorial-LSEMVAE.ipynb"),
+    "tutorials/kalecardiac/cardiovae": ("Chest X-ray + ECG", f"{CARDIAC}/tutorial-CardioVAE.ipynb"),
+    "tutorials/kalecardiac/lsemvae": ("12-lead ECG", f"{CARDIAC}/tutorial-LSEMVAE.ipynb"),
+}
+# The sentence beneath each page's title, in MyST Markdown; [1] links to the model's paper in the
+# notebook's own References section.
+CARDIAC_SUMMARIES = {
+    "tutorials/kalecardiac/cardiovae": "Learn from paired chest X-rays and 12-lead ECGs with the CardioVAE model "
+                                       "[\\[1\\]](#references), which can still make predictions when one of the two "
+                                       "is missing.",
+    "tutorials/kalecardiac/lsemvae": "Learn from the 12 leads of an ECG, each as a separate input, with the LS-EMVAE "
+                                     "model [\\[1\\]](#references), which can still make predictions when leads are "
+                                     "missing.",
 }
 
 # Every staged notebook page.
