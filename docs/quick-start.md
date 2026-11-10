@@ -27,7 +27,7 @@ This CPU-capable starter generates clinical variables, pathology patch features 
 
 Open [KaleCardiac CardioVAE](../notebooks/MDAS/cardiac/tutorial-CardioVAE.ipynb) or [KaleCardiac LS-EMVAE](../notebooks/MDAS/cardiac/tutorial-LSEMVAE.ipynb).
 
-**Run with Binder** starts a temporary CPU kernel on this website. **Run in Google Colab** opens the corresponding notebook in Colab. Run the notebook's Step 0 installation and dataset cells in order; they install KaleCardiac with the required extras, fetch configurations and download the tutorial dataset (about 400 MB). For Colab, follow the compatible Python runtime guidance in Cardiac setup; a T4 GPU can accelerate training, and CPU execution is also supported. See [Cardiac setup instructions](notebook-execution.md#cardiac-setup).
+**Run in Google Colab** opens the corresponding notebook in Colab. Run the notebook's Step 0 installation and dataset cells in order; they install KaleCardiac with the required extras, fetch configurations and download the tutorial dataset (about 400 MB). For Colab, follow the compatible Python runtime guidance in Cardiac setup; a T4 GPU can accelerate training, and CPU execution is also supported. See [Cardiac setup instructions](notebook-execution.md#cardiac-setup).
 
 ### Run locally
 

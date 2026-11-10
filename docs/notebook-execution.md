@@ -8,7 +8,7 @@ This guide opens in a new tab so your notebook page and active kernel can stay i
 
 ## Binder: run on this website
 
-Binder runs the selected Cancer or Cardiac notebook on this website using a temporary kernel. Google Colab opens a dedicated copy in a separate runtime.
+Binder runs the selected Cancer notebook on this website using a temporary kernel. Google Colab opens a dedicated copy in a separate runtime.
 
 1. Choose **Run with Binder**. The page first checks that the public GitHub revision contains the notebook and Binder files, then requests a temporary kernel. It does not run notebook cells automatically.
 2. Wait for **Kernel connected**. A first build or busy public service can take several minutes. Keep the page open and read the connection status; repeated clicks do not speed up startup.
@@ -44,12 +44,12 @@ For runtime selection, a setup failure or a checksum/version message, follow the
 
 ## Cardiac setup
 
-Open [KaleCardiac CardioVAE](../notebooks/MDAS/cardiac/tutorial-CardioVAE.ipynb) or [KaleCardiac LS-EMVAE](../notebooks/MDAS/cardiac/tutorial-LSEMVAE.ipynb). **Run with Binder** starts a temporary kernel in `notebooks/MDAS/cardiac/`. **Run in Google Colab** opens that same authored notebook in Colab; its own Step 0 prepares the environment.
+Open [KaleCardiac CardioVAE](../notebooks/MDAS/cardiac/tutorial-CardioVAE.ipynb) or [KaleCardiac LS-EMVAE](../notebooks/MDAS/cardiac/tutorial-LSEMVAE.ipynb). **Run in Google Colab** opens that authored notebook in Colab; its own Step 0 prepares the environment.
 
 1. Run the package installation cell. It installs `kalecardiac[imaging,interpret]` from its repository, fetches the tutorial configurations and changes into the tutorial folder.
 2. Run the dataset cell. It downloads and extracts about **400 MB** of public tutorial DICOM data. The unlabelled cohort is for pretraining; the labelled cohort is for fine-tuning. Both examples can reuse this data in a shared folder.
 3. Run the remaining cells in order. Each tutorial loads separate pretraining and fine-tuning configuration files; its notebook cells expose settings to explore. Checkpoints and training logs are written in separate output folders.
-4. Binder uses a CPU. For Cardiac Colab, use a compatible Python 3.12 runtime where offered; that is the Python version used in the local shared-environment checks. A T4 GPU can accelerate training, while CPU execution also works. The current default Colab runtime has not been verified here. If a compatible runtime is unavailable, use Binder or Run locally; installing another interpreter does not change the kernel. Resolve any installation error before proceeding.
+4. For Cardiac Colab, use a compatible Python 3.12 runtime where offered; that is the Python version used in the local shared-environment checks. A T4 GPU can accelerate training, while CPU execution also works. The current default Colab runtime has not been verified here. If a compatible runtime is unavailable, use Run locally; installing another interpreter does not change the kernel. Resolve any installation error before proceeding.
 
 For **Run locally**, use [Quick Start](quick-start.md#cardiac). Do not mix a local checkout and an older installed copy. Public services must use only the tutorial data; save work before leaving a temporary session.
 

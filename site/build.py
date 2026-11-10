@@ -18,7 +18,7 @@ STAGED = SITE / "_staged"
 HTML = SITE / "_build" / "html"
 REPOSITORY = "https://github.com/pykale/mdas"
 sys.path.insert(0, str(SITE / "_ext"))
-from mdas_notebooks import ALL_NOTEBOOKS, NOTEBOOKS, CARDIAC_NOTEBOOKS
+from mdas_notebooks import ALL_NOTEBOOKS, CARDIAC_TUTORIALS_TITLE, NOTEBOOKS
 
 
 def find_uv() -> str:
@@ -63,7 +63,7 @@ def stage() -> None:
         mapping[notebook_path] = docname + ".ipynb"
     aliases = {"docs/agenda.md": "docs/about.md","tutorials/kalecancer/results.md": "tutorials/kalecancer/live-coding.ipynb",
                "tutorials/kalecardiac/getting-started.md": "tutorials/kalecardiac/index.md",
-               "tutorials/kalecardiac/results.md": "tutorials/kalecardiac/live-coding.ipynb",
+               "tutorials/kalecardiac/results.md": "tutorials/kalecardiac/cardiovae.ipynb",
                "notebooks/MDAS/cancer/survival.ipynb": "tutorials/kalecancer/live-coding-survival.ipynb",
                "notebooks/MDAS/cancer/classification.ipynb": "tutorials/kalecancer/live-coding.ipynb",
                "docs/prerequisites.md": "docs/participation.md",
@@ -119,8 +119,11 @@ def stage() -> None:
     # Byte-for-byte copy: never execute or alter the original notebook.
     for _, notebook_path in ALL_NOTEBOOKS.values():
         shutil.copyfile(ROOT / notebook_path, STAGED / mapping[notebook_path])
-    for track, notebooks in {"kalecancer": NOTEBOOKS, "kalecardiac": CARDIAC_NOTEBOOKS}.items():
-        entries = [[title, docname.rsplit("/", 1)[1]] for docname, (title, _) in notebooks.items()]
+    for track, entries in {
+        "kalecancer": [[title, docname.rsplit("/", 1)[1]] for docname, (title, _) in NOTEBOOKS.items()],
+        # The tutorials page adds its own CardioVAE / LS-EMVAE branch to the sidebar (conf.py).
+        "kalecardiac": [["Overview", "self"], [CARDIAC_TUTORIALS_TITLE, "cardiovae"]],
+    }.items():
         destination = STAGED / f"tutorials/{track}/index.md"
         destination.write_text(destination.read_text(encoding="utf-8") + toctree(entries), encoding="utf-8")
     print(f"Staged {len(paths)} Markdown pages and {len(ALL_NOTEBOOKS)} original notebooks in {STAGED}", flush=True)

@@ -52,17 +52,14 @@ class Page(HTMLParser):
             self.inputs[-1] += data
 
 class Notebooks(unittest.TestCase):
-    def test_four_independent_notebook_pages(self):
+    def test_cancer_notebook_pages(self):
         import sys
         sys.path.insert(0, str(ROOT / "site/_ext"))
-        from mdas_notebooks import ALL_NOTEBOOKS
+        from mdas_notebooks import NOTEBOOKS
         previous = {"tutorials/kalecancer/live-coding": "index.html",
-                    "tutorials/kalecancer/live-coding-survival": "live-coding.html",
-                    "tutorials/kalecardiac/live-coding": "index.html",
-                    "tutorials/kalecardiac/live-coding-lsemvae": "live-coding.html"}
-        next_page = {"tutorials/kalecancer/live-coding": "live-coding-survival.html",
-                     "tutorials/kalecardiac/live-coding": "live-coding-lsemvae.html"}
-        for doc, (title, path) in ALL_NOTEBOOKS.items():
+                    "tutorials/kalecancer/live-coding-survival": "live-coding.html"}
+        next_page = {"tutorials/kalecancer/live-coding": "live-coding-survival.html"}
+        for doc, (title, path) in NOTEBOOKS.items():
             with self.subTest(doc=doc):
                 original = json.loads((ROOT / path).read_text(encoding="utf-8"))
                 html_path = ROOT / "site/_build/html" / (doc + ".html")
@@ -77,21 +74,20 @@ class Notebooks(unittest.TestCase):
                 self.assertEqual([s.strip() for s in page.inputs], ["".join(c["source"]).strip() for c in original["cells"] if c["cell_type"] == "code"])
                 self.assertEqual([tag for tag, _ in page.actions], ["button", "a"])
                 self.assertEqual(page.actions[0][1]["onclick"], "mdasLaunchInteractive()")
-                cardiac = "kalecardiac" in doc
-                colab = path if cardiac else path.replace(".ipynb", "_colab.ipynb")
+                colab = path.replace(".ipynb", "_colab.ipynb")
                 self.assertEqual(page.actions[1][1]["href"], "https://colab.research.google.com/github/pykale/mdas/blob/main/" + colab)
                 self.assertEqual(len(page.help_links), 1)
-                self.assertEqual(page.help_links[0]["href"], "../../docs/notebook-execution.html" + ("#cardiac-setup" if cardiac else ""))
+                self.assertEqual(page.help_links[0]["href"], "../../docs/notebook-execution.html")
                 self.assertEqual(page.help_links[0]["target"], "_blank")
                 config = json.loads(page.scripts["text/x-thebe-config"])
                 self.assertFalse(config["bootstrap"])
-                self.assertEqual(config["kernelOptions"]["path"], "notebooks/MDAS/" + ("cardiac" if cardiac else "cancer"))
+                self.assertEqual(config["kernelOptions"]["path"], "notebooks/MDAS/cancer")
                 required = json.loads(page.scripts["mdas-binder-check"])["required_files"]
                 self.assertIn(path, required)
                 for file in required:
                     self.assertTrue((ROOT / file).is_file(), file)
-                if not cardiac:
-                    self.assertIn("notebooks/MDAS/cancer/synthetic_showcase_data.py", required)
+                self.assertIn("notebooks/MDAS/cancer/synthetic_showcase_data.py", required)
+                self.assertNotIn("mdas-tutorial-picker", html)
                 self.assertRegex(html, r'class="left-prev"\s+href="' + re.escape(previous[doc]) + '"')
                 if doc in next_page:
                     self.assertRegex(html, r'class="right-next"\s+href="' + re.escape(next_page[doc]) + '"')
@@ -101,6 +97,51 @@ class Notebooks(unittest.TestCase):
                 self.assertNotIn('>Example Notebook</a>', sidebar)
                 self.assertIn("mdas-presentation.js", html)
                 self.assertIn("mdas-notebooks.js", html)
+                self.assertIn('id="interpretation-and-next-steps"', html)
+                toc = html.split('id="pst-secondary-sidebar"')[1]
+                for anchor in re.findall(r'<section id="([^"]+)"', html):
+                    self.assertIn(f'href="#{anchor}"', toc)
+
+    def test_cardiac_tutorial_pages(self):
+        """Colab only, one shared heading, a tutorial picker and a sidebar branch for both methods."""
+        import sys
+        sys.path.insert(0, str(ROOT / "site/_ext"))
+        from mdas_notebooks import CARDIAC_NOTEBOOKS, CARDIAC_TUTORIALS_TITLE
+        previous = {"tutorials/kalecardiac/cardiovae": "index.html",
+                    "tutorials/kalecardiac/lsemvae": "cardiovae.html"}
+        for doc, (label, path) in CARDIAC_NOTEBOOKS.items():
+            with self.subTest(doc=doc):
+                source = (ROOT / path).read_text(encoding="utf-8")
+                original = json.loads(source)
+                html_path = ROOT / "site/_build/html" / (doc + ".html")
+                html = html_path.read_text(encoding="utf-8")
+                page = Page(html_path)
+                self.assertEqual((ROOT / "site/_staged" / (doc + ".ipynb")).read_bytes(), (ROOT / path).read_bytes())
+                self.assertEqual(set(re.findall(r"<h1[^>]*>([^<]*)", html)), {CARDIAC_TUTORIALS_TITLE})
+                self.assertIn('<label for="mdas-tutorial-select">Choose a tutorial</label>', html)
+                self.assertEqual([x["value"] for x in page.options], ["cardiovae.html", "lsemvae.html"])
+                self.assertNotIn("live-coding", doc)
+                self.assertNotIn("live-coding", html.split('<article class="bd-article">')[1].split("</article>")[0])
+                self.assertEqual([x["value"] for x in page.options if "selected" in x], [doc.rsplit("/", 1)[1] + ".html"])
+                self.assertIn(f"<strong>{label}</strong>", html)
+                self.assertIn("mdas-tutorial-picker.css", html)
+                self.assertEqual([s.strip() for s in page.inputs], ["".join(c["source"]).strip() for c in original["cells"] if c["cell_type"] == "code"])
+                # Google Colab is the only execution route: no Binder or Thebe anywhere.
+                self.assertEqual([tag for tag, _ in page.actions], ["a"])
+                self.assertEqual(page.actions[0][1]["href"], "https://colab.research.google.com/github/pykale/mdas/blob/main/" + path)
+                self.assertNotIn("binder", html.lower())
+                self.assertNotIn("thebe", html.lower())
+                self.assertNotIn("binder", source.lower())
+                self.assertNotIn("mdas-interactive", html)
+                self.assertEqual(len(page.help_links), 1)
+                self.assertEqual(page.help_links[0]["href"], "../../docs/notebook-execution.html#cardiac-setup")
+                self.assertRegex(html, r'class="left-prev"\s+href="' + re.escape(previous[doc]) + '"')
+                sidebar = html.split('<div class="bd-toc-item navbar-nav active">')[1].split('</nav>')[0]
+                entries = re.findall(r'<li class="toctree-l(\d)[^"]*"><a class="[^"]*reference internal" href="[^"]*">([^<]+)</a>', sidebar)
+                start = entries.index(("1", "KaleCardiac"))
+                self.assertEqual(entries[start:], [("1", "KaleCardiac"), ("2", "Overview"), ("2", CARDIAC_TUTORIALS_TITLE), ("3", "CardioVAE"), ("3", "LS-EMVAE")])
+                current = re.findall(r'<li class="toctree-l3 current active"><a class="current reference internal" href="[^"]*">([^<]+)</a>', sidebar)
+                self.assertEqual(current, [label])
                 self.assertIn('id="interpretation-and-next-steps"', html)
                 toc = html.split('id="pst-secondary-sidebar"')[1]
                 for anchor in re.findall(r'<section id="([^"]+)"', html):

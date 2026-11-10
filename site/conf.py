@@ -6,7 +6,7 @@ import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parent / "_ext"))
 
-from mdas_notebooks import CARDIAC_NOTEBOOKS, NOTEBOOKS
+from mdas_notebooks import CARDIAC_NOTEBOOKS, CARDIAC_TUTORIALS_TITLE, NOTEBOOKS
 
 project = "Multimodal Data Analysis Session (MDAS)"
 author = "CMI/UKOMAIN"
@@ -72,21 +72,62 @@ html_theme_options = {
 
 BINDER_LAUNCH = """<button type="button" id="mdas-thebe-launch" class="btn btn-primary mdas-execution-button thebe-launch-button" onclick="mdasLaunchInteractive()">Run with Binder</button>""" if MDAS_ENABLE_THEBE else "<p>In-page execution is disabled for this build. Read the saved notebook below or use Colab.</p>"
 
+def execution_help(target):
+    """Secondary help link; it opens in a new tab so the notebook page stays in place."""
+    return f"""<div class="mdas-notebook-tools"><a class="mdas-execution-help" href="{target}" target="_blank" rel="noopener" aria-label="Execution Help (opens in a new tab)"><svg class="mdas-help-icon" aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 6v15 M12 6C9 4 6 4 3 5v14c3-1 6-1 9 1 M12 6c3-2 6-2 9-1v14c-3-1-6-1-9 1"/></svg> Execution Help</a></div>"""
+
+
+def cardiac_intro(docname):
+    """Shared heading, tutorial picker and the Colab action for a Cardiac tutorial page."""
+    label, path = CARDIAC_NOTEBOOKS[docname]
+    pages = {name: (name.rsplit("/", 1)[1], title) for name, (title, _) in CARDIAC_NOTEBOOKS.items()}
+    options = "".join(
+        f'<option value="{page}.html"' + (" selected" if name == docname else "") + f">{title}</option>"
+        for name, (page, title) in pages.items()
+    )
+    # Reset before leaving, so returning with the back button shows this page's tutorial.
+    picker = ('<div class="mdas-tutorial-picker"><label for="mdas-tutorial-select">Choose a tutorial</label> '
+              '<select id="mdas-tutorial-select" onchange="const target = this.value; '
+              "this.value = this.querySelector('option[selected]').value; location.assign(target);\">"
+              f"{options}</select></div>")
+    fallback = " | ".join(f'<a href="{page}.html">{title}</a>' for page, title in pages.values())
+    # The default page also holds the sidebar branch beneath the shared entry.
+    branch = ""
+    if docname == next(iter(CARDIAC_NOTEBOOKS)):
+        items = "\n".join(f"{title} <{'self' if name == docname else page}>" for name, (page, title) in pages.items())
+        branch = f"\n```{{toctree}}\n:hidden:\n:titlesonly:\n\n{items}\n```\n"
+    return f"""{execution_help("../../docs/notebook-execution.html#cardiac-setup")}
+
+# {CARDIAC_TUTORIALS_TITLE}
+
+{picker}<noscript><p>Choose: {fallback}</p></noscript>
+
+**{label}**
+
+Run this tutorial in Google Colab, which provides the GPU it uses for training.
+
+<div class="mdas-execution-actions">
+<a class="btn btn-primary mdas-execution-button" href="https://colab.research.google.com/github/pykale/mdas/blob/main/{path}">Run in Google Colab</a>
+</div>
+
+In Colab, choose a T4 GPU runtime, then run Step 0 in order: install KaleCardiac, fetch configurations and download the tutorial data. For **Run locally**, see [Quick Start](../../docs/quick-start.md#cardiac).
+
+> Sessions are temporary. Save code edits, important results and generated files before leaving or opening another example. Do not upload private or patient data to public services.
+{branch}"""
+
+
 def notebook_intro(docname):
     """Own title and matching execution routes; scientific cells are untouched."""
-    cardiac = docname in CARDIAC_NOTEBOOKS
-    title, path = (CARDIAC_NOTEBOOKS if cardiac else NOTEBOOKS)[docname]
-    colab = path if cardiac else path.replace(".ipynb", "_colab.ipynb")
-    help_target = "../../docs/notebook-execution.html" + ("#cardiac-setup" if cardiac else "")
-    setup = ("Run Step 0 in order: install KaleCardiac, fetch configurations and download the tutorial data. "
-             "Binder uses a CPU; in Colab a T4 GPU can accelerate training. "
-             if cardiac else
-             "In Colab select the documented **Python 3.12 / 2026.07** runtime, then run the initial setup cell. "
+    if docname in CARDIAC_NOTEBOOKS:
+        return cardiac_intro(docname)
+    title, path = NOTEBOOKS[docname]
+    colab = path.replace(".ipynb", "_colab.ipynb")
+    setup = ("In Colab select the documented **Python 3.12 / 2026.07** runtime, then run the initial setup cell. "
              "Follow any restart instruction before continuing. ")
     routes = ("Choose **Run with Binder** for a temporary kernel on this website, or **Run in Google Colab** for a separate runtime."
               if MDAS_ENABLE_THEBE else "In-page execution is disabled in this build. Choose **Run in Google Colab** for a separate runtime.")
     status = "Not connected. Binder starts only when you choose to launch it." if MDAS_ENABLE_THEBE else "In-page execution is disabled."
-    return f"""<div class="mdas-notebook-tools"><a class="mdas-execution-help" href="{help_target}" target="_blank" rel="noopener" aria-label="Execution Help (opens in a new tab)"><svg class="mdas-help-icon" aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 6v15 M12 6C9 4 6 4 3 5v14c3-1 6-1 9 1 M12 6c3-2 6-2 9-1v14c-3-1-6-1-9 1"/></svg> Execution Help</a></div>
+    return f"""{execution_help("../../docs/notebook-execution.html")}
 
 # {title}
 
@@ -100,7 +141,7 @@ def notebook_intro(docname):
 </div>
 <p id="mdas-thebe-status" role="status" aria-live="polite">{status}</p>
 
-{setup}For **Run locally**, see [Quick Start](../../docs/quick-start.md#{'cardiac' if cardiac else 'cancer'}).
+{setup}For **Run locally**, see [Quick Start](../../docs/quick-start.md#cancer).
 
 > Sessions are temporary. Save code edits, important results and generated files before leaving or opening another example. Do not upload private or patient data to public services.
 """
@@ -167,10 +208,23 @@ REDIRECTS = {
     "tutorials/kalecancer/README": "index.html",
     "tutorials/kalecancer/getting-started": "index.html",
     "tutorials/kalecardiac/README": "index.html",
-    "tutorials/kalecardiac/cardiovae-hands-on": "live-coding.html",
-    "tutorials/kalecardiac/lsemvae-hands-on": "live-coding-lsemvae.html",
-    "tutorials/kalecardiac/results": "live-coding.html#interpretation-and-next-steps",
+    "tutorials/kalecardiac/cardiovae-hands-on": "cardiovae.html",
+    "tutorials/kalecardiac/lsemvae-hands-on": "lsemvae.html",
+    "tutorials/kalecardiac/results": "cardiovae.html#interpretation-and-next-steps",
+    "tutorials/kalecardiac/live-coding": "cardiovae.html",
+    "tutorials/kalecardiac/live-coding-lsemvae": "lsemvae.html",
 }
+
+
+def cardiac_tutorial_page(app, pagename, templatename, context, doctree):
+    """Load the picker style, and name the method in previous/next links (the pages share one heading)."""
+    if pagename not in CARDIAC_NOTEBOOKS:
+        return
+    app.add_css_file("mdas-tutorial-picker.css")
+    titles ={app.builder.get_relative_uri(pagename, name): label for name, (label, _) in CARDIAC_NOTEBOOKS.items()}
+    for key in ("prev", "next"):
+        if context.get(key) and context[key]["link"] in titles:
+            context[key]["title"] = titles[context[key]["link"]]
 
 
 def redirect_pages(app):
@@ -189,6 +243,7 @@ def setup(app):
 
     app.add_lexer("ipython2", PythonLexer)
     app.connect("source-read", prepare_notebook)
+    app.connect("html-page-context", cardiac_tutorial_page)
     app.add_js_file("mdas-notebooks.js", defer="defer")
     app.add_css_file("mdas-notebooks.css")
     app.connect("html-collect-pages", redirect_pages)

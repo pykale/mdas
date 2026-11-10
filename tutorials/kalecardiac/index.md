@@ -1,37 +1,41 @@
-# Cardiac
+# KaleCardiac Overview
 
-<span id="overview"></span>
+[KaleCardiac](https://github.com/pykale/cardiac) is a Python library for multimodal cardiovascular machine learning, built on [PyKale](https://github.com/pykale/pykale). It works with ECG, chest X-ray, cardiac imaging and clinical data. Its API is a pipeline of modules, each named for what it does:
 
-[KaleCardiac](https://github.com/pykale/cardiac) explores complementary cardiac measurements. Its examples learn representations from unlabelled investigations, then use labelled subjects to train and evaluate a classifier.
+```text
+loaddata  →  prepdata  →  model  →  pipeline  →  evaluate  →  interpret
+ access      transform    learn      train        score        explain
+                            │
+                            ├─ layers   building blocks
+                            ├─ embed    CardioVAE, LS-EMVAE and fusion
+                            └─ predict  heads and objectives
+```
 
-<span id="choose-a-tutorial"></span>
+The `auto` module runs these stages from a single configuration, and the tutorials use it for pretraining and fine-tuning.
 
-## Choose an example
+The library is organised around two features of cardiac data. Recordings are easy to collect but labels are expensive, so a model first learns from unlabelled recordings and is then fine-tuned on a labelled cohort. Modalities also go missing in practice, so models keep working when an input is absent.
 
-| Example | What it demonstrates |
-| --- | --- |
-| [KaleCardiac CardioVAE](../../notebooks/MDAS/cardiac/tutorial-CardioVAE.ipynb) | Combine a chest X-ray and a twelve-lead ECG, then inspect how each contributes to a prediction. |
-| [KaleCardiac LS-EMVAE](../../notebooks/MDAS/cardiac/tutorial-LSEMVAE.ipynb) | Learn from complementary ECG leads and examine predictions as leads are withheld. |
+## The tutorial notebooks
 
-<span id="the-workflow"></span>
-<span id="the-tutorial-dataset"></span>
+Each notebook builds a published model from raw DICOM files using the [KaleCardiac API](https://github.com/pykale/cardiac/blob/main/API_overview.md). You will find both under **KaleCardiac API Notebooks** in the sidebar.
 
-The notebooks follow preparation, pretraining, fine-tuning, evaluation and interpretation. They use the public tutorial dataset of paired ECGs and chest X-rays stored as DICOM files: an unlabelled pretraining cohort and a labelled fine-tuning cohort. A cell downloads the dataset as a ZIP archive of about **400 MB**. LS-EMVAE uses the ECGs only.
+| | CardioVAE | LS-EMVAE |
+| --- | --- | --- |
+| **Input data** | Chest X-ray and twelve-lead ECG | Twelve-lead ECG, with each lead as its own modality |
+| **Model** | An encoder and a decoder for each modality, fused by a product of experts | An encoder for each lead, hierarchical fusion and one decoder shared by all leads |
+| **Pretrained on** | Paired ECGs and chest X-rays | All twelve leads |
+| **Fine-tuned on** | Both modalities | The six limb leads, or all twelve |
+| **Missing inputs** | Withholds each modality in turn and scores again | Withholds leads one after another, down to lead I |
+| **Notebook** | [Open CardioVAE](../../notebooks/MDAS/cardiac/tutorial-CardioVAE.ipynb) | [Open LS-EMVAE](../../notebooks/MDAS/cardiac/tutorial-LSEMVAE.ipynb) |
 
-<span id="run-a-tutorial"></span>
+## What you will do
 
-## Run an example
+Both tutorials follow the same five steps:
 
-Each example page offers **Run with Binder** and **Run in Google Colab**. Start with its Step 0 installation and download cells; see [Cardiac setup](../../docs/notebook-execution.md#cardiac-setup). For **Run locally**, follow [Quick Start](../../docs/quick-start.md#cardiac).
+1. **Set up:** install KaleCardiac and download the tutorial data.
+2. **Pretrain:** the model learns from the data without any labels.
+3. **Fine-tune:** a classifier is trained on top of the model using labelled data.
+4. **Evaluate:** the model is tested on subjects it has not seen.
+5. **Interpret:** you see which inputs, and which parts of them, the predictions relied on.
 
-<span id="configuration-files"></span>
-
-Each notebook works independently. In a shared working folder, CardioVAE can download the dataset first and LS-EMVAE can reuse it. Checkpoints and logs go into separate output folders. The notebook configuration cells expose settings you can explore; the matching files are in the [KaleCardiac tutorial folder](https://github.com/pykale/cardiac/tree/main/tutorials/mdas_tutorial).
-
-## As you work
-
-Compare performance and explanations when inputs are available or withheld. An attribution describes what this model uses; it does not establish a causal or clinically reliable finding. The no-data command-line examples in Quick Start use generated cohorts; they are a separate entry point from these DICOM notebooks.
-
-<span id="beyond-the-notebooks"></span>
-
-Use only the tutorial data on public services. Keep identifiable patient data in approved, secure environments, and plan independent evaluation before making clinical claims. For further work, see the [KaleCardiac quickstart](https://github.com/pykale/cardiac/blob/main/docs/quickstart.md) and [examples overview](https://github.com/pykale/cardiac/blob/main/examples/README.md).
+Each tutorial runs in Google Colab, which provides the GPU it uses for training.

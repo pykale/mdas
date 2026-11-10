@@ -1,0 +1,4 @@
+/* Tutorial picker on the Cardiac tutorial pages; loaded only there (conf.py). */
+.mdas-tutorial-picker { display: flex; flex-wrap: wrap; align-items: center; gap: .65rem; margin: 0 0 1rem; }
+.mdas-tutorial-picker label { font-weight: 600; }
+.mdas-tutorial-picker select { padding: .4rem .7rem; color: var(--pst-color-text-base); background: var(--pst-color-background); border: 1px solid var(--pst-color-border); border-radius: .3rem; }

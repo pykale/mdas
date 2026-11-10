@@ -1,11 +1,11 @@
-"""Scope sphinx-thebe to the notebook pages and use each notebook's real repository path."""
+"""Scope sphinx-thebe to the Binder-enabled Cancer pages and use each notebook's real repository path."""
 
 import json
 import posixpath
 
 from docutils import nodes
 
-from mdas_notebooks import ALL_NOTEBOOKS, BINDER_FILES
+from mdas_notebooks import BINDER_FILES, NOTEBOOKS
 
 
 def configure_page(app, doctree, docname):
@@ -14,7 +14,7 @@ def configure_page(app, doctree, docname):
         text = node.astext()
         if 'type="text/x-thebe-config"' not in text and "<script>kernelName =" not in text:
             continue
-        if docname not in ALL_NOTEBOOKS:
+        if docname not in NOTEBOOKS:
             node.parent.remove(node)
             continue
         if 'type="text/x-thebe-config"' in text:
@@ -30,7 +30,7 @@ def configure_page(app, doctree, docname):
                     "savedSession": {"enabled": False},
                 },
                 # The kernel starts in the notebook's own folder, beside its helper or configs.
-                "kernelOptions": {"name": "python3", "path": posixpath.dirname(ALL_NOTEBOOKS[docname][1])},
+                "kernelOptions": {"name": "python3", "path": posixpath.dirname(NOTEBOOKS[docname][1])},
                 "codeMirrorConfig": {"theme": "default", "mode": "python"},
                 "predefinedOutput": True,
                 "mathjaxUrl": False,
@@ -48,7 +48,7 @@ def configure_page(app, doctree, docname):
 
 
 def scope_assets(app, pagename, templatename, context, doctree):
-    if pagename in ALL_NOTEBOOKS:
+    if pagename in NOTEBOOKS:
         return
 
     def keep(asset):

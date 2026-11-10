@@ -6,26 +6,21 @@ NOTEBOOKS = {
     "tutorials/kalecancer/live-coding-survival": ("KaleCancer Survival Analysis", f"{CANCER}/survival_showcase.ipynb"),
 }
 
+# The Cardiac tutorials share one sidebar entry and heading; the first is its default page.
 CARDIAC = "notebooks/MDAS/cardiac"
+CARDIAC_TUTORIALS_TITLE = "KaleCardiac API Notebooks"
 CARDIAC_NOTEBOOKS = {
-    "tutorials/kalecardiac/live-coding": ("KaleCardiac CardioVAE", f"{CARDIAC}/tutorial-CardioVAE.ipynb"),
-    "tutorials/kalecardiac/live-coding-lsemvae": ("KaleCardiac LS-EMVAE", f"{CARDIAC}/tutorial-LSEMVAE.ipynb"),
+    "tutorials/kalecardiac/cardiovae": ("CardioVAE", f"{CARDIAC}/tutorial-CardioVAE.ipynb"),
+    "tutorials/kalecardiac/lsemvae": ("LS-EMVAE", f"{CARDIAC}/tutorial-LSEMVAE.ipynb"),
 }
 
-# Each notebook is a normal toctree page with its own navigation.
+# Every staged notebook page.
 ALL_NOTEBOOKS = {**NOTEBOOKS, **CARDIAC_NOTEBOOKS}
 
+# Binder runs the Cancer notebooks only: the Cardiac tutorials need a GPU, so they use Colab.
 # Files each page's Binder launch checks on the public revision, besides .binder/.
-# Binder kernels start in the notebook's own folder. The Cardiac notebooks install
-# KaleCardiac in the session from their first code cell; .binder/ is shared and unchanged.
 BINDER_FILES = {
-    **{docname: [path, f"{CANCER}/synthetic_data_generation.py"]
-       + ([f"{CANCER}/synthetic_showcase_data.py"] if path.endswith("_showcase.ipynb") else [])
-       for docname, (_, path) in NOTEBOOKS.items()},
-    "tutorials/kalecardiac/live-coding": [f"{CARDIAC}/tutorial-CardioVAE.ipynb",
-                                          f"{CARDIAC}/configs/config_cardiovae_pretrain.yaml",
-                                          f"{CARDIAC}/configs/config_cardiovae_finetune.yaml"],
-    "tutorials/kalecardiac/live-coding-lsemvae": [f"{CARDIAC}/tutorial-LSEMVAE.ipynb",
-                                                  f"{CARDIAC}/configs/config_lsemvae_pretrain.yaml",
-                                                  f"{CARDIAC}/configs/config_lsemvae_finetune.yaml"],
+    docname: [path, f"{CANCER}/synthetic_data_generation.py"]
+    + ([f"{CANCER}/synthetic_showcase_data.py"] if path.endswith("_showcase.ipynb") else [])
+    for docname, (_, path) in NOTEBOOKS.items()
 }
