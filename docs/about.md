@@ -1,6 +1,6 @@
 # What is MDAS?
 
-The **Multimodal Data Analysis Session (MDAS)** is a practical introduction to combining different types of biomedical data using the PyKale software ecosystem. It is organised by the **CMI** AIRE team with the support of **UKOMAIN**.
+The **Multimodal Data Analysis Session (MDAS)** is a practical introduction to combining different types of biomedical data using the PyKale software ecosystem. It is organised by the AI Research Engineering team at the Centre for Machine Intelligence, with support from the EPSRC-funded UK Open Multimodal AI Network.
 
 Attendees will choose a [Cancer](../tutorials/kalecancer/index.md) or [Cardiac](../tutorials/kalecardiac/index.md) example, follow an analysis from data to predictions, and explore their own research question with support from the AIRE team.
 
