@@ -6,7 +6,7 @@ Organised by the AI Research Engineering team at the Centre for Machine Intellig
 
 Work through the examples with us at the session or independently afterwards. The materials explain the inputs, modelling choices and evaluation, starting with synthetic data so no patient dataset is needed.
 
-## Explore the examples
+## Explore the tutorials
 
 | Track | What you will explore |
 | --- | --- |

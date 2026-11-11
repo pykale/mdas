@@ -178,7 +178,7 @@ REDIRECTS = {
     "tutorials/kalecancer/results": "live-coding.html#interpretation-and-next-steps",
     "tutorials/kalecardiac/getting-started": "index.html",
     "docs/prerequisites": "participation.html",
-    "tutorials/README": "../index.html#explore-the-examples",
+    "tutorials/README": "../index.html#explore-the-tutorials",
     "tutorials/kalecancer/hands-on": "live-coding.html",
     "docs/overview": "about.html",
     "docs/resources": "quick-start.html",
