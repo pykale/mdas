@@ -2,7 +2,7 @@
 
 Biomedical research often brings together measurements that describe different aspects of the same person. Multimodal data analysis asks how these complementary sources can be combined to address a research question, and how to evaluate what the combination adds.
 
-Organised by the AI Research Engineering team at the Centre for Machine Intelligence, with support from the EPSRC-funded UK Open Multimodal AI Network, MDAS introduces practical examples from the PyKale biomedical research ecosystem. **Cancer** combines clinical variables and pathology patch features for classification and survival analysis. **Cardiac** explores chest X-ray and ECG representation learning with CardioVAE, and complementary ECG leads with LS-EMVAE.
+Organised by the AI Research Engineering team at the Centre for Machine Intelligence, with support from the EPSRC-funded UK Open Multimodal AI Network, MDAS introduces practical examples from the PyKale biomedical research ecosystem. The **Cancer tutorial** combines clinical variables and pathology patch features for classification and survival analysis. The **Cardiac tutorial** explores chest X-ray and ECG representation learning with CardioVAE, and complementary ECG leads with LS-EMVAE.
 
 Work through the examples with us at the session or independently afterwards. The materials explain the inputs, modelling choices and evaluation, starting with synthetic data so no patient dataset is needed.
 

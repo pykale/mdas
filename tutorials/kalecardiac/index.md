@@ -1,17 +1,17 @@
 # Overview
 
-[Cardiac](https://github.com/pykale/cardiac) is a Python library for multimodal cardiovascular machine learning, built on [PyKale](https://github.com/pykale/pykale). It supports multiple data modalities, including cardiac imaging, physiological signals, and clinical data. Its API follows a modular pipeline architecture, with each module named according to its functionality:
+In the Cardiac tutorial, we will use [KaleCardiac](https://github.com/pykale/cardiac), a Python library for multimodal cardiovascular machine learning built on [PyKale](https://github.com/pykale/pykale). KaleCardiac supports multiple data modalities, including cardiac imaging, physiological signals, and clinical data. Its API follows a modular pipeline architecture, with each module named according to its functionality:
 
 ```text
 loaddata  →  prepdata  →  model  →  pipeline  →  evaluate  →  interpret
 (access)    (transform)  (learn)     (train)    (metrics)     (explain)
 ```
 
-The library is organised around two features of cardiac data. Data are easy to collect but labels are expensive, so a model first learns from unlabelled datas and is then fine-tuned on a labelled cohort. Modalities also go missing in practice, so models keep working when an input is absent.
+The library is organised around two features of cardiac data. Data are easy to collect but labels are expensive, so a model first learns from unlabelled data and is then fine-tuned on a labelled cohort. Modalities also go missing in practice, so models keep working when an input is absent.
 
 ## The tutorial notebooks
 
-Each notebook builds a published model from raw DICOM files using the [Cardiac API](https://github.com/pykale/cardiac/blob/main/API_overview.md). You will find both under **Cardiac Overview** in the sidebar.
+Each notebook builds a published model from raw DICOM files using the [KaleCardiac API](https://github.com/pykale/cardiac/blob/main/API_overview.md). You will find both under **Cardiac Overview** in the sidebar.
 
 | | Chest X-ray and ECG | 12-lead ECG |
 | --- | --- | --- |

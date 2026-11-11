@@ -1,6 +1,6 @@
 # Cancer
 
-[Cancer](https://github.com/pykale/cancer) combines clinical variables and pathology slide features to explore cancer research questions. The examples follow the same workflow: load the inputs, prepare a model, train it, then evaluate and interpret its predictions.
+In the Cancer tutorial, we will use [KaleCancer](https://github.com/pykale/cancer) to combine clinical variables and pathology slide features and explore cancer research questions. The examples follow the same workflow: load the inputs, prepare a model, train it, then evaluate and interpret its predictions.
 
 ## Choose an example
 
