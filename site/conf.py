@@ -49,7 +49,8 @@ html_baseurl = "https://pykale.github.io/mdas/"
 html_static_path = ["_static"]
 templates_path = ["_templates"]
 html_css_files = ["mdas.css"]
-html_js_files = [("mdas-presentation.js", {"defer": "defer"})]
+html_js_files = [("mdas-presentation.js", {"defer": "defer"}),
+                 ("mdas-sidebar.js", {"defer": "defer"})]
 html_logo = "_static/mdas-logo.png"
 html_permalinks = False
 html_show_sourcelink = False
