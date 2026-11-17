@@ -95,7 +95,7 @@ Run this tutorial in Google Colab, which provides the GPU it uses for training.
 <a class="btn btn-primary mdas-execution-button" href="https://colab.research.google.com/github/pykale/mdas/blob/main/{path}">Run in Google Colab</a>
 </div>
 
-In Colab, choose a T4 GPU runtime, then run Step 0 in order: install KaleCardiac, fetch configurations and download the tutorial data. For **Run locally**, see [Quick Start](../../docs/quick-start.md#cardiac).
+In Colab, choose a T4 GPU runtime, then run Step 0 in order: install KaleCardiac and download the tutorial data. For **Run locally**, see [Quick Start](../../docs/quick-start.md#cardiac).
 
 > Sessions are temporary. Save code edits, important results and generated files before leaving or opening another example. Do not upload private or patient data to public services.
 """
