@@ -2,8 +2,8 @@
 
 CANCER = "notebooks/MDAS/cancer"
 NOTEBOOKS = {
-    "tutorials/kalecancer/live-coding": ("Classification", f"{CANCER}/classification_showcase.ipynb"),
-    "tutorials/kalecancer/live-coding-survival": ("Survival Analysis", f"{CANCER}/survival_showcase.ipynb"),
+    "tutorials/kalecancer/classification": ("Classification", f"{CANCER}/classification_showcase.ipynb"),
+    "tutorials/kalecancer/survival": ("Survival Analysis", f"{CANCER}/survival_showcase.ipynb"),
 }
 
 # Each Cardiac tutorial is its own page, titled and addressed by the data it learns from, so

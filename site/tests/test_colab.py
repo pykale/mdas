@@ -44,7 +44,7 @@ class DirectColab(unittest.TestCase):
             target = source_path.replace(".ipynb", "_colab.ipynb")
             self.assertIn(f'href="https://colab.research.google.com/github/pykale/mdas/blob/main/{target}"', intro)
             self.assertTrue((ROOT / target).is_file())
-            self.assertNotIn("(live-coding-notebook)=", intro)
+            self.assertNotIn("live-coding-notebook", intro)
             if "_showcase" in source_path:
                 self.assertNotIn("Binder unavailable", intro)
                 self.assertNotIn('onclick="mdasLaunchInteractive()"', intro)  # Colab is the only route

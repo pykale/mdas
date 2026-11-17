@@ -19,7 +19,7 @@ class SiteStructure(unittest.TestCase):
         navigation = json.loads((ROOT / "site/navigation.json").read_text())
         self.assertEqual(navigation["About the Session"], [["What is MDAS?", "docs/about"], ["Participation Guide", "docs/participation"]])
         self.assertEqual(navigation["Tutorials"], [["Cancer Overview", "tutorials/kalecancer/index"], ["Cardiac Overview", "tutorials/kalecardiac/index"]])
-        for track, entries in (("kalecancer", ["Classification <live-coding>", "Survival Analysis <live-coding-survival>"]),
+        for track, entries in (("kalecancer", ["Classification <classification>", "Survival Analysis <survival>"]),
                                ("kalecardiac", ["Chest X-ray and ECG <chest-xray-ecg>", "12-lead ECG <12-lead-ecg>"])):
             staged = (ROOT / f"site/_staged/tutorials/{track}/index.md").read_text(encoding="utf-8")
             for entry in entries:
@@ -37,10 +37,12 @@ class SiteStructure(unittest.TestCase):
         redirects = {"docs/agenda": "about.html#programme","docs/prerequisites": "participation.html",
                      "tutorials/kalecancer/getting-started": "index.html",
                      "tutorials/kalecardiac/getting-started": "index.html",
-                     "tutorials/kalecancer/results": "live-coding.html#interpretation-and-next-steps",
+                     "tutorials/kalecancer/results": "classification.html#interpretation-and-next-steps",
                      "tutorials/kalecardiac/results": "chest-xray-ecg.html#step-3-evaluation",
                      "tutorials/kalecardiac/cardiovae-hands-on": "chest-xray-ecg.html",
                      "tutorials/kalecardiac/lsemvae-hands-on": "12-lead-ecg.html",
+                     "tutorials/kalecancer/live-coding": "classification.html",
+                     "tutorials/kalecancer/live-coding-survival": "survival.html",
                      "tutorials/kalecardiac/live-coding": "chest-xray-ecg.html",
                      "tutorials/kalecardiac/live-coding-lsemvae": "12-lead-ecg.html",
                      "tutorials/kalecardiac/cardiovae": "chest-xray-ecg.html",
@@ -78,12 +80,12 @@ class SiteStructure(unittest.TestCase):
         for obsolete in ("ABMIL", "32-dimensional", "40 training epochs"):
             self.assertNotIn(obsolete, cancer)
         self.assertIn('assets/kalecancer-fusion-workflow.svg', cancer)
-        for track, examples in (("kalecancer", ("live-coding", "live-coding-survival")), ("kalecardiac", ("chest-xray-ecg", "12-lead-ecg"))):
+        for track, examples in (("kalecancer", ("classification", "survival")), ("kalecardiac", ("chest-xray-ecg", "12-lead-ecg"))):
             overview = page(f"tutorials/{track}/index")
             for example in examples:
                 self.assertIn(f'href="{example}.html"', overview)
         quick = page("docs/quick-start")
-        for target in ("../tutorials/kalecancer/live-coding.html", "../tutorials/kalecancer/live-coding-survival.html", "../tutorials/kalecardiac/chest-xray-ecg.html", "../tutorials/kalecardiac/12-lead-ecg.html"):
+        for target in ("../tutorials/kalecancer/classification.html", "../tutorials/kalecancer/survival.html", "../tutorials/kalecardiac/chest-xray-ecg.html", "../tutorials/kalecardiac/12-lead-ecg.html"):
             self.assertIn(f'href="{target}"', quick)
         participation = plain(page("docs/participation"))
         self.assertNotIn("Choose an execution route", participation)

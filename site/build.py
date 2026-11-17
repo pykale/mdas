@@ -61,16 +61,16 @@ def stage() -> None:
     mapping["README.md"] = "index.md"
     for docname, (_, notebook_path) in ALL_NOTEBOOKS.items():
         mapping[notebook_path] = docname + ".ipynb"
-    aliases = {"docs/agenda.md": "docs/about.md","tutorials/kalecancer/results.md": "tutorials/kalecancer/live-coding.ipynb",
+    aliases = {"docs/agenda.md": "docs/about.md","tutorials/kalecancer/results.md": "tutorials/kalecancer/classification.ipynb",
                "tutorials/kalecardiac/getting-started.md": "tutorials/kalecardiac/index.md",
                "tutorials/kalecardiac/results.md": "tutorials/kalecardiac/chest-xray-ecg.ipynb",
-               "notebooks/MDAS/cancer/survival.ipynb": "tutorials/kalecancer/live-coding-survival.ipynb",
-               "notebooks/MDAS/cancer/classification.ipynb": "tutorials/kalecancer/live-coding.ipynb",
+               "notebooks/MDAS/cancer/survival.ipynb": "tutorials/kalecancer/survival.ipynb",
+               "notebooks/MDAS/cancer/classification.ipynb": "tutorials/kalecancer/classification.ipynb",
                "docs/prerequisites.md": "docs/participation.md",
                "tutorials/README.md": "index.md",
-               "tutorials/kalecancer/hands-on.md": "tutorials/kalecancer/live-coding.ipynb",
+               "tutorials/kalecancer/hands-on.md": "tutorials/kalecancer/classification.ipynb",
                "docs/overview.md": "docs/about.md", "docs/resources.md": "docs/quick-start.md",
-               "notebooks/README.md": "tutorials/kalecancer/live-coding.ipynb",
+               "notebooks/README.md": "tutorials/kalecancer/classification.ipynb",
                "tutorials/kalecancer/README.md": "tutorials/kalecancer/index.md",
                "tutorials/kalecancer/getting-started.md": "tutorials/kalecancer/index.md",
                "tutorials/kalecardiac/README.md": "tutorials/kalecardiac/index.md"}
