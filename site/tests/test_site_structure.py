@@ -37,7 +37,7 @@ class SiteStructure(unittest.TestCase):
         redirects = {"docs/agenda": "about.html#programme","docs/prerequisites": "participation.html",
                      "tutorials/kalecancer/getting-started": "index.html",
                      "tutorials/kalecardiac/getting-started": "index.html",
-                     "tutorials/kalecancer/results": "classification.html#interpretation-and-next-steps",
+                     "tutorials/kalecancer/results": "classification.html",
                      "tutorials/kalecardiac/results": "chest-xray-ecg.html#step-3-evaluation",
                      "tutorials/kalecardiac/cardiovae-hands-on": "chest-xray-ecg.html",
                      "tutorials/kalecardiac/lsemvae-hands-on": "12-lead-ecg.html",

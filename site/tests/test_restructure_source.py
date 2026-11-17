@@ -44,9 +44,8 @@ class RestructureSource(unittest.TestCase):
                 self.assertNotIn("mdas-notebook-select", intro)
                 self.assertNotIn("Live-Coding Notebook", intro)
                 self.assertNotIn("orphan", rendered.get("metadata", {}))
-                # Cancer pages close with guidance; Cardiac notebooks end with their own references.
-                closing = self.assertIn if doc in conf.NOTEBOOKS else self.assertNotIn
-                closing("## Interpretation and next steps", rendered["cells"][-1]["source"])
+                # Every page ends with its notebook's own final cell; no closing section is added.
+                self.assertNotIn("## Interpretation and next steps", rendered["cells"][-1]["source"])
             for old in ("tutorials/kalecardiac/getting-started", "tutorials/kalecancer/results", "tutorials/kalecardiac/results"):
                 self.assertIn(old, conf.REDIRECTS)
             self.assertFalse((build.STAGED / "docs/agenda.md").exists())
