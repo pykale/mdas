@@ -4,6 +4,7 @@ CANCER = "notebooks/MDAS/cancer"
 NOTEBOOKS = {
     "tutorials/kalecancer/classification": ("Classification", f"{CANCER}/classification_showcase.ipynb"),
     "tutorials/kalecancer/survival": ("Survival Analysis", f"{CANCER}/survival_showcase.ipynb"),
+    "tutorials/kalecancer/hancock": ("Exploring HANCOCK", f"{CANCER}/hancock_questions.ipynb"),
 }
 
 # Each Cardiac tutorial is its own page, titled and addressed by the data it learns from, so
@@ -31,7 +32,8 @@ ALL_NOTEBOOKS = {**NOTEBOOKS, **CARDIAC_NOTEBOOKS}
 # Binder runs the Cancer notebooks only: the Cardiac tutorials need a GPU, so they use Colab.
 # Files each page's Binder launch checks on the public revision, besides .binder/.
 BINDER_FILES = {
-    docname: [path, f"{CANCER}/synthetic_data_generation.py"]
+    docname: [path, f"{CANCER}/hancock_data.py"] if path.endswith("hancock_questions.ipynb")
+    else [path, f"{CANCER}/synthetic_data_generation.py"]
     + ([f"{CANCER}/synthetic_showcase_data.py"] if path.endswith("_showcase.ipynb") else [])
     for docname, (_, path) in NOTEBOOKS.items()
 }

@@ -99,7 +99,7 @@ class RestructureSource(unittest.TestCase):
     def test_cancer_colab_only_actions_and_guidance(self):
         conf = module("mdas_colab_only_source_test", ROOT / "site/conf.py")
         self.assertEqual([title for title, _ in conf.NOTEBOOKS.values()],
-                         ["Classification", "Survival Analysis"])
+                         ["Classification", "Survival Analysis", "Exploring HANCOCK"])
         navigation = json.loads((ROOT / "site/navigation.json").read_text())
         self.assertIn(["Cancer Overview", "tutorials/kalecancer/index"], navigation["Tutorials"])
         home = (ROOT / "README.md").read_text(encoding="utf-8")

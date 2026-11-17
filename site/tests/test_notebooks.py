@@ -57,8 +57,10 @@ class Notebooks(unittest.TestCase):
         sys.path.insert(0, str(ROOT / "site/_ext"))
         from mdas_notebooks import NOTEBOOKS
         previous = {"tutorials/kalecancer/classification": "index.html",
-                    "tutorials/kalecancer/survival": "classification.html"}
-        next_page = {"tutorials/kalecancer/classification": "survival.html"}
+                    "tutorials/kalecancer/survival": "classification.html",
+                    "tutorials/kalecancer/hancock": "survival.html"}
+        next_page = {"tutorials/kalecancer/classification": "survival.html",
+                     "tutorials/kalecancer/survival": "hancock.html"}
         for doc, (title, path) in NOTEBOOKS.items():
             with self.subTest(doc=doc):
                 original = json.loads((ROOT / path).read_text(encoding="utf-8"))

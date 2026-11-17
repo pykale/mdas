@@ -8,8 +8,9 @@ In the Cancer tutorial, we will use [KaleCancer](https://github.com/pykale/cance
 | --- | --- |
 | [Classification](../../notebooks/MDAS/cancer/classification_showcase.ipynb) | Predict a category, compare the contribution of different inputs, and explore what the model uses. |
 | [Survival Analysis](../../notebooks/MDAS/cancer/survival_showcase.ipynb) | Analyse event risk with incomplete follow-up, evaluate survival predictions, and explore individual explanations. |
+| [Exploring HANCOCK](../../notebooks/MDAS/cancer/hancock_questions.ipynb) | Hands-on: answer research questions on a real head and neck cancer cohort by changing a line or two. |
 
-Both examples use synthetic clinical data and generated pathology patch features. These are numerical demonstrations, not patient images or evidence of clinical performance.
+Classification and Survival Analysis use synthetic clinical data and generated pathology patch features. Exploring HANCOCK uses a reduced copy of the public [HANCOCK](https://hancock.research.fau.eu) cohort (CC BY 4.0), downloaded automatically by the notebook. None of these results are evidence of clinical performance.
 
 ## From data to interpretation
 
