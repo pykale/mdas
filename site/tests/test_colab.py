@@ -18,11 +18,11 @@ spec.loader.exec_module(setup)
 
 class DirectColab(unittest.TestCase):
     def test_original_payloads_and_copies(self):
-        for name in ("classification", "survival", "classification_blank", "survival_blank", "classification_showcase"):
+        for name in ("classification_showcase", "survival_showcase"):
             path = f"notebooks/MDAS/cancer/{name}.ipynb"
             authored = subprocess.check_output(["git", "show", f"HEAD:{path}"], cwd=ROOT)
             self.assertEqual((ROOT / path).read_bytes().replace(b"\r\n", b"\n"), authored.replace(b"\r\n", b"\n"))
-        for name in ("classification", "survival", "classification_showcase", "survival_showcase"):
+        for name in ("classification_showcase", "survival_showcase"):
             original = json.loads((CANCER / f"{name}.ipynb").read_text(encoding="utf-8"))
             direct = json.loads((CANCER / f"{name}_colab.ipynb").read_text(encoding="utf-8"))
             self.assertEqual(direct["cells"][2:], original["cells"])  # includes source, metadata and saved outputs

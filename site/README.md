@@ -129,7 +129,7 @@ The dependency resolution, helper smoke test, static builds, HTML links and cont
 
 The organiser has confirmed Binder server launch and Thebe kernel connection after publishing revision `090f1ff`. The earlier failure analysis above records the pre-publication state. Full research-training validation remains separate.
 
-The Survival Colab button targets `survival_showcase_colab.ipynb`. Classification displays the showcase and links to `classification_showcase_colab.ipynb` (see the setup notes below). The older `classification_colab.ipynb` remains in the repository but is not the selected example. The notebook pages share a single sidebar entry.
+The Survival Colab button targets `survival_showcase_colab.ipynb`. Classification displays the showcase and links to `classification_showcase_colab.ipynb` (see the setup notes below). The notebook pages share a single sidebar entry.
 
 ### Disable or replace the backend
 

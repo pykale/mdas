@@ -78,9 +78,9 @@ MDAS website → choose **Classification** or **Survival Analysis** → **Run in
 The website offers exactly two primary execution actions:
 
 - **Run with Binder** uses the original notebook and existing in-page Binder controller.
-- **Run in Google Colab** opens `classification_colab.ipynb` or `survival_colab.ipynb`.
+- **Run in Google Colab** opens `classification_showcase_colab.ipynb` or `survival_showcase_colab.ipynb`.
 
-The direct copies add one initial Markdown cell and one setup code cell. Every original cell dictionary follows unchanged, in its original order: scientific source, explanatory Markdown, IDs, metadata, saved outputs and execution counts. The original notebook files themselves are never written. The optional blank exercises remain unchanged.
+The direct copies add one initial Markdown cell and one setup code cell. Every original cell dictionary follows unchanged, in its original order: scientific source, explanatory Markdown, IDs, metadata, saved outputs and execution counts. The original notebook files themselves are never written.
 
 ## Runtime availability and dependency evidence
 

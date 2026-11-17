@@ -69,7 +69,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--check", action="store_true")
     args = parser.parse_args()
-    for name in ("classification", "survival", "classification_showcase", "survival_showcase"):
+    for name in ("classification_showcase", "survival_showcase"):
         original = json.loads((CANCER / f"{name}.ipynb").read_text(encoding="utf-8"))
         notebook = copy.deepcopy(original)
         notebook["cells"] = additions(showcase=name.endswith("_showcase")) + notebook["cells"]
