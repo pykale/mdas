@@ -92,7 +92,7 @@ def cardiac_intro(docname):
 Run this tutorial in Google Colab, which provides the GPU it uses for training.
 
 <div class="mdas-execution-actions">
-<a class="btn btn-primary mdas-execution-button" href="https://colab.research.google.com/github/pykale/mdas/blob/main/{path}">Run in Google Colab</a>
+<a class="btn btn-primary mdas-execution-button" href="https://colab.research.google.com/github/pykale/mdas/blob/main/{path}" target="_blank" rel="noopener noreferrer">Run in Google Colab</a>
 </div>
 
 In Colab, choose a T4 GPU runtime, then run Step 0 in order: install KaleCardiac and download the tutorial data. For **Run locally**, see [Quick Start](../../docs/quick-start.md#cardiac).
@@ -116,7 +116,7 @@ def notebook_intro(docname):
 Run this example in Google Colab, which opens the matching showcase copy in a separate runtime.
 
 <div class="mdas-execution-actions">
-<a class="btn btn-primary mdas-execution-button" href="https://colab.research.google.com/github/pykale/mdas/blob/main/{colab}">Run in Google Colab</a>
+<a class="btn btn-primary mdas-execution-button" href="https://colab.research.google.com/github/pykale/mdas/blob/main/{colab}" target="_blank" rel="noopener noreferrer">Run in Google Colab</a>
 </div>
 
 {setup}For **Run locally**, see [Quick Start](../../docs/quick-start.md#cancer).
