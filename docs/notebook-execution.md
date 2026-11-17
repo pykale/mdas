@@ -22,7 +22,7 @@ For runtime selection, a setup failure or a checksum/version message, follow the
 
 Open the [Chest X-ray and ECG](../notebooks/MDAS/cardiac/tutorial-CardioVAE.ipynb) or [12-lead ECG](../notebooks/MDAS/cardiac/tutorial-LSEMVAE.ipynb) tutorial. **Run in Google Colab** opens that authored notebook in Colab; its own Step 0 prepares the environment.
 
-1. Run the package installation cell. It installs the KaleCardiac pre-release, `kalecardiac[imaging,interpret]==0.1.0a1`, from TestPyPI, with its dependencies from PyPI. Each configuration cell later downloads the configuration file it reads.
+1. Run the package installation cell. It installs KaleCardiac from PyPI with the extras the tutorials need, `kalecardiac[imaging,interpret]`. Each configuration cell later downloads the configuration file it reads.
 2. Run the dataset cell. It downloads and extracts about **400 MB** of public tutorial DICOM data. The unlabelled cohort is for pretraining; the labelled cohort is for fine-tuning. Both examples can reuse this data in a shared folder.
 3. Run the remaining cells in order. Each tutorial loads separate pretraining and fine-tuning configuration files; its notebook cells expose settings to explore. Checkpoints and training logs are written in separate output folders.
 4. For Cardiac Colab, use a compatible Python 3.12 runtime where offered; that is the Python version used in the local shared-environment checks. A T4 GPU can accelerate training, while CPU execution also works. The current default Colab runtime has not been verified here. If a compatible runtime is unavailable, use Run locally; installing another interpreter does not change the kernel. Resolve any installation error before proceeding.
