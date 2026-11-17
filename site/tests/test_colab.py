@@ -27,7 +27,7 @@ class DirectColab(unittest.TestCase):
             direct = json.loads((CANCER / f"{name}_colab.ipynb").read_text(encoding="utf-8"))
             self.assertEqual(direct["cells"][2:], original["cells"])  # includes source, metadata and saved outputs
             self.assertEqual({k: v for k, v in direct.items() if k != "cells"}, {k: v for k, v in original.items() if k != "cells"})
-            self.assertIn("Google Colab Environment Setup", "".join(direct["cells"][0]["source"]))
+            self.assertIn("Before you start", "".join(direct["cells"][0]["source"]))
             compile("".join(direct["cells"][1]["source"]), "setup cell", "exec")
         subprocess.run([sys.executable, str(ROOT / "site/sync_colab.py"), "--check"], check=True)
 
@@ -49,9 +49,7 @@ class DirectColab(unittest.TestCase):
                 self.assertNotIn("Binder unavailable", intro)
                 self.assertNotIn('onclick="mdasLaunchInteractive()"', intro)  # Colab is the only route
                 bootstrap = "".join(json.loads((ROOT / target).read_text(encoding="utf-8"))["cells"][1]["source"])
-                for helper in ("synthetic_showcase_data.py", "synthetic_data_generation.py"):
-                    digest = hashlib.sha256((CANCER / helper).read_bytes().replace(b"\r\n", b"\n")).hexdigest()
-                    self.assertIn(digest, bootstrap)
+                for helper in ("colab_setup.py", "colab-requirements.txt", "synthetic_showcase_data.py", "synthetic_data_generation.py"):
                     self.assertIn(helper, bootstrap)
                 self.assertIn("showcase=True", bootstrap)
 
@@ -112,27 +110,27 @@ class DirectColab(unittest.TestCase):
                 setup._ensure_helper(Path(tmp))
             self.assertFalse((Path(tmp) / "synthetic_data_generation.py").exists())
 
-    def test_fresh_bootstrap_downloads_verified_support_and_reuses_cache(self):
+    def test_fresh_bootstrap_downloads_support_once_and_runs_setup(self):
         bootstrap = "".join(json.loads((CANCER / "classification_showcase_colab.ipynb").read_text(encoding="utf-8"))["cells"][1]["source"])
-        contents = {name: (CANCER / name).read_bytes().replace(b"\r\n", b"\n") for name in ("colab_setup.py", "colab-requirements.txt", "synthetic_data_generation.py", "synthetic_showcase_data.py")}
-        prepare = MagicMock()
+        fake_setup = MagicMock()
         with tempfile.TemporaryDirectory() as tmp:
-            directory = Path(tmp) / "notebooks/MDAS/cancer"
-            code = bootstrap.replace('/content/mdas-cancer/notebooks/MDAS/cancer', directory.as_posix())
-            def response(request, **kwargs):
-                item = MagicMock()
-                # Exercise Windows CRLF downloads/caches against LF GitHub hashes.
-                item.__enter__.return_value.read.return_value = contents[request.full_url.rsplit("/", 1)[-1]].replace(b"\n", b"\r\n")
-                return item
-            with patch("pathlib.Path.cwd", return_value=Path(tmp)), patch.object(sys, "version_info", (3, 12)), \
-                 patch("urllib.request.urlopen", side_effect=response) as fetch, patch("runpy.run_path", return_value={"prepare": prepare}):
+            directory = Path(tmp) / "mdas"
+            code = bootstrap.replace('"/content/mdas"', repr(directory.as_posix()))
+            self.assertNotEqual(code, bootstrap)
+
+            def download(url, path):
+                Path(path).write_bytes((CANCER / url.rsplit("/", 1)[-1]).read_bytes())
+
+            # A fresh Colab session has no support files in its working directory.
+            with patch("pathlib.Path.cwd", return_value=Path(tmp)), patch("urllib.request.urlretrieve", side_effect=download) as fetch, \
+                 patch.dict(sys.modules, {"colab_setup": fake_setup}), patch.object(sys, "path", list(sys.path)):
                 exec(code, {})
-                (directory / "colab_setup.py").write_bytes(contents["colab_setup.py"].replace(b"\n", b"\r\n"))
-                exec(code, {})
-                self.assertEqual(fetch.call_count, 4)
-                self.assertEqual(prepare.call_count, 2)
-                prepare.assert_called_with(directory, showcase=True)
-                self.assertEqual((directory / "colab_setup.py").read_bytes().replace(b"\r\n", b"\n"), contents["colab_setup.py"])
+                exec(code, {})  # Rerunning setup reuses the downloaded files.
+            self.assertEqual(fetch.call_count, 4)
+            for name in ("colab_setup.py", "colab-requirements.txt", "synthetic_data_generation.py", "synthetic_showcase_data.py"):
+                self.assertEqual((directory / name).read_bytes(), (CANCER / name).read_bytes())
+            self.assertEqual(fake_setup.prepare.call_count, 2)
+            fake_setup.prepare.assert_called_with(directory, showcase=True)
 
     def test_buttons_have_white_text_in_all_states_and_accessible_focus(self):
         css = (ROOT / "site/_static/mdas-notebooks.css").read_text(encoding="utf-8")

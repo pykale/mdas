@@ -16,7 +16,7 @@ This guide opens in a new tab so your notebook page and active kernel can stay i
 4. Run scientific cells individually in order, including their data generation, training and evaluation steps.
 5. Save a notebook copy and download needed data/results using Colab's File menu and Files pane before disconnecting. A new Colab session does not automatically retain an earlier runtime's files or variables.
 
-For runtime selection, a setup failure or a checksum/version message, follow the [Colab troubleshooting guide](colab.md). A failed setup is not permission to skip ahead to the scientific cells.
+For runtime selection, a setup failure or a version message, follow the [Colab troubleshooting guide](colab.md). A failed setup is not permission to skip ahead to the scientific cells.
 
 ## Cardiac setup
 

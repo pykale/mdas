@@ -112,6 +112,8 @@ The CPU Torch index is official. No imaging, pathology, interpretation, TabICL o
 
 ## Bootstrap and paths
 
+> **Update (17 November 2026):** the setup cells were simplified. The Markdown cell is now a short *Before you start* checklist, and the setup code cell downloads any missing support files from public `main` into `/content/mdas/` (no embedded SHA-256 checks) before calling `colab_setup.prepare()`. The installation, version, restart and readiness checks below are unchanged. The checksum description that follows is historical.
+
 The two small setup cells share `colab_setup.py` and `colab-requirements.txt`; `site/sync_colab.py` generates the copies and embeds the support-file SHA-256 values. In a fresh Colab runtime, setup downloads only those support files from the MDAS public `main`, verifies their hashes before executing code (normalizing support-file line endings to LF for Windows/GitHub consistency), and caches them under `/content/mdas-cancer/notebooks/MDAS/cancer`. A local checkout can supply the same files during testing.
 
 `main` is used for these new support files because the copies and helper must be published together. The embedded hashes bind a notebook copy to its exact support-file revision. If a later `main` no longer serves the matching version and no verified cached copy exists, setup stops and asks the participant to reopen the latest notebook rather than silently executing different setup code. Regenerate both copies whenever the helper or requirement file changes:

@@ -107,21 +107,13 @@ def notebook_intro(docname):
         return cardiac_intro(docname)
     title, path = NOTEBOOKS[docname]
     colab = path.replace(".ipynb", "_colab.ipynb")
-    setup = ("In Colab select the documented **Python 3.12 / 2026.07** runtime, then run the initial setup cell. "
-             "Follow any restart instruction before continuing. ")
     return f"""{execution_help("../../docs/notebook-execution.html")}
 
 # {title}
 
-Run this example in Google Colab, which opens the matching showcase copy in a separate runtime.
-
 <div class="mdas-execution-actions">
 <a class="btn btn-primary mdas-execution-button" href="https://colab.research.google.com/github/pykale/mdas/blob/main/{colab}" target="_blank" rel="noopener noreferrer">Run in Google Colab</a>
 </div>
-
-{setup}For **Run locally**, see [Quick Start](../../docs/quick-start.md#cancer).
-
-> Sessions are temporary. Save code edits, important results and generated files before leaving or opening another example. Do not upload private or patient data to public services.
 """
 
 

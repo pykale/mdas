@@ -117,9 +117,9 @@ class RestructureSource(unittest.TestCase):
             self.assertEqual(intro.count('class="btn btn-primary mdas-execution-button"'), 1)
             self.assertIn(path.replace(".ipynb", "_colab.ipynb"), intro)
             self.assertTrue((ROOT / path.replace(".ipynb", "_colab.ipynb")).is_file())
-            self.assertIn("Python 3.12 / 2026.07", intro)
-            self.assertIn("quick-start.md#cancer", intro)
-            self.assertIn("Do not upload private or patient data", intro)
+            # Setup steps live in the Colab notebook itself, not on the page.
+            self.assertNotIn("2026.07", intro)
+            self.assertNotIn("Sessions are temporary", intro)
         for path in ("README.md", "docs/quick-start.md", "docs/notebook-execution.md", "docs/colab.md", "tutorials/kalecancer/index.md"):
             self.assertNotIn("Run with Binder", (ROOT / path).read_text(encoding="utf-8"))
         overview = (ROOT / "tutorials/kalecancer/index.md").read_text(encoding="utf-8")
