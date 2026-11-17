@@ -112,7 +112,6 @@ def stage() -> None:
                               lambda m: rewrite_link(m, path, destination), parts[i])
         text = "".join(parts)
         if name == "README.md":
-            text = '<img class="mdas-home-logo" src="_static/mdas-logo.png" alt="Multimodal Data Analysis Session logo">\n\n' + text
             nav = json.loads((SITE / "navigation.json").read_text(encoding="utf-8"))
             text += "".join(toctree(entries, caption) for caption, entries in nav.items())
         destination.write_text(text, encoding="utf-8")
