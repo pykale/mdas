@@ -113,8 +113,6 @@ def notebook_intro(docname):
 
 # {title}
 
-<span id="live-coding-notebook"></span>
-
 Run this example in Google Colab, which opens the matching showcase copy in a separate runtime.
 
 <div class="mdas-execution-actions">
@@ -176,20 +174,22 @@ def prepare_notebook(app, docname, source):
 
 REDIRECTS = {
     "docs/agenda": "about.html#programme",
-    "tutorials/kalecancer/results": "live-coding.html#interpretation-and-next-steps",
+    "tutorials/kalecancer/results": "classification.html#interpretation-and-next-steps",
     "tutorials/kalecardiac/getting-started": "index.html",
     "docs/prerequisites": "participation.html",
     "tutorials/README": "../index.html#explore-the-tutorials",
-    "tutorials/kalecancer/hands-on": "live-coding.html",
+    "tutorials/kalecancer/hands-on": "classification.html",
     "docs/overview": "about.html",
     "docs/resources": "quick-start.html",
-    "notebooks/README": "../tutorials/kalecancer/live-coding.html",
+    "notebooks/README": "../tutorials/kalecancer/classification.html",
     "tutorials/kalecancer/README": "index.html",
     "tutorials/kalecancer/getting-started": "index.html",
     "tutorials/kalecardiac/README": "index.html",
     "tutorials/kalecardiac/cardiovae-hands-on": "chest-xray-ecg.html",
     "tutorials/kalecardiac/lsemvae-hands-on": "12-lead-ecg.html",
     "tutorials/kalecardiac/results": "chest-xray-ecg.html#step-3-evaluation",
+    "tutorials/kalecancer/live-coding": "classification.html",
+    "tutorials/kalecancer/live-coding-survival": "survival.html",
     "tutorials/kalecardiac/live-coding": "chest-xray-ecg.html",
     "tutorials/kalecardiac/live-coding-lsemvae": "12-lead-ecg.html",
     # The tutorial pages' former, model-named addresses; a section link keeps its fragment.
@@ -202,7 +202,7 @@ def redirect_pages(app):
     for old, target in REDIRECTS.items():
         fragments = {}
         if old == "tutorials/kalecancer/results":
-            fragments = {key: "live-coding-survival.html#interpretation-and-next-steps"
+            fragments = {key: "survival.html#interpretation-and-next-steps"
                          for key in ("#survival-analysis-results-and-interpretation", "#read-risk-alongside-follow-up")}
         yield old, {"redirect_target": target, "redirect_fragments": fragments}, "redirect.html"
 

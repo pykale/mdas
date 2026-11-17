@@ -14,14 +14,12 @@ Attendees will choose a [Cancer](../tutorials/kalecancer/index.md) or [Cardiac](
 
 | Time | Activity |
 | --- | --- |
-| 13:00–14:00 | **Part 1: Learn the Pipeline** |
-| 13:00–13:05 | Introductions and session outline |
-| 13:05–13:10 | Environment setup |
-| 13:10–13:50 | Preview the Cancer and Cardiac examples |
-| 13:50–14:00 | Discussion |
-| 14:00–14:10 | Break and refreshments |
-| 14:10–16:30 | **Part 2: Apply the Pipeline** |
-| 14:10–16:20 | Apply the pipeline to your own research question or to data provided by the organisers, with support from the AIRE team. |
-| 16:20–16:30 | Closing remarks |
+| 13:00–13:15 | Introduction & Overview |
+| 13:15–14:00 | KaleCancer Walkthrough |
+| 14:00–14:15 | Discussion & Break |
+| 14:15–15:00 | KaleCardiac Walkthrough |
+| 15:00–15:15 | Discussion & Break |
+| 15:15–16:15 | Hands-on Challenges |
+| 16:15–16:30 | Discussion & Closing Remarks |
 
 For preparation and participation guidance, see the [Participation Guide](participation.md).

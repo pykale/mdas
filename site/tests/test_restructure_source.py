@@ -24,7 +24,7 @@ class RestructureSource(unittest.TestCase):
         with tempfile.TemporaryDirectory() as folder:
             build.STAGED = Path(folder) / "source"
             build.stage()
-            for track, entries in (("kalecancer", ["Classification <live-coding>", "Survival Analysis <live-coding-survival>"]),
+            for track, entries in (("kalecancer", ["Classification <classification>", "Survival Analysis <survival>"]),
                                    ("kalecardiac", ["Chest X-ray and ECG <chest-xray-ecg>", "12-lead ECG <12-lead-ecg>"])):
                 text = (build.STAGED / f"tutorials/{track}/index.md").read_text(encoding="utf-8")
                 for entry in entries:
@@ -53,7 +53,7 @@ class RestructureSource(unittest.TestCase):
             self.assertEqual(conf.REDIRECTS["docs/agenda"], "about.html#programme")
             self.assertIn("## Programme", (build.STAGED / "docs/about.md").read_text())
             quick = (build.STAGED / "docs/quick-start.md").read_text()
-            for track, pages in (("kalecancer", ("live-coding", "live-coding-survival")),
+            for track, pages in (("kalecancer", ("classification", "survival")),
                                  ("kalecardiac", ("chest-xray-ecg", "12-lead-ecg"))):
                 for page in pages:
                     self.assertIn(f"../tutorials/{track}/{page}.ipynb", quick)
@@ -68,15 +68,13 @@ class RestructureSource(unittest.TestCase):
         self.assertEqual(text.count("](participation.md)"), 1)
         expected = [
             "| Time | Activity |", "| --- | --- |",
-            "| 13:00–14:00 | **Block 1: Learn the Pipeline** |",
-            "| 13:00–13:05 | Introductions and session outline |",
-            "| 13:05–13:10 | Environment setup |",
-            "| 13:10–13:50 | Core content: from data loading to model evaluation |",
-            "| 13:50–14:00 | Discussion |",
-            "| 14:00–14:10 | Break and refreshments |",
-            "| 14:10–16:30 | **Block 2: Apply the Pipeline** |",
-            "| 14:10–16:20 | Work on your own research question with support from the AIRE team. |",
-            "| 16:20–16:30 | Closing remarks |",
+            "| 13:00–13:15 | Introduction & Overview |",
+            "| 13:15–14:00 | KaleCancer Walkthrough |",
+            "| 14:00–14:15 | Discussion & Break |",
+            "| 14:15–15:00 | KaleCardiac Walkthrough |",
+            "| 15:00–15:15 | Discussion & Break |",
+            "| 15:15–16:15 | Hands-on Challenges |",
+            "| 16:15–16:30 | Discussion & Closing Remarks |",
         ]
         self.assertEqual([line for line in text.splitlines() if line.startswith("|")], expected)
         navigation = json.loads((ROOT / "site/navigation.json").read_text())
