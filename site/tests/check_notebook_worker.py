@@ -17,7 +17,7 @@ class Worker(unittest.TestCase):
         from nbclient.exceptions import CellExecutionError
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
-            source = root / "notebooks/MDAS/cancer/classification.ipynb"
+            source = root / "notebooks/MDAS/cancer/classification_showcase.ipynb"
             source.parent.mkdir(parents=True)
             notebook = nbformat.v4.new_notebook(cells=[
                 nbformat.v4.new_code_cell("from pathlib import Path; assert Path.cwd().name == 'cancer'"),
@@ -27,15 +27,15 @@ class Worker(unittest.TestCase):
             nbformat.write(notebook, source)
             before = source.read_bytes()
             (root / "outputs").mkdir()
-            (root / "outputs/classification.html").write_text("stale success", encoding="utf-8")
+            (root / "outputs/classification_showcase.html").write_text("stale success", encoding="utf-8")
             with self.assertRaises(CellExecutionError):
-                runner.execute("classification", root, root / "outputs", 30)
+                runner.execute("classification_showcase", root, root / "outputs", 30)
             self.assertEqual(source.read_bytes(), before)
-            self.assertFalse((root / "outputs/classification.html").exists())
-            result = json.loads((root / "outputs/classification.execution.json").read_text(encoding="utf-8"))
+            self.assertFalse((root / "outputs/classification_showcase.html").exists())
+            result = json.loads((root / "outputs/classification_showcase.execution.json").read_text(encoding="utf-8"))
             self.assertEqual(result["status"], "failed")
             self.assertTrue(result["source_unchanged"])
-            executed = nbformat.read(root / "outputs/classification.executed.ipynb", as_version=4)
+            executed = nbformat.read(root / "outputs/classification_showcase.executed.ipynb", as_version=4)
             self.assertIsNone(executed.cells[-1].execution_count)
 
 

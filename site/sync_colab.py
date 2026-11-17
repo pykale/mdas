@@ -3,61 +3,39 @@ from __future__ import annotations
 
 import argparse
 import copy
-import hashlib
 import json
 from pathlib import Path
 
 CANCER = Path(__file__).resolve().parents[1] / "notebooks/MDAS/cancer"
 
 
-def additions(showcase: bool = False) -> list[dict]:
-    support = ["colab_setup.py", "colab-requirements.txt"]
-    if showcase:
-        support += ["synthetic_data_generation.py", "synthetic_showcase_data.py"]
-    checksums = {name: hashlib.sha256((CANCER / name).read_bytes().replace(b"\r\n", b"\n")).hexdigest()
-                 for name in support}
-    intro = """# Google Colab Environment Setup
+SUPPORT_FILES = ["colab_setup.py", "colab-requirements.txt", "synthetic_data_generation.py", "synthetic_showcase_data.py"]
 
-**Python 3.12 required.** Before running, select **Runtime > Change runtime type > Runtime Version > 2026.07**, then reconnect. Google currently lists this Python 3.12 runtime; if it is no longer offered, use **Run with Binder** on the MDAS website. The default Python 3.13 runtime is incompatible with the published KaleCancer/PyKale requirements.
 
-Run the setup cell below, then run the scientific cells individually in order. Setup downloads the companion module and installs a pinned CPU stack in **this notebook's active Python environment**; no separate notebook, Drive mount or upload is needed. The first installation may take several minutes. If libraries with different versions are already loaded, setup will ask you to **Restart session** and rerun setup before continuing. Reruns reuse the installed packages and downloaded files.
+def additions() -> list[dict]:
+    intro = """# Before you start
 
-If you ran an earlier setup in this session, restart the session after the corrected packages are installed, then rerun setup. This includes Hugging Face Hub/Transformers imports: changing packages on disk does not replace already imported modules. Continue only when **MDAS ready** prints the corrected Hub version.
+1. **Switch to Python 3.12:** go to **Runtime > Change runtime type**, set **Runtime version** to **2026.07** and click **Save**. Colab's default Python 3.13 won't work.
+2. **Run the setup cell below.** The first run takes a few minutes. If it asks you to restart, choose **Runtime > Restart session** and run it again.
+3. **When you see "MDAS ready"**, run the rest of the notebook in order.
 
-Every cell below this setup section is preserved from the original MDAS notebook, including its full training and advanced analyses. Use synthetic data only. Colab sessions are temporary; download work you want to keep.
+Colab sessions are temporary, so download anything you want to keep.
 """
-    bootstrap = '''# Bootstrap only: scientific code below is unchanged.
-import hashlib
-from pathlib import Path
-import runpy
+    bootstrap = f'''# Set up Colab: download the tutorial's helper files, then install the packages it needs.
 import sys
-from urllib.request import Request, urlopen
+from pathlib import Path
+from urllib.request import urlretrieve
 
-if sys.version_info[:2] != (3, 12):
-    raise RuntimeError("Python 3.12 is required. Choose Runtime > Change runtime type > Runtime Version > 2026.07, reconnect, then rerun setup. If unavailable, use Run with Binder.")
+folder = Path.cwd() if Path("colab_setup.py").exists() else Path("/content/mdas")
+folder.mkdir(exist_ok=True)
+for file in {SUPPORT_FILES!r}:
+    if not (folder / file).exists():
+        urlretrieve("https://raw.githubusercontent.com/pykale/mdas/main/notebooks/MDAS/cancer/" + file, folder / file)
 
-# Prefer a local checkout when testing; a fresh Colab session uses /content.
-_candidates = [Path.cwd(), *(p / "notebooks/MDAS/cancer" for p in [Path.cwd(), *Path.cwd().parents])]
-_mdas_dir = next((p for p in _candidates if (p / "colab_setup.py").is_file()), Path("/content/mdas-cancer/notebooks/MDAS/cancer"))
-_mdas_dir.mkdir(parents=True, exist_ok=True)
-_checksums = CHECKSUMS
-try:
-    for _name, _digest in _checksums.items():
-        _path = _mdas_dir / _name
-        if not _path.is_file() or hashlib.sha256(_path.read_bytes().replace(b"\\r\\n", b"\\n")).hexdigest() != _digest:
-            print("MDAS: downloading", _name, flush=True)
-            _url = "https://raw.githubusercontent.com/pykale/mdas/main/notebooks/MDAS/cancer/" + _name
-            with urlopen(Request(_url, headers={"User-Agent": "MDAS-Colab"}), timeout=60) as _response:
-                _contents = _response.read().replace(b"\\r\\n", b"\\n")
-            if hashlib.sha256(_contents).hexdigest() != _digest:
-                raise RuntimeError("Setup revision mismatch. Reopen the latest Colab notebook from the MDAS website; no downloaded code was executed.")
-            _temporary = _path.with_suffix(_path.suffix + ".tmp")
-            _temporary.write_bytes(_contents)
-            _temporary.replace(_path)
-    runpy.run_path(str(_mdas_dir / "colab_setup.py"))["prepare"](_mdas_dirSHOWCASE)
-except OSError as _error:
-    raise RuntimeError("MDAS download/install failed. Check internet access and rerun setup. The reviewed Colab support files must exist on public main.") from _error
-'''.replace("CHECKSUMS", repr(checksums)).replace("SHOWCASE", ", showcase=True" if showcase else "")
+sys.path.insert(0, str(folder))
+import colab_setup
+colab_setup.prepare(folder, showcase=True)
+'''
     return [
         {"cell_type": "markdown", "id": "mdas-colab-intro", "metadata": {}, "source": intro.splitlines(keepends=True)},
         {"cell_type": "code", "id": "mdas-colab-setup", "metadata": {}, "execution_count": None, "outputs": [],
@@ -69,10 +47,10 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--check", action="store_true")
     args = parser.parse_args()
-    for name in ("classification", "survival", "classification_showcase", "survival_showcase"):
+    for name in ("classification_showcase", "survival_showcase"):
         original = json.loads((CANCER / f"{name}.ipynb").read_text(encoding="utf-8"))
         notebook = copy.deepcopy(original)
-        notebook["cells"] = additions(showcase=name.endswith("_showcase")) + notebook["cells"]
+        notebook["cells"] = additions() + notebook["cells"]
         target = CANCER / f"{name}_colab.ipynb"
         if args.check:
             if not target.is_file() or json.loads(target.read_text(encoding="utf-8")) != notebook:

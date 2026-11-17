@@ -78,9 +78,9 @@ MDAS website → choose **Classification** or **Survival Analysis** → **Run in
 The website offers exactly two primary execution actions:
 
 - **Run with Binder** uses the original notebook and existing in-page Binder controller.
-- **Run in Google Colab** opens `classification_colab.ipynb` or `survival_colab.ipynb`.
+- **Run in Google Colab** opens `classification_showcase_colab.ipynb` or `survival_showcase_colab.ipynb`.
 
-The direct copies add one initial Markdown cell and one setup code cell. Every original cell dictionary follows unchanged, in its original order: scientific source, explanatory Markdown, IDs, metadata, saved outputs and execution counts. The original notebook files themselves are never written. The optional blank exercises remain unchanged.
+The direct copies add one initial Markdown cell and one setup code cell. Every original cell dictionary follows unchanged, in its original order: scientific source, explanatory Markdown, IDs, metadata, saved outputs and execution counts. The original notebook files themselves are never written.
 
 ## Runtime availability and dependency evidence
 
@@ -111,6 +111,8 @@ Key pins:
 The CPU Torch index is official. No imaging, pathology, interpretation, TabICL or development extras are installed. The required PyTorch downgrade is necessary to satisfy PyKale's declared cap. Installation is into the **active interpreter** (`sys.executable -m pip`), so the following scientific cells use the installed packages directly, without a kernel proxy or notebook runner.
 
 ## Bootstrap and paths
+
+> **Update (17 November 2026):** the setup cells were simplified. The Markdown cell is now a short *Before you start* checklist, and the setup code cell downloads any missing support files from public `main` into `/content/mdas/` (no embedded SHA-256 checks) before calling `colab_setup.prepare()`. The installation, version, restart and readiness checks below are unchanged. The checksum description that follows is historical.
 
 The two small setup cells share `colab_setup.py` and `colab-requirements.txt`; `site/sync_colab.py` generates the copies and embeds the support-file SHA-256 values. In a fresh Colab runtime, setup downloads only those support files from the MDAS public `main`, verifies their hashes before executing code (normalizing support-file line endings to LF for Windows/GitHub consistency), and caches them under `/content/mdas-cancer/notebooks/MDAS/cancer`. A local checkout can supply the same files during testing.
 

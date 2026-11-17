@@ -33,7 +33,7 @@ def check_python() -> None:
             f"The active kernel is Python {sys.version_info[0]}.{sys.version_info[1]}. "
             "KaleCancer and PyKale require Python below 3.13. In Colab choose Runtime > Change runtime type > "
             "Runtime Version > 2026.07 (Python 3.12), reconnect, then rerun this setup cell. "
-            "If this runtime is not offered, use Run with Binder or a local Python 3.12 environment. Installing another interpreter does not change this kernel."
+            "If this runtime is not offered, run the notebook locally with Python 3.12 (see Quick Start on the MDAS website)."
         )
 
 
@@ -163,5 +163,5 @@ def prepare(directory: Path | None = None, *, showcase: bool = False) -> None:
     except (subprocess.CalledProcessError, OSError, ImportError) as error:
         raise RuntimeError(
             f"MDAS setup failed: {error}. Check internet access and the pip/import output, then rerun setup. "
-            "If packages were already imported, restart the session first. Use Run with Binder or local Python 3.12 if the supported Colab runtime is unavailable."
+            "If packages were already imported, restart the session first."
         ) from error

@@ -16,7 +16,7 @@ def execute(name: str, root: Path, output: Path, timeout: int = 1200, variant: s
     from jupyter_client import KernelManager
     from jupyter_client.kernelspec import KernelSpecManager
 
-    if name not in {"classification", "survival", "classification_showcase", "survival_showcase", "tutorial-CardioVAE", "tutorial-LSEMVAE"}:
+    if name not in {"classification_showcase", "survival_showcase", "tutorial-CardioVAE", "tutorial-LSEMVAE"}:
         raise ValueError("Choose a complete Cancer or Cardiac tutorial notebook.")
     stem = name + ("_colab" if variant == "colab" else "")
     track = "cardiac" if name.startswith("tutorial-") else "cancer"
@@ -94,7 +94,7 @@ def execute(name: str, root: Path, output: Path, timeout: int = 1200, variant: s
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("notebook", choices=["classification", "survival", "classification_showcase", "survival_showcase", "tutorial-CardioVAE", "tutorial-LSEMVAE", "both"])
+    parser.add_argument("notebook", choices=["classification_showcase", "survival_showcase", "tutorial-CardioVAE", "tutorial-LSEMVAE", "both"])
     parser.add_argument("--variant", choices=["original", "colab"], default="colab")
     parser.add_argument("--root", type=Path, default=Path(__file__).resolve().parents[2])
     parser.add_argument("--output", type=Path)
@@ -106,7 +106,7 @@ def main():
         parser.error("Output must be outside the source notebooks directory.")
     if sys.version_info[:2] != (3, 12):
         parser.error("Run this worker with the prepared Python 3.12 interpreter.")
-    for name in (["classification", "survival"] if args.notebook == "both" else [args.notebook]):
+    for name in (["classification_showcase", "survival_showcase"] if args.notebook == "both" else [args.notebook]):
         execute(name, root, output, args.timeout, args.variant)
 
 

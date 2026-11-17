@@ -91,7 +91,7 @@ class Notebooks(unittest.TestCase):
                 self.assertNotIn('>Example Notebook</a>', sidebar)
                 self.assertIn("mdas-presentation.js", html)
                 self.assertIn("mdas-notebooks.js", html)
-                self.assertIn('id="interpretation-and-next-steps"', html)
+                self.assertNotIn('id="interpretation-and-next-steps"', html)
                 toc = html.split('id="pst-secondary-sidebar"')[1]
                 for anchor in re.findall(r'<section id="([^"]+)"', html):
                     self.assertIn(f'href="#{anchor}"', toc)

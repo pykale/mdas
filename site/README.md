@@ -129,7 +129,7 @@ The dependency resolution, helper smoke test, static builds, HTML links and cont
 
 The organiser has confirmed Binder server launch and Thebe kernel connection after publishing revision `090f1ff`. The earlier failure analysis above records the pre-publication state. Full research-training validation remains separate.
 
-The Survival Colab button targets `survival_showcase_colab.ipynb`. Classification displays the showcase and links to `classification_showcase_colab.ipynb` (see the setup notes below). The older `classification_colab.ipynb` remains in the repository but is not the selected example. The notebook pages share a single sidebar entry.
+The Survival Colab button targets `survival_showcase_colab.ipynb`. Classification displays the showcase and links to `classification_showcase_colab.ipynb` (see the setup notes below). The notebook pages share a single sidebar entry.
 
 ### Disable or replace the backend
 
@@ -191,7 +191,7 @@ Files in this change: `build.py`, `conf.py`, `diagnose_binder.py`, `_ext/mdas_no
 
 `site/sync_colab.py` generates the legacy Colab copies and available `*_showcase_colab.ipynb` copies by prepending one Markdown/setup-code pair to a complete copy of the corresponding original notebook. Use `python site/sync_colab.py --check` to detect drift. Only generated Colab copies are written; the four authored notebooks remain untouched.
 
-Shared bootstrap code and the scientific requirement pins live beside the copies as `colab_setup.py` and `colab-requirements.txt`. Setup checks the actual kernel's Python 3.12, verifies downloaded support-file hashes, installs through ordinary pip dependency resolution, restores the original working directory, and detects stale imported libraries that require a session restart. No separate participant setup notebook or execution proxy is used.
+Shared bootstrap code and the scientific requirement pins live beside the copies as `colab_setup.py` and `colab-requirements.txt`. Setup downloads any missing support files from public `main`, checks the actual kernel's Python 3.12, installs through ordinary pip dependency resolution, restores the original working directory, and detects stale imported libraries that require a session restart. No separate participant setup notebook or execution proxy is used.
 
 The website has exactly two primary execution actions: **Run with Binder**, using the existing controller and original notebook, and **Run in Google Colab**, targeting the selected `_colab.ipynb`. Button styling is scoped to `.mdas-execution-actions`: blue backgrounds, explicit white text including visited/hover/focus/active states, keyboard focus outline, and a responsive layout. Execution Help is a secondary, upper-right control with an accessible help icon, explicit new-tab label and keyboard focus style.
 

@@ -92,7 +92,7 @@ def cardiac_intro(docname):
 Run this tutorial in Google Colab, which provides the GPU it uses for training.
 
 <div class="mdas-execution-actions">
-<a class="btn btn-primary mdas-execution-button" href="https://colab.research.google.com/github/pykale/mdas/blob/main/{path}">Run in Google Colab</a>
+<a class="btn btn-primary mdas-execution-button" href="https://colab.research.google.com/github/pykale/mdas/blob/main/{path}" target="_blank" rel="noopener noreferrer">Run in Google Colab</a>
 </div>
 
 In Colab, choose a T4 GPU runtime, then run Step 0 in order: install KaleCardiac and download the tutorial data. For **Run locally**, see [Quick Start](../../docs/quick-start.md#cardiac).
@@ -107,34 +107,14 @@ def notebook_intro(docname):
         return cardiac_intro(docname)
     title, path = NOTEBOOKS[docname]
     colab = path.replace(".ipynb", "_colab.ipynb")
-    setup = ("In Colab select the documented **Python 3.12 / 2026.07** runtime, then run the initial setup cell. "
-             "Follow any restart instruction before continuing. ")
     return f"""{execution_help("../../docs/notebook-execution.html")}
 
 # {title}
 
-Run this example in Google Colab, which opens the matching showcase copy in a separate runtime.
-
 <div class="mdas-execution-actions">
-<a class="btn btn-primary mdas-execution-button" href="https://colab.research.google.com/github/pykale/mdas/blob/main/{colab}">Run in Google Colab</a>
+<a class="btn btn-primary mdas-execution-button" href="https://colab.research.google.com/github/pykale/mdas/blob/main/{colab}" target="_blank" rel="noopener noreferrer">Run in Google Colab</a>
 </div>
-
-{setup}For **Run locally**, see [Quick Start](../../docs/quick-start.md#cancer).
-
-> Sessions are temporary. Save code edits, important results and generated files before leaving or opening another example. Do not upload private or patient data to public services.
 """
-
-
-def notebook_guidance(docname):
-    """Closing guidance for a Cancer page; the Cardiac notebooks end with their own references."""
-    if docname.endswith("-survival"):
-        detail = "A log-hazard score orders relative risk; it is not an event time or a survival probability. Interpret censored follow-up correctly. Ranking and calibration answer different questions: inspect the notebook's survival probabilities and calibration analysis separately from concordance. Censoring and follow-up assumptions limit comparisons, and synthetic time units do not establish a clinical horizon."
-    else:
-        detail = "Class probabilities describe the synthetic labels; discrimination does not establish calibration or reliable individual clinical predictions. Compare modalities and uncertainty rather than assuming that fusion must improve performance. An interval spanning zero does not establish a clear positive gain; intervals from a small synthetic cohort are not external clinical validation."
-    research = ("\n\nThe [Cancer HANCOCK research examples](https://github.com/pykale/cancer/tree/main/examples/hancock) require authorised local data, the expected dataset layout and appropriate compute; they are not no-data starter exercises.")
-    return ("## Interpretation and next steps\n\n" + detail +
-            "\n\nSynthetic results demonstrate a software workflow, not clinical validity, external generalisation or causality. Keep subjects separated across splits, fit preprocessing on training data, assess uncertainty and missing inputs, and plan external evaluation. Clinical data require permissions and secure infrastructure.\n\n"
-            "Return to the [tutorial overview](index.md) or follow [Quick Start](../../docs/quick-start.md) to explore another example." + research)
 
 
 def prepare_notebook(app, docname, source):
@@ -165,16 +145,13 @@ def prepare_notebook(app, docname, source):
         notebook["metadata"].setdefault("language_info", {})["pygments_lexer"] = "ipython3"
     notebook["cells"].insert(0, {"cell_type": "markdown", "id": "mdas-access", "metadata": {},
                                  "source": notebook_intro(docname)})
-    if docname in NOTEBOOKS:
-        notebook["cells"].append({"cell_type": "markdown", "id": "mdas-next-step", "metadata": {},
-                                  "source": notebook_guidance(docname)})
     source[0] = json.dumps(notebook)
 
 
 
 REDIRECTS = {
     "docs/agenda": "about.html#programme",
-    "tutorials/kalecancer/results": "classification.html#interpretation-and-next-steps",
+    "tutorials/kalecancer/results": "classification.html",
     "tutorials/kalecardiac/getting-started": "index.html",
     "docs/prerequisites": "participation.html",
     "tutorials/README": "../index.html#explore-the-tutorials",
@@ -202,7 +179,7 @@ def redirect_pages(app):
     for old, target in REDIRECTS.items():
         fragments = {}
         if old == "tutorials/kalecancer/results":
-            fragments = {key: "survival.html#interpretation-and-next-steps"
+            fragments = {key: "survival.html"
                          for key in ("#survival-analysis-results-and-interpretation", "#read-risk-alongside-follow-up")}
         yield old, {"redirect_target": target, "redirect_fragments": fragments}, "redirect.html"
 
