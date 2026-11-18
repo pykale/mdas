@@ -110,6 +110,28 @@ def _ensure_helper(directory: Path) -> None:
     temporary.replace(path)
 
 
+def _check_dependencies(pins: dict[str, str]) -> None:
+    """Fail on broken requirements of the packages MDAS installs; only report Colab's other conflicts.
+
+    ``pip check`` audits every package in the runtime, including the hundreds Colab preinstalls that these notebooks
+    never import (for example a library whose NumPy upper bound our pin exceeds). Those cannot affect the notebooks,
+    so they are printed as a note instead of stopping setup.
+    """
+    def normalise(name: str) -> str:
+        return name.lower().replace("_", "-").replace(".", "-")
+
+    ours = {normalise(name) for name in pins} | {"kalecancer", "pykale"}
+    result = subprocess.run([sys.executable, "-m", "pip", "check"], capture_output=True, text=True)
+    problems = [line for line in result.stdout.splitlines() if line.strip() and not line.startswith("No broken")]
+    blocking = [line for line in problems if normalise(line.split()[0]) in ours]
+    if blocking:
+        print("\n".join(blocking), flush=True)
+        raise subprocess.CalledProcessError(result.returncode, result.args, output=result.stdout)
+    if problems:
+        print(f"MDAS note: pip reports {len(problems)} conflict(s) among Colab's preinstalled packages that these "
+              "notebooks do not use; they are safe to ignore:\n  " + "\n  ".join(problems), flush=True)
+
+
 def prepare(directory: Path | None = None, *, showcase: bool = False) -> None:
     """Install in this kernel's interpreter and preserve the originals' cwd/imports."""
     check_python()  # Before installation or download.
@@ -158,7 +180,7 @@ def prepare(directory: Path | None = None, *, showcase: bool = False) -> None:
                 CalibrationError, IntegratedBrier, TimeDependentAUC)
             from kalecancer.pipeline import EarlyStopping, dump_config, load_pipeline
             from kalecancer.model import MLP, MaskedMean, LateFusion
-        subprocess.run([sys.executable, "-m", "pip", "check"], check=True)
+        _check_dependencies(pins)
         print(f"MDAS ready in {time.monotonic() - started:.1f}s: Python {sys.version.split()[0]}, PyTorch {torch.__version__}, Hub {metadata.version('huggingface-hub')}. Run the scientific cells below in order.", flush=True)
     except (subprocess.CalledProcessError, OSError, ImportError) as error:
         raise RuntimeError(
