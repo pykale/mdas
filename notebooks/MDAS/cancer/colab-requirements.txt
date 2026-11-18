@@ -39,12 +39,10 @@ networkx==3.7
 numpy==2.0.2
 packaging==26.3
 pandas==2.2.2
-pillow==13.0.0
 platformdirs==4.13.5
 pooch==1.9.0
 propcache==0.5.4
 pykale==0.2.1
-python-dateutil==3.0.0
 pytorch-lightning==2.6.6
 pytz==2026.5
 pyyaml==6.0.3
@@ -68,10 +66,5 @@ tzdata==2026.5
 urllib3==2.8.0
 yarl==1.25.1
 
-# Showcase plotting, resolved with the scientific pins on Python 3.12.
-matplotlib==3.11.2
-contourpy==1.4.0
-cycler==0.12.1
-fonttools==4.68.0
-kiwisolver==1.5.1
-pyparsing==3.3.3
+# Plotting uses Colab's own matplotlib, pillow and python-dateutil. Colab loads them when a session starts, so
+# pinning other versions here would replace them under the running kernel and force a restart.
