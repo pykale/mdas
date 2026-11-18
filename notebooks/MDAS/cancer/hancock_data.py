@@ -42,6 +42,7 @@ SHA256 = "4643ad148d0cb1cb146a66a89fe032a86ef1e3328d6e5d804df096c3c0a5199a"
 
 # Chosen by 5-fold cross-validation; training longer overfits the slide encoder
 HIDDEN, LEARNING_RATE, EPOCHS, RANDOM_STATE = 64, 1e-3, 10, 0
+N_RESAMPLES = 300  # Bootstrap resamples per interval: enough for teaching, and quick on a free Colab CPU
 MODEL_COLOUR = "#1baf7a"
 
 results: list[dict] = []  # Every experiment() run, for plot_results()
@@ -165,7 +166,7 @@ def experiment(name: str, modalities: dict[str, pd.DataFrame | PatchFeatures], t
     predictions = pipeline.predict(test)
     truth = test.target.frame.loc[predictions.index]
     context = EvalContext(train_target=pipeline.train_target_, classes=None)
-    interval = bootstrap_ci(HarrellC(), predictions, truth, context)
+    interval = bootstrap_ci(HarrellC(), predictions, truth, context, n_resamples=N_RESAMPLES)
     results.append({"experiment": name, "split": split, "test patients": len(predictions),
                     "C-index": interval.estimate, "lower": interval.lower, "upper": interval.upper})
     print(f"{name} ({split} split): C-index {interval.estimate:.3f} (95% CI {interval.lower:.2f} to {interval.upper:.2f})")
@@ -177,7 +178,8 @@ def compare(new: dict, old: dict) -> None:
     """Print the bootstrap 95% CI of the C-index gained by ``new`` over ``old`` on the same test patients."""
     shared = new["predictions"].index.intersection(old["predictions"].index)
     gain = bootstrap_ci(HarrellC(), new["predictions"].loc[shared], new["truth"].loc[shared], new["context"],
-                        baseline=old["predictions"].loc[shared], baseline_context=old["context"])
+                        baseline=old["predictions"].loc[shared], baseline_context=old["context"],
+                        n_resamples=N_RESAMPLES)
     verdict = "a clear gain" if gain.lower > 0 else "a clear loss" if gain.upper < 0 else "no clear difference"
     print(f"Gain: {gain.estimate:+.3f} (95% CI {gain.lower:+.2f} to {gain.upper:+.2f}): {verdict}")
 
