@@ -1,4 +1,4 @@
-﻿---
+---
 orphan: true
 ---
 
@@ -8,15 +8,14 @@ This guide opens in a new tab so your notebook page and active kernel can stay i
 
 ## Colab: run the dedicated copy
 
-**Run in Google Colab** opens `classification_showcase_colab.ipynb` for Classification and `survival_showcase_colab.ipynb` for Survival Analysis. Each copy preserves the selected source notebook's scientific cells and adds an initial setup section. Google Colab is the sole online execution option for both Cancer examples. For local execution, see [Quick Start](quick-start.md#cancer). See the [Colab guide](colab.md) for details.
+**Run in Google Colab** opens a copy of the notebook with one setup cell added at the top: `classification_showcase_colab.ipynb` for Classification, `survival_showcase_colab.ipynb` for Survival Analysis and `hancock_questions_colab.ipynb` for Exploring HANCOCK. For local execution, see [Quick Start](quick-start.md#cancer). See the [Colab guide](colab.md) for details.
 
-1. Select a compatible **Python 3.12** runtime as explained at the top of that notebook. Runtime selection is a participant action; installing another Python executable does not change the active kernel.
-2. Run the initial setup cell. It retrieves support files and installs compatible research packages in the active environment. The first installation may take several minutes.
-3. If requested, choose **Runtime > Restart session**, then rerun setup. Continue only when **MDAS ready** appears. After the corrected Hub setup, that message should include **Hub 1.33.0**; an already imported old Hub or Transformers stack needs a restart.
-4. Run scientific cells individually in order, including their data generation, training and evaluation steps.
-5. Save a notebook copy and download needed data/results using Colab's File menu and Files pane before disconnecting. A new Colab session does not automatically retain an earlier runtime's files or variables.
+1. Select the **Python 3.12** runtime as explained at the top of that notebook (**Runtime > Change runtime type**, runtime version **2026.07**).
+2. Run the setup cell. It installs KaleCancer and downloads the notebook's helper files. The first run takes about 6 minutes.
+3. When it prints **Ready**, run the remaining cells in order.
+4. Save a notebook copy and download needed results using Colab's File menu and Files pane before disconnecting. A new Colab session does not keep an earlier session's files or variables.
 
-For runtime selection, a setup failure or a version message, follow the [Colab troubleshooting guide](colab.md). A failed setup is not permission to skip ahead to the scientific cells.
+If the setup cell stops with a message, follow it, or see the [Colab guide](colab.md). Don't skip ahead to the other cells until setup prints **Ready**.
 
 ## Cardiac setup
 

@@ -4,38 +4,29 @@ orphan: true
 
 # Run the Cancer notebooks in Google Colab
 
-Open [Classification](../notebooks/MDAS/cancer/classification_showcase.ipynb) or [Survival Analysis](../notebooks/MDAS/cancer/survival_showcase.ipynb), then select **Run in Google Colab**.
+Open [Classification](../notebooks/MDAS/cancer/classification_showcase.ipynb), [Survival Analysis](../notebooks/MDAS/cancer/survival_showcase.ipynb) or [Exploring HANCOCK](../notebooks/MDAS/cancer/hancock_questions.ipynb), then select **Run in Google Colab**.
 
-- [Classification showcase in Google Colab](https://colab.research.google.com/github/pykale/mdas/blob/main/notebooks/MDAS/cancer/classification_showcase_colab.ipynb)
+- [Classification in Google Colab](https://colab.research.google.com/github/pykale/mdas/blob/main/notebooks/MDAS/cancer/classification_showcase_colab.ipynb)
 - [Survival Analysis in Google Colab](https://colab.research.google.com/github/pykale/mdas/blob/main/notebooks/MDAS/cancer/survival_showcase_colab.ipynb)
+- [Exploring HANCOCK in Google Colab](https://colab.research.google.com/github/pykale/mdas/blob/main/notebooks/MDAS/cancer/hancock_questions_colab.ipynb)
 
-Each selected task uses a complete copy of the authored showcase with its scientific cells unchanged. Each setup downloads the setup script, requirements and both synthetic helpers from the public MDAS repository and pins Cancer `f8dff11372587c4ae97ce86b7d869ace511a6a17`, including the interpretation APIs. Google Colab is the sole online execution option for both Cancer examples.
+Each Colab copy is the full notebook with one setup cell added at the top. That cell installs KaleCancer (Git commit `f8dff11372587c4ae97ce86b7d869ace511a6a17`) with pip and downloads the notebook's helper files from the public MDAS repository. Everything KaleCancer does not constrain keeps Colab's own version.
 
 ## Before running: Python 3.12
 
-In Colab select **Runtime > Change runtime type > Runtime Version > 2026.07**, then reconnect. Google currently lists this Python 3.12 runtime in its [runtime documentation](https://research.google.com/colaboratory/runtime-version-faq.html), checked on 9 November 2026. Runtime availability can change; if it is not offered, use local Python 3.12 following [Quick Start](quick-start.md#cancer).
+In Colab select **Runtime > Change runtime type**, set **Runtime version** to **2026.07** and click **Save**. Google lists this Python 3.12 runtime in its [runtime documentation](https://research.google.com/colaboratory/runtime-version-faq.html). KaleCancer and PyKale need Python below 3.13, so Colab's default Python 3.13 won't work; the setup cell stops with this instruction if the runtime is wrong. If the runtime is not offered, run locally with [Quick Start](quick-start.md#cancer).
 
-The default Python 3.13 runtime is outside the published Cancer and PyKale requirements. Installing another interpreter does not change the active notebook kernel. The setup checks that kernel's Python version before downloading or installing anything.
+Exploring HANCOCK can also use a **T4 GPU** (set under **Hardware accelerator** in the same dialog). It trains on the GPU, but its models are small, so it is only a little faster, and setup downloads a larger PyTorch. Classification and Survival Analysis run on the CPU.
 
-## Run cells directly
+## Run the notebook
 
-1. Run the setup code cell under **Before you start**. It installs compatible CPU research packages in this notebook's active Python environment and downloads the companion module. No separate notebook, Drive mount, uploaded files or terminal commands are needed.
-2. If setup says a different library version is already loaded, choose **Runtime > Restart session** and rerun setup. This prevents mixing old, loaded libraries with newly installed packages, including Hugging Face Hub and Transformers. After updating an earlier failed setup, wait for **MDAS ready** to print **Hub 1.33.0** before running scientific cells. Continue only after **MDAS ready** appears.
-3. Run the scientific cells individually in order. Training and advanced analyses run in full. Rerunning setup reuses compatible dependencies and cached support files.
-4. Save a notebook copy through Colab's File menu and download generated files through its Files pane before disconnecting. Colab runtimes are temporary. Use synthetic data only.
+1. Run the setup cell under **Before you start**. The first run takes about 6 minutes: KaleCancer needs PyTorch 2.6, so setup replaces Colab's newer PyTorch (with the smaller CPU-only build on a CPU runtime).
+2. When it prints **Ready**, run the remaining cells in order.
+3. Save a copy through Colab's File menu, and download any results through its Files pane, before disconnecting. Colab sessions are temporary.
 
-The setup downloads the support files into `/content/mdas/`, adds that directory to the import path and changes the working directory there. Thus the original `from synthetic_data_generation import make_cohort` and `../../../data/synthetic_data` work without editing any scientific cell. Each notebook generates its own appropriate synthetic task with the original deterministic generator.
+## If setup fails
 
-The four original notebooks, blank exercises, Binder requirements and Binder controller are unchanged. The Cancer website pages offer Google Colab only. Colab copies add only this setup section; all original cell dictionaries, ordering, metadata and saved outputs are preserved.
+- **"KaleCancer needs Python 3.12"**: change the runtime version as above, then run the setup cell again.
+- **"Installation failed"**: pip's messages are shown above it. A download error usually means the session lost its internet connection; reconnect and run the setup cell again.
 
-## If setup does not reach MDAS ready
-
-Keep the error message. An unsupported Python version needs a runtime selection, not another interpreter installed in a cell. A download error usually means the session has no internet access; reconnect and rerun setup. If a different package version is already imported, restart the session and rerun setup until **MDAS ready** appears; do not continue with a partly configured environment.
-
-For notebook switching, temporary sessions and saving work across both execution routes, see [Execution Help](notebook-execution.md).
-
-## Compatibility and validation
-
-The Colab research stack uses Python 3.12, PyTorch 2.6 CPU, PyKale 0.2.1, the existing pinned Cancer Git commit, NumPy 2.0.2, pandas 2.2.2, scikit-learn 1.9.1 and Lightning 2.6.6. NumPy matches the documented Colab 2026.07 base version. Setup installs the required PyTorch version because the preinstalled newer release does not satisfy PyKale's cap. Unrelated kernel/IPython packages are not replaced. No Python-version or dependency constraints are bypassed.
-
-Direct Colab UI execution has not been verified in this development environment. Complete local executions, preservation checks, exact dependency details and the final fresh-session Colab checklist are documented in the [validation report](https://github.com/pykale/mdas/blob/main/notebooks/MDAS/cancer/README-colab.md). Local execution is not a claim that Colab UI/runtime behaviour has been tested. The new notebook copies and their support files must be published together after review before their public links can work.
+For switching notebooks, temporary sessions and saving work, see [Execution Help](notebook-execution.md).
