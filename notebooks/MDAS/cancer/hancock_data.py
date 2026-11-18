@@ -144,7 +144,7 @@ def _pipeline(modalities: dict[str, pd.DataFrame | PatchFeatures]) -> Pipeline:
         transforms={name: table_transform(table) for name, table in tables.items()},
         optimizer=partial(torch.optim.AdamW, lr=LEARNING_RATE, weight_decay=1e-2),
         batch_size=64, drop_last=False, max_epochs=EPOCHS, validation=None, early_stopping=None,
-        accelerator="cpu", precision="32-true", random_state=RANDOM_STATE,
+        accelerator="gpu" if torch.cuda.is_available() else "cpu", precision="32-true", random_state=RANDOM_STATE,
     )
 
 

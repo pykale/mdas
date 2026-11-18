@@ -1,19 +1,34 @@
-"""Direct Colab copy preservation, bootstrap and runtime-safety regression checks."""
-import hashlib
+"""Direct Colab copy preservation and setup-cell regression checks."""
 import importlib.util
 import json
 from pathlib import Path
 import subprocess
 import sys
-import tempfile
 import unittest
 from unittest.mock import patch, MagicMock
 
 ROOT = Path(__file__).resolve().parents[2]
 CANCER = ROOT / "notebooks/MDAS/cancer"
-spec = importlib.util.spec_from_file_location("mdas_colab_setup", CANCER / "colab_setup.py")
-setup = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(setup)
+spec = importlib.util.spec_from_file_location("mdas_sync_colab", ROOT / "site/sync_colab.py")
+sync = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(sync)
+
+
+def setup_source(name):
+    return "".join(json.loads((CANCER / f"{name}_colab.ipynb").read_text(encoding="utf-8"))["cells"][1]["source"])
+
+
+def run_setup(name, *, python=(3, 12), gpu=False, returncode=0, install=None):
+    """Run a copy's setup cell with pip, downloads and imports replaced; return the mocks."""
+    install = install or MagicMock(return_value=MagicMock(returncode=returncode, stdout="pip out", stderr="pip err"))
+    fetch = MagicMock()
+    torch = MagicMock(__version__="2.6.0+cpu")
+    torch.cuda.is_available.return_value = gpu
+    with patch.object(sys, "version_info", python), patch("subprocess.run", install), \
+            patch("urllib.request.urlretrieve", fetch), patch("shutil.which", return_value="/usr/bin/nvidia-smi" if gpu else None), \
+            patch.dict(sys.modules, {"torch": torch, "kalecancer": MagicMock()}), patch("builtins.print"):
+        exec(setup_source(name), {})
+    return install, fetch
 
 
 class DirectColab(unittest.TestCase):
@@ -22,16 +37,16 @@ class DirectColab(unittest.TestCase):
             path = f"notebooks/MDAS/cancer/{name}.ipynb"
             authored = subprocess.check_output(["git", "show", f"HEAD:{path}"], cwd=ROOT)
             self.assertEqual((ROOT / path).read_bytes().replace(b"\r\n", b"\n"), authored.replace(b"\r\n", b"\n"))
-        for name in ("classification_showcase", "survival_showcase"):
+        for name in sync.NOTEBOOKS:
             original = json.loads((CANCER / f"{name}.ipynb").read_text(encoding="utf-8"))
             direct = json.loads((CANCER / f"{name}_colab.ipynb").read_text(encoding="utf-8"))
             self.assertEqual(direct["cells"][2:], original["cells"])  # includes source, metadata and saved outputs
             self.assertEqual({k: v for k, v in direct.items() if k != "cells"}, {k: v for k, v in original.items() if k != "cells"})
             self.assertIn("Before you start", "".join(direct["cells"][0]["source"]))
-            compile("".join(direct["cells"][1]["source"]), "setup cell", "exec")
+            compile(setup_source(name), "setup cell", "exec")
         subprocess.run([sys.executable, str(ROOT / "site/sync_colab.py"), "--check"], check=True)
 
-    def test_showcase_bootstrap_and_page_targets(self):
+    def test_page_targets_and_helpers(self):
         spec = importlib.util.spec_from_file_location("mdas_site_conf", ROOT / "site/conf.py")
         conf = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(conf)
@@ -45,92 +60,42 @@ class DirectColab(unittest.TestCase):
             self.assertIn(f'href="https://colab.research.google.com/github/pykale/mdas/blob/main/{target}"', intro)
             self.assertTrue((ROOT / target).is_file())
             self.assertNotIn("live-coding-notebook", intro)
-            if "_showcase" in source_path:
-                self.assertNotIn("Binder unavailable", intro)
-                self.assertNotIn('onclick="mdasLaunchInteractive()"', intro)  # Colab is the only route
-                bootstrap = "".join(json.loads((ROOT / target).read_text(encoding="utf-8"))["cells"][1]["source"])
-                for helper in ("colab_setup.py", "colab-requirements.txt", "synthetic_showcase_data.py", "synthetic_data_generation.py"):
-                    self.assertIn(helper, bootstrap)
-                self.assertIn("showcase=True", bootstrap)
+            self.assertNotIn('onclick="mdasLaunchInteractive()"', intro)  # Colab is the only route
+            name = Path(source_path).stem
+            self.assertIn(name, sync.NOTEBOOKS)
+            for helper in sync.NOTEBOOKS[name]["helpers"]:
+                self.assertTrue((CANCER / helper).is_file())
 
-    def test_unsupported_python_does_not_install_or_download(self):
-        with patch.object(setup.sys, "version_info", (3, 13)), patch.object(setup.subprocess, "run") as install, patch.object(setup, "urlopen") as fetch:
-            with self.assertRaisesRegex(RuntimeError, "2026.07"):
-                setup.prepare()
-            install.assert_not_called()
-            fetch.assert_not_called()
+    def test_unsupported_python_stops_before_installing(self):
+        with self.assertRaisesRegex(SystemExit, "Python 3.12"):
+            run_setup("hancock_questions", python=(3, 13))
+        install = MagicMock()
+        with self.assertRaises(SystemExit):
+            run_setup("classification_showcase", python=(3, 13), install=install)
+        install.assert_not_called()
 
-    def test_already_imported_different_binary_libraries_require_restart(self):
-        with self.assertRaisesRegex(RuntimeError, "Restart session"):
-            setup._check_loaded({"torch": "2.11.0", "numpy": "2.0.2"}, {"torch": "2.6.0+cpu", "numpy": "2.0.2"})
-        setup._check_loaded({"torch": "2.6.0+cpu"}, {"torch": "2.6.0+cpu"})
+    def test_installs_cpu_pytorch_and_downloads_each_notebooks_helpers(self):
+        for name, config in sync.NOTEBOOKS.items():
+            install, fetch = run_setup(name)
+            command = install.call_args.args[0]
+            self.assertIn(sync.KALECANCER, command)
+            self.assertIn("torch==2.6.0+cpu", command)
+            self.assertIn("https://download.pytorch.org/whl/cpu", command)
+            self.assertEqual([call.args[1] for call in fetch.call_args_list], config["helpers"])
+            for call in fetch.call_args_list:
+                self.assertEqual(call.args[0], sync.HELPER_URL + call.args[1])
 
-    def test_previously_loaded_hub_requires_restart_after_downgrade(self):
-        hub = MagicMock(__version__="2.3.0")
-        with patch.dict(sys.modules, {"huggingface_hub": hub}):
-            before = setup._loaded_versions()
-        self.assertEqual(before["huggingface-hub"], "2.3.0")
-        with self.assertRaisesRegex(RuntimeError, "huggingface-hub.*Restart session"):
-            setup._check_loaded(before, {"huggingface-hub": "1.33.0"})
-        setup._check_loaded({"huggingface-hub": "1.33.0"}, {"huggingface-hub": "1.33.0"})
+    def test_only_hancock_installs_gpu_pytorch_on_a_gpu_runtime(self):
+        install, _ = run_setup("hancock_questions", gpu=True)
+        command = install.call_args.args[0]
+        self.assertIn("torch==2.6.0", command)
+        self.assertNotIn("https://download.pytorch.org/whl/cpu", command)
+        install, _ = run_setup("survival_showcase", gpu=True)  # The showcases train on the CPU anyway
+        self.assertIn("torch==2.6.0+cpu", install.call_args.args[0])
 
-    def test_colab_transformers_hub_requirement_is_checked_before_imports(self):
-        def version(name):
-            return "5.13.1" if name == "transformers" else hub_version
-        with patch.object(setup.metadata, "requires", return_value=["huggingface-hub>=1.5.0,<2.0"]), \
-             patch.object(setup.metadata, "version", side_effect=version):
-            hub_version = "1.33.0"
-            setup._check_transformers_hub()
-            hub_version = "2.3.0"
-            with self.assertRaisesRegex(RuntimeError, "Transformers 5.13.1.*Hub 2.3.0"):
-                setup._check_transformers_hub()
-        with patch.object(setup.metadata, "requires", side_effect=setup.metadata.PackageNotFoundError):
-            setup._check_transformers_hub()  # Optional Transformers stays optional.
-
-    def test_correct_alpha_version_from_wrong_git_commit_is_not_reused(self):
-        with patch.object(setup.metadata, "version", return_value="2.0.2"), patch.object(setup.metadata, "distribution") as dist:
-            dist.return_value.read_text.return_value = json.dumps({"vcs_info": {"commit_id": "wrong"}})
-            self.assertFalse(setup._matches({"numpy": "2.0.2"}))
-            dist.return_value.read_text.return_value = json.dumps({"vcs_info": {"commit_id": setup.CANCER_REF}})
-            self.assertTrue(setup._matches({"numpy": "2.0.2"}))
-
-    def test_companion_download_is_verified_cached_and_does_not_overwrite_existing_source(self):
-        contents = (CANCER / "synthetic_data_generation.py").read_bytes().replace(b"\r\n", b"\n")
-        self.assertEqual(hashlib.sha256(contents).hexdigest(), setup.DATA_SHA256)
-        with tempfile.TemporaryDirectory() as tmp, patch.object(setup, "urlopen") as fetch:
-            directory = Path(tmp)
-            fetch.return_value.__enter__.return_value.read.return_value = contents
-            setup._ensure_helper(directory)
-            setup._ensure_helper(directory)
-            fetch.assert_called_once()
-            self.assertEqual((directory / "synthetic_data_generation.py").read_bytes(), contents)
-        with tempfile.TemporaryDirectory() as tmp, patch.object(setup, "urlopen") as fetch:
-            fetch.return_value.__enter__.return_value.read.return_value = b"bad download"
-            with self.assertRaisesRegex(RuntimeError, "checksum"):
-                setup._ensure_helper(Path(tmp))
-            self.assertFalse((Path(tmp) / "synthetic_data_generation.py").exists())
-
-    def test_fresh_bootstrap_downloads_support_once_and_runs_setup(self):
-        bootstrap = "".join(json.loads((CANCER / "classification_showcase_colab.ipynb").read_text(encoding="utf-8"))["cells"][1]["source"])
-        fake_setup = MagicMock()
-        with tempfile.TemporaryDirectory() as tmp:
-            directory = Path(tmp) / "mdas"
-            code = bootstrap.replace('"/content/mdas"', repr(directory.as_posix()))
-            self.assertNotEqual(code, bootstrap)
-
-            def download(url, path):
-                Path(path).write_bytes((CANCER / url.rsplit("/", 1)[-1]).read_bytes())
-
-            # A fresh Colab session has no support files in its working directory.
-            with patch("pathlib.Path.cwd", return_value=Path(tmp)), patch("urllib.request.urlretrieve", side_effect=download) as fetch, \
-                 patch.dict(sys.modules, {"colab_setup": fake_setup}), patch.object(sys, "path", list(sys.path)):
-                exec(code, {})
-                exec(code, {})  # Rerunning setup reuses the downloaded files.
-            self.assertEqual(fetch.call_count, 4)
-            for name in ("colab_setup.py", "colab-requirements.txt", "synthetic_data_generation.py", "synthetic_showcase_data.py"):
-                self.assertEqual((directory / name).read_bytes(), (CANCER / name).read_bytes())
-            self.assertEqual(fake_setup.prepare.call_count, 2)
-            fake_setup.prepare.assert_called_with(directory, showcase=True)
+    def test_failed_installation_stops_and_shows_pip_output(self):
+        with self.assertRaisesRegex(SystemExit, "Installation failed"):
+            run_setup("survival_showcase", returncode=1)
 
     def test_buttons_have_white_text_in_all_states_and_accessible_focus(self):
         css = (ROOT / "site/_static/mdas-notebooks.css").read_text(encoding="utf-8")
